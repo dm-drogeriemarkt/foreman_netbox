@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'netbox-client-ruby'
+require 'interactor'
 
 module ForemanNetbox
   class Engine < ::Rails::Engine
     engine_name 'foreman_netbox'
+
+    config.autoload_paths += Dir["#{config.root}/app/interactors"]
 
     initializer 'foreman_netbox.load_default_settings', before: :load_config_initializers do
       require_dependency File.expand_path('../../app/models/setting/netbox.rb', __dir__) if begin
@@ -29,6 +32,7 @@ module ForemanNetbox
 
     config.to_prepare do
       begin
+        Host::Managed.include(ForemanNetbox::HostExtensions)
         NetboxClientRuby.configure do |config|
           config.netbox.api_base_url = Setting::Netbox['netbox_url']
           config.netbox.auth.token = Setting::Netbox['netbox_api_token']
