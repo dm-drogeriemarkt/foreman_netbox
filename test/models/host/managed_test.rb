@@ -4,9 +4,9 @@ require 'test_plugin_helper'
 
 module Host
   class ManagedTest < ActiveSupport::TestCase
-    context 'a host with Netbox orchestration' do
-      let(:host) { FactoryBot.build(:host, :managed) }
+    let(:host) { FactoryBot.build(:host, :managed) }
 
+    context 'a host with Netbox orchestration' do
       setup do
         disable_orchestration
         setup_default_netbox_settings
@@ -35,14 +35,29 @@ module Host
       end
 
       test '#set_netbox' do
-        ::ForemanNetbox::SyncHost::Organizer.any_instance.expects(:call)
+        host.expects(:push_to_netbox_async)
         host.send(:set_netbox)
       end
 
       test '#del_netbox' do
-        ::ForemanNetbox::DeleteHost::Organizer.any_instance.expects(:call)
+        host.expects(:delete_from_netbox)
         host.send(:del_netbox)
       end
+    end
+
+    test '#push_to_netbox_async' do
+      ForemanNetbox::SyncHostJob.expects(:perform_later).with(host.id)
+      host.push_to_netbox_async
+    end
+
+    test '#push_to_netbox' do
+      ::ForemanNetbox::SyncHost::Organizer.expects(:call).with(host: host)
+      host.push_to_netbox
+    end
+
+    test '#delete_from_netbox' do
+      ::ForemanNetbox::DeleteHost::Organizer.expects(:call).with(host: host)
+      host.delete_from_netbox
     end
   end
 end
