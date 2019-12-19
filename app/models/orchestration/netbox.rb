@@ -28,10 +28,7 @@ module Orchestration
     def set_netbox
       logger.info "Pushing #{name} to Netbox"
 
-      result = push_to_netbox
-      return true if result.success?
-
-      raise Foreman::Exception, result.error
+      push_to_netbox_async
     rescue StandardError => e
       Foreman::Logging.exception("Failed to push #{name} to Netbox.", e)
       failure format(_('Failed to push %{name} to Netbox: %{message}\n '), name: name, message: e.message), e

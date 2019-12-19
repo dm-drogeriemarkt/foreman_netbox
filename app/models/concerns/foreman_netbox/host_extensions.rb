@@ -8,6 +8,10 @@ module ForemanNetbox
       include ::Orchestration::Netbox
     end
 
+    def push_to_netbox_async
+      ForemanNetbox::SyncHostJob.perform_later(id)
+    end
+
     def push_to_netbox
       ForemanNetbox::SyncHost::Organizer.call(host: self)
     end
