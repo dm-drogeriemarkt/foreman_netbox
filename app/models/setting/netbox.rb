@@ -8,7 +8,7 @@ class Setting
 
     def self.default_settings
       [
-        set('netbox_url', N_('URL where Netbox API is reachable'), nil, N_('Netbox API URL')),
+        set('netbox_url', N_('URL where Netbox is reachable'), nil, N_('Netbox URL')),
         set('netbox_api_token', N_('API token to Netbox'), nil, N_('Netbox API token'), nil, encrypted: true)
       ]
     end

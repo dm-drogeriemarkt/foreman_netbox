@@ -16,7 +16,8 @@ module ForemanNetbox
                  SyncDevice::Find,
                  SyncDevice::Create,
                  SyncDevice::SyncInterfaces::Organizer,
-                 SyncDevice::Update
+                 SyncDevice::Update,
+                 SyncDevice::SaveNetboxUrl
       end
     end
   end

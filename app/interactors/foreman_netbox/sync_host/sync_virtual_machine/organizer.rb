@@ -14,7 +14,8 @@ module ForemanNetbox
                  SyncVirtualMachine::Find,
                  SyncVirtualMachine::Create,
                  SyncVirtualMachine::SyncInterfaces::Organizer,
-                 SyncVirtualMachine::Update
+                 SyncVirtualMachine::Update,
+                 SyncVirtualMachine::SaveNetboxUrl
       end
     end
   end
