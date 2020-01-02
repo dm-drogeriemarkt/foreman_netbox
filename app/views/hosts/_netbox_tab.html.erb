@@ -1,0 +1,5 @@
+<% if @host.netbox_facet&.url %>
+  <%= link_to _('Open Netbox'), @host.netbox_facet&.url, class: 'btn btn-default', target: :_blank %>
+<% else %>
+  <%= alert text: _('This host has not been synchronized yet'), class: 'alert-warning' %>
+<% end %>

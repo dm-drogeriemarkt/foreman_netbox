@@ -27,6 +27,17 @@ module ForemanNetbox
     initializer 'foreman_netbox.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_netbox do
         requires_foreman '>= 1.24'
+
+        # Netbox Facet
+        register_facet(ForemanNetbox::NetboxFacet, :netbox_facet)
+
+        # extend host show page
+        extend_page('hosts/show') do |context|
+          context.add_pagelet :main_tabs,
+                              name: N_('Netbox'),
+                              partial: 'hosts/netbox_tab',
+                              onlyif: proc { |host| host.netbox_facet }
+        end
       end
     end
 
