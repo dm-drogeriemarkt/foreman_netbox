@@ -24,7 +24,7 @@ module ForemanNetbox
             end
 
             def manufacturer
-              context.host.facts.deep_symbolize_keys.dig(:dmi, :manufacturer)
+              context.host.facts.fetch('dmi::manufacturer')
             end
           end
         end

@@ -9,9 +9,7 @@ class ValidateManufacturerTest < ActiveSupport::TestCase
     let(:host) do
       OpenStruct.new(
         facts: {
-          dmi: {
-            manufacturer: 'Manufacturer'
-          }
+          'dmi::manufacturer': 'Manufacturer'
         }
       )
     end

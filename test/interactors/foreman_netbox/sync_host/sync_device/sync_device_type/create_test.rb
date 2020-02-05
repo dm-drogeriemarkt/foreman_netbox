@@ -16,11 +16,7 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       facts: {
-        dmi: {
-          product: {
-            name: 'Device Type Model'
-          }
-        }
+        'dmi::product::name': 'Device Type Model'
       }
     )
   end
@@ -35,8 +31,8 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
     it 'assigns device_type to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/device-types/").with(
         body: {
-          model: host.facts.deep_symbolize_keys.dig(:dmi, :product, :name),
-          slug: host.facts.deep_symbolize_keys.dig(:dmi, :product, :name).parameterize,
+          model: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
+          slug: host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize,
           manufacturer: manufacturer.id
         }.to_json
       ).to_return(

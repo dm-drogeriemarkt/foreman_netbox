@@ -42,13 +42,13 @@ module ForemanNetbox
         end
 
         def primary_ip4
-          return unless context.host.ip.present?
+          return if context.host.ip.blank?
 
           ip_addresses_map[IPAddr.new(context.host.ip).to_i]
         end
 
         def primary_ip6
-          return unless context.host.ip6.present?
+          return if context.host.ip6.blank?
 
           ip_addresses_map[IPAddr.new(context.host.ip6).to_i]
         end

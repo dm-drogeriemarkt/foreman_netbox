@@ -20,7 +20,7 @@ module ForemanNetbox
             private
 
             def params
-              manufacturer_name = context.host.facts.deep_symbolize_keys.dig(:dmi, :manufacturer)
+              manufacturer_name = context.host.facts.symbolize_keys.fetch(:'dmi::manufacturer')
 
               {
                 name: manufacturer_name,

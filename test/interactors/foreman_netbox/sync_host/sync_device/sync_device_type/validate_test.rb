@@ -9,11 +9,7 @@ class ValidateDeviceTypeTest < ActiveSupport::TestCase
     let(:host) do
       OpenStruct.new(
         facts: {
-          dmi: {
-            product: {
-              name: 'Device Type'
-            }
-          }
+          'dmi::product::name': 'Device Type'
         }
       )
     end

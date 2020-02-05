@@ -25,7 +25,7 @@ module ForemanNetbox
           end
 
           def slug
-            @slug ||= context.host.facts.deep_symbolize_keys.dig(:dmi, :product, :name)&.parameterize
+            @slug ||= context.host.facts.symbolize_keys.dig(:'dmi::product::name')&.parameterize
           end
         end
       end

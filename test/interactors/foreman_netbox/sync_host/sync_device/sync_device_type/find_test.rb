@@ -8,15 +8,11 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       facts: {
-        dmi: {
-          product: {
-            name: 'Device type'
-          }
-        }
+        'dmi::product::name': 'Device type'
       }
     )
   end
-  let(:slug) { host.facts.dig(:dmi, :product, :name).parameterize }
+  let(:slug) { host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize }
 
   setup do
     setup_default_netbox_settings
@@ -33,7 +29,7 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: host.facts.dig(:dmi, :product, :name),
+              name: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
               slug: slug
             }
           ]

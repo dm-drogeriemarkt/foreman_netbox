@@ -8,13 +8,12 @@ class FindManufacturerTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       facts: {
-        dmi: {
-          manufacturer: 'Manufacturer'
-        }
+        'dmi::manufacturer' => 'Manufacturer',
+        'dmi::product::name' => 'device type 2'
       }
     )
   end
-  let(:slug) { host.facts.dig(:dmi, :manufacturer).parameterize }
+  let(:slug) { host.facts.fetch('dmi::manufacturer').parameterize }
 
   setup do
     setup_default_netbox_settings
@@ -31,7 +30,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: host.facts.dig(:dmi, :product, :name),
+              name: host.facts.fetch('dmi::product::name'),
               slug: slug
             }
           ]

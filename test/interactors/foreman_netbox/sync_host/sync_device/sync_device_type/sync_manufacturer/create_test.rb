@@ -10,9 +10,7 @@ class CreateManufacturerTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       facts: {
-        dmi: {
-          manufacturer: 'Manufacturer'
-        }
+        'dmi::manufacturer': 'Manufacturer'
       }
     )
   end
@@ -27,8 +25,8 @@ class CreateManufacturerTest < ActiveSupport::TestCase
     it 'assigns manufacturer to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/manufacturers/").with(
         body: {
-          name: host.facts.dig(:dmi, :manufacturer),
-          slug: host.facts.dig(:dmi, :manufacturer).parameterize
+          name: host.facts.symbolize_keys.fetch(:'dmi::manufacturer'),
+          slug: host.facts.symbolize_keys.fetch(:'dmi::manufacturer').parameterize
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

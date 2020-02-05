@@ -9,8 +9,10 @@ module ForemanNetbox
             include ::Interactor
 
             def call
-              return if context.host.facts.deep_symbolize_keys.dig(:dmi, :manufacturer)
+              context.host.facts.symbolize_keys.fetch(:'dmi::manufacturer')
 
+              true
+            rescue KeyError
               raise SyncHost::ValidationOrganizer::HostAttributeError, _('%s: Invalid manufacturer attributes') % self.class
             end
           end

@@ -27,7 +27,7 @@ module ForemanNetbox
           end
 
           def model
-            @model ||= context.host.facts.deep_symbolize_keys.dig(:dmi, :product, :name)
+            @model ||= context.host.facts.symbolize_keys.fetch(:'dmi::product::name')
           end
         end
       end

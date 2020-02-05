@@ -8,8 +8,10 @@ module ForemanNetbox
           include ::Interactor
 
           def call
-            return if context.host.facts.deep_symbolize_keys.dig(:dmi, :product, :name)
+            context.host.facts.symbolize_keys.fetch(:'dmi::product::name')
 
+            true
+          rescue KeyError
             raise SyncHost::ValidationOrganizer::HostAttributeError, _('%s: Invalid device type attributes') % self.class
           end
         end
