@@ -17,7 +17,7 @@ class CreateDeviceRoleTest < ActiveSupport::TestCase
     let(:device_role) { nil }
 
     it 'assigns device_role to context' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/device-roles/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/device-roles/").with(
         body: {
           name: device_role_params[:name],
           slug: device_role_params[:name].parameterize,

@@ -31,7 +31,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     let(:new_mac) { 'fe:13:c6:44:29:24' }
 
     it 'updates interface in Netbox' do
-      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/interfaces.json").with(
+      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/interfaces.json").with(
         query: { limit: 50 }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -46,7 +46,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
           ]
         }.to_json
       )
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/virtualization/interfaces/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json").with(
         body: {
           mac_address: host.interfaces.first.mac
         }.to_json
@@ -63,7 +63,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
 
   context 'if the interface has not been updated since the last synchronization' do
     it 'does not update interface on Netbox' do
-      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/interfaces.json").with(
+      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/interfaces.json").with(
         query: { limit: 50 }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

@@ -6,12 +6,11 @@ module ForemanNetbox
       module SyncDeviceType
         class Validate
           include ::Interactor
+          include SyncDeviceType::Concerns::Productname
 
           def call
-            context.host.facts.symbolize_keys.fetch(:'dmi::product::name')
+            return true if productname
 
-            true
-          rescue KeyError
             raise SyncHost::ValidationOrganizer::HostAttributeError, _('%s: Invalid device type attributes') % self.class
           end
         end

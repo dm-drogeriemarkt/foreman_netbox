@@ -7,12 +7,11 @@ module ForemanNetbox
         module SyncManufacturer
           class Validate
             include ::Interactor
+            include SyncManufacturer::Concerns::Manufacturer
 
             def call
-              context.host.facts.symbolize_keys.fetch(:'dmi::manufacturer')
+              return true if manufacturer
 
-              true
-            rescue KeyError
               raise SyncHost::ValidationOrganizer::HostAttributeError, _('%s: Invalid manufacturer attributes') % self.class
             end
           end

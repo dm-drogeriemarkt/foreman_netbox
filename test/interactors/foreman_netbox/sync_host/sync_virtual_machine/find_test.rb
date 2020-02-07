@@ -12,7 +12,7 @@ class FindVirtualMachineTest < ActiveSupport::TestCase
 
   context 'when virtual machine exists in Netbox' do
     it 'assigns virtual_machine to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/virtual-machines.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
         query: { limit: 50, name: host.name }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -34,7 +34,7 @@ class FindVirtualMachineTest < ActiveSupport::TestCase
 
   context 'when virtual machine does not exist in Netbox' do
     it 'does not assign virtual_machine to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/virtual-machines.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
         query: { limit: 50, name: host.name }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

@@ -21,7 +21,7 @@ class CreateTenantTest < ActiveSupport::TestCase
     let(:tenant) { nil }
 
     it 'assigns tenant to context' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/tenancy/tenants/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/tenancy/tenants/").with(
         body: {
           name: host.owner.name,
           slug: host.owner.name.parameterize

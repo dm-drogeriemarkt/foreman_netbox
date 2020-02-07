@@ -20,7 +20,7 @@ class FindClusterTypeTest < ActiveSupport::TestCase
 
   context 'when cluster type exists in Netbox' do
     it 'assigns cluster_type to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/cluster-types.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/cluster-types.json").with(
         query: { limit: 50, slug: 'vmware' }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -43,7 +43,7 @@ class FindClusterTypeTest < ActiveSupport::TestCase
 
   context 'when cluster type does not exist in NetBox' do
     it 'does not assign cluster_type to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/virtualization/cluster-types.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/cluster-types.json").with(
         query: { limit: 50, slug: 'vmware' }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncDeviceType
         class Create
           include ::Interactor
+          include SyncDeviceType::Concerns::Productname
 
           def call
             return if context.device_type
@@ -20,14 +21,10 @@ module ForemanNetbox
 
           def params
             {
-              model: model,
-              slug: model&.parameterize,
+              model: productname,
+              slug: productname&.parameterize,
               manufacturer: context.manufacturer.id
             }
-          end
-
-          def model
-            @model ||= context.host.facts.symbolize_keys.fetch(:'dmi::product::name')
           end
         end
       end

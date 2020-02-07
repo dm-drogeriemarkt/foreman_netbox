@@ -7,6 +7,7 @@ module ForemanNetbox
         module SyncManufacturer
           class Find
             include ::Interactor
+            include SyncManufacturer::Concerns::Manufacturer
 
             def call
               context.manufacturer = ForemanNetbox::API.client.dcim.manufacturers.find_by(params)
@@ -21,10 +22,6 @@ module ForemanNetbox
               {
                 slug: manufacturer.parameterize
               }
-            end
-
-            def manufacturer
-              context.host.facts.fetch('dmi::manufacturer')
             end
           end
         end

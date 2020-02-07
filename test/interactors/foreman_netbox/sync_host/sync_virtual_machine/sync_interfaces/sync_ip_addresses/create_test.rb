@@ -25,7 +25,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
       query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.subnet.network_address }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -34,7 +34,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         results: []
       }.to_json
     )
-    stub_request(:get, "#{Setting[:netbox_url]}/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
       query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.subnet6.network_address }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -46,7 +46,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   end
 
   it 'creates missing IP addresses in Netbox' do
-    stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/ipam/ip-addresses/").with(
+    stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
         address: host.interfaces.first.subnet.network_address
@@ -56,7 +56,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       body: { id: 1 }.to_json
     )
 
-    stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/ipam/ip-addresses/").with(
+    stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
         address: host.interfaces.first.subnet6.network_address

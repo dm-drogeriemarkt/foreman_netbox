@@ -37,7 +37,7 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
   it 'creates missing interfaces' do
     interfaces.expects(:reload).once.returns(true)
 
-    stub_post = stub_request(:post, "#{Setting[:netbox_url]}/virtualization/interfaces/").with(
+    stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/interfaces/").with(
       body: {
         virtual_machine: virtual_machine.id,
         name: host.interfaces.first.name,

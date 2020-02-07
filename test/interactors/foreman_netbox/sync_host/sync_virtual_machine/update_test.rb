@@ -103,7 +103,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
     end
 
     it 'updates virtual_machine' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/virtualization/virtual-machines/#{virtual_machine.id}.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/#{virtual_machine.id}.json").with(
         body: {
           cluster: cluster.id,
           tenant: tenant.id,

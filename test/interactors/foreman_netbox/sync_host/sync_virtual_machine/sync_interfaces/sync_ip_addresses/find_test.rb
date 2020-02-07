@@ -17,7 +17,7 @@ class FindVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   context 'when ip_addresses were found on Netbox' do
     it 'assigns ip_addresses to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/ipam/ip-addresses.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
         query: { limit: 50, virtual_machine_id: virtual_machine.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -34,7 +34,7 @@ class FindVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   context 'when ip_addresses were not found on Netbox' do
     it 'does not assign ip_addresses to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/ipam/ip-addresses.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
         query: { limit: 50, virtual_machine_id: virtual_machine.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

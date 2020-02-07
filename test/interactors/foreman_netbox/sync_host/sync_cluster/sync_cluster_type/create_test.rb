@@ -27,7 +27,7 @@ class CreateClusterTypeTest < ActiveSupport::TestCase
     let(:cluster_type) { nil }
 
     it 'creates a cluster_type' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/virtualization/cluster-types/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/cluster-types/").with(
         body: cluster_type_params.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

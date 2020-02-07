@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncDeviceType
         class Find
           include ::Interactor
+          include SyncDeviceType::Concerns::Productname
 
           def call
             return unless slug
@@ -25,7 +26,7 @@ module ForemanNetbox
           end
 
           def slug
-            @slug ||= context.host.facts.symbolize_keys.dig(:'dmi::product::name')&.parameterize
+            @slug ||= productname&.parameterize
           end
         end
       end

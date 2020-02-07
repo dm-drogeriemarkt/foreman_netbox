@@ -22,7 +22,7 @@ class CreateSiteTest < ActiveSupport::TestCase
     let(:site) { nil }
 
     it 'assigns site to context' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/sites/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/sites/").with(
         body: {
           name: host.location.name,
           slug: host.location.name.parameterize

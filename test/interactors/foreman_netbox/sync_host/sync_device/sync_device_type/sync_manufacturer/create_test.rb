@@ -23,7 +23,7 @@ class CreateManufacturerTest < ActiveSupport::TestCase
     let(:manufacturer) { nil }
 
     it 'assigns manufacturer to context' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/manufacturers/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
         body: {
           name: host.facts.symbolize_keys.fetch(:'dmi::manufacturer'),
           slug: host.facts.symbolize_keys.fetch(:'dmi::manufacturer').parameterize

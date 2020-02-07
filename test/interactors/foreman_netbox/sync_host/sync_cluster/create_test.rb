@@ -27,7 +27,7 @@ class CreateClusterTest < ActiveSupport::TestCase
     let(:cluster) { nil }
 
     it 'creates a cluster' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/virtualization/clusters/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/clusters/").with(
         body: {
           type: cluster_type.id,
           name: host.compute_object.cluster

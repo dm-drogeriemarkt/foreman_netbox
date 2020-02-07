@@ -21,7 +21,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
 
   context 'when manufacturer exists in Netbox' do
     it 'assigns manufacturer to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/dcim/manufacturers.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
         query: { limit: 50, slug: slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
 
   context 'when manufacturer does not exist in NetBox' do
     it 'does not assign manufacturer to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/dcim/manufacturers.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
         query: { limit: 50, slug: slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

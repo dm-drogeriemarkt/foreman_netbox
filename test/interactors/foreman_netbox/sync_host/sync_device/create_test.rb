@@ -31,7 +31,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
     let(:device) { nil }
 
     it 'creates a device' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/devices/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         body: {
           device_type: device_type.id,
           device_role: device_role.id,

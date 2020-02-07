@@ -7,6 +7,7 @@ module ForemanNetbox
         module SyncManufacturer
           class Create
             include ::Interactor
+            include SyncManufacturer::Concerns::Manufacturer
 
             def call
               return if context.manufacturer
@@ -20,11 +21,9 @@ module ForemanNetbox
             private
 
             def params
-              manufacturer_name = context.host.facts.symbolize_keys.fetch(:'dmi::manufacturer')
-
               {
-                name: manufacturer_name,
-                slug: manufacturer_name.parameterize
+                name: manufacturer,
+                slug: manufacturer.parameterize
               }
             end
           end

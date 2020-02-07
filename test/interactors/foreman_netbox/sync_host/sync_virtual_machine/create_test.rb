@@ -38,7 +38,7 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
     let(:virtual_machine) { nil }
 
     it 'creates a virtual_machine' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/virtualization/virtual-machines/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         body: {
           name: host.name,
           cluster: cluster.id,

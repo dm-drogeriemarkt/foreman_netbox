@@ -37,7 +37,7 @@ class CreateDeviceInterfacesTest < ActiveSupport::TestCase
   it 'creates missing interfaces' do
     interfaces.expects(:reload).once.returns(true)
 
-    stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/interfaces/").with(
+    stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
       body: {
         device: device.id,
         name: host.interfaces.first.name,

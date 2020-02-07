@@ -29,7 +29,7 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
     let(:device_type) { nil }
 
     it 'assigns device_type to context' do
-      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/dcim/device-types/").with(
+      stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/device-types/").with(
         body: {
           model: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
           slug: host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize,

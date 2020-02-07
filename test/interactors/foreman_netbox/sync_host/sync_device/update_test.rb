@@ -95,7 +95,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
     end
 
     it 'updates device' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/dcim/devices/#{device.id}.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
         body: {
           device_role: device_role.id,
           device_type: device_type.id,
