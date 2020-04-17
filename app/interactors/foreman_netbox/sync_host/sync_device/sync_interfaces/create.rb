@@ -7,6 +7,8 @@ module ForemanNetbox
         class Create
           include ::Interactor
 
+          TYPE = 'virtual'
+
           def call
             context.host
                    .interfaces
@@ -15,7 +17,8 @@ module ForemanNetbox
                      ForemanNetbox::API.client::DCIM::Interface.new(
                        device: context.device.id,
                        name: host_interface.name,
-                       mac_address: host_interface.mac
+                       mac_address: host_interface.mac,
+                       type: TYPE
                      ).save
                    end
             context.interfaces.reload

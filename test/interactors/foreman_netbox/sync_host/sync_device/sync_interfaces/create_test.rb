@@ -41,7 +41,8 @@ class CreateDeviceInterfacesTest < ActiveSupport::TestCase
       body: {
         device: device.id,
         name: host.interfaces.first.name,
-        mac_address: host.interfaces.first.mac
+        mac_address: host.interfaces.first.mac,
+        type: ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Create::TYPE
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
