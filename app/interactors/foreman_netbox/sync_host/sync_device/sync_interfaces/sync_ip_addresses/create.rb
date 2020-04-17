@@ -32,7 +32,7 @@ module ForemanNetbox
             end
 
             def ip_addresses_for(host_interface)
-              [host_interface&.subnet, host_interface&.subnet6].compact.map(&:network_address)
+              [host_interface&.ip, host_interface&.ip6].compact
             end
           end
         end
