@@ -4,7 +4,7 @@ require 'test_plugin_helper'
 
 class CreateClusterTest < ActiveSupport::TestCase
   subject do
-    ForemanNetbox::SyncHost::SyncCluster::Create.call(
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Create.call(
       host: host, cluster_type: cluster_type, cluster: cluster
     )
   end

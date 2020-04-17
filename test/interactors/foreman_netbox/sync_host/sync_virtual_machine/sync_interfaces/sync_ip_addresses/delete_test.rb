@@ -9,8 +9,8 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { NetboxClientRuby::Virtualization::Interfaces.new }
-  let(:ip_addresses) { NetboxClientRuby::IPAM::IpAddresses.new }
+  let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
+  let(:ip_addresses) { ForemanNetbox::API.client::IPAM::IpAddresses.new }
   let(:host) do
     OpenStruct.new(
       interfaces: [

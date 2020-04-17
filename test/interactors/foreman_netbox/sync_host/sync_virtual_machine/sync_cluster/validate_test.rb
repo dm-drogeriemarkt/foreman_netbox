@@ -3,7 +3,7 @@
 require 'test_plugin_helper'
 
 class ValidateClusterTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncCluster::Validate.call(host: host) }
+  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Validate.call(host: host) }
 
   context 'with valid attributes' do
     let(:host) do

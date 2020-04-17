@@ -3,7 +3,7 @@
 require 'test_plugin_helper'
 
 class FindClusterTypeTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncCluster::SyncClusterType::Find.call(host: host) }
+  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Find.call(host: host) }
 
   let(:host) do
     OpenStruct.new(

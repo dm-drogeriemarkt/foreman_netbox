@@ -6,7 +6,7 @@ class DeleteVirtualMachineInterfacesTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::Delete.call(host: host, interfaces: interfaces) }
 
   let(:interface_id) { 1 }
-  let(:interfaces) { NetboxClientRuby::Virtualization::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
   let(:host) { OpenStruct.new(interfaces: []) }
 
   setup do

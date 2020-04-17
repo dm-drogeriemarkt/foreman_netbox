@@ -6,7 +6,8 @@ module ForemanNetbox
       class Organizer
         include ::Interactor::Organizer
 
-        organize SyncVirtualMachine::Find,
+        organize SyncVirtualMachine::SyncCluster::Organizer,
+                 SyncVirtualMachine::Find,
                  SyncVirtualMachine::Create,
                  SyncVirtualMachine::SyncInterfaces::Organizer,
                  SyncVirtualMachine::Update

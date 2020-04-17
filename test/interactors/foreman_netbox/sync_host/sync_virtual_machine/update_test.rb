@@ -14,7 +14,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:virtual_machine) do
-    NetboxClientRuby::Virtualization::VirtualMachine.new(
+    ForemanNetbox::API.client::Virtualization::VirtualMachine.new(
       id: 1,
       cluster: OpenStruct.new(id: 1),
       tenant: OpenStruct.new(id: 1),

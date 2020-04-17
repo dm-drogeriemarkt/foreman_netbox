@@ -6,7 +6,7 @@ class DeleteDeviceInterfacesTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Delete.call(host: host, interfaces: interfaces) }
 
   let(:interface_id) { 1 }
-  let(:interfaces) { NetboxClientRuby::DCIM::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
   let(:host) { OpenStruct.new(interfaces: []) }
 
   setup do

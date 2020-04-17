@@ -6,7 +6,7 @@ module ForemanNetbox
       class ValidationOrganizer
         include ::Interactor::Organizer
 
-        organize SyncHost::SyncCluster::ValidationOrganizer
+        organize SyncVirtualMachine::SyncCluster::ValidationOrganizer
 
         def call
           return unless context.host.compute?

@@ -10,7 +10,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { NetboxClientRuby::DCIM::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
   let(:old_mac) { 'fe:13:c6:44:29:22' }
 
   let(:host) do

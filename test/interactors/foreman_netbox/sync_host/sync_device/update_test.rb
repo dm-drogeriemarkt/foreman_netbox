@@ -17,7 +17,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
 
   let(:device) do
-    NetboxClientRuby::DCIM::Device.new(
+    ForemanNetbox::API.client::DCIM::Device.new(
       id: 1,
       device_role: OpenStruct.new(id: 1),
       device_type: OpenStruct.new(id: 1),

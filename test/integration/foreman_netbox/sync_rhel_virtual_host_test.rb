@@ -51,7 +51,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
   end
 
   test 'sync host' do
-    VCR.use_cassette "push_#{hostname}" do
+    VCR.use_cassette "push_#{hostname}", match_requests_on: %i[uri method] do
       result = ForemanNetbox::SyncHost::Organizer.call(host: host)
 
       assert result.success?

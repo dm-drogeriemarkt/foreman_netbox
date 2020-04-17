@@ -7,7 +7,6 @@ module ForemanNetbox
 
       organize SyncHost::ValidationOrganizer,
                SyncHost::SyncTenant::Organizer,
-               SyncHost::SyncCluster::Organizer,
                SyncHost::SyncVirtualMachine::Organizer,
                SyncHost::SyncDevice::Organizer
     end
