@@ -34,16 +34,12 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
         OpenStruct.new(
           name: 'INT1',
           mac: 'C3:CD:63:54:21:60',
-          subnet: OpenStruct.new(
-            network_address: "#{ip}/24"
-          )
+          ip: "#{ip}/24"
         ),
         OpenStruct.new(
           name: 'INT2',
           mac: '45:E9:6A:83:02:20',
-          subnet6: OpenStruct.new(
-            network_address: "#{ip6}/32"
-          )
+          ip6: "#{ip6}/32"
         )
       ],
       facts: facts_json

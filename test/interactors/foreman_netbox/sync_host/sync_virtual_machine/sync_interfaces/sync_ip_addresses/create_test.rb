@@ -16,8 +16,8 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         OpenStruct.new(
           name: 'INT1',
           mac: 'fe:13:c6:44:29:24',
-          subnet: OpenStruct.new(network_address: '10.0.0.1/24'),
-          subnet6: OpenStruct.new(network_address: '1500:0:2d0:201::1/32')
+          ip: '10.0.0.1/24',
+          ip6: '1500:0:2d0:201::1/32'
         )
       ]
     )
@@ -26,7 +26,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   setup do
     setup_default_netbox_settings
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.subnet.network_address }
+      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.ip }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -35,7 +35,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.subnet6.network_address }
+      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.ip6 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -49,7 +49,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.subnet.network_address
+        address: host.interfaces.first.ip
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -59,7 +59,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.subnet6.network_address
+        address: host.interfaces.first.ip6
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

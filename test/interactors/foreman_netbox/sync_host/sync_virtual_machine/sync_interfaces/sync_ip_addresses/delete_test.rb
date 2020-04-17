@@ -16,7 +16,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       interfaces: [
         OpenStruct.new(
           name: 'INT1',
-          subnet: OpenStruct.new(network_address: ip_addresses_v4)
+          ip: ip_addresses_v4
         )
       ]
     )
