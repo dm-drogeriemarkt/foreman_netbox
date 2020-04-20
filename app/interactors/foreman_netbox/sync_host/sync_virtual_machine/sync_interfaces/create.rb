@@ -10,11 +10,12 @@ module ForemanNetbox
           def call
             context.host
                    .interfaces
-                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.name) }
+                   .reject { |host_interface| host_interface.netbox_name.blank? }
+                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.netbox_name) }
                    .map do |host_interface|
                      ForemanNetbox::API.client::Virtualization::Interface.new(
                        virtual_machine: context.virtual_machine.id,
-                       name: host_interface.name,
+                       name: host_interface.netbox_name,
                        mac_address: host_interface.mac
                      ).save
                    end

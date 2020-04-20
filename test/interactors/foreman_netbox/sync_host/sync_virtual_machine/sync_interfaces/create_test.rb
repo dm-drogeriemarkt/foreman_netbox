@@ -9,13 +9,26 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { [OpenStruct.new(name: host.interfaces.second.name)] }
+  let(:interfaces) { [OpenStruct.new(name: host.interfaces.second.netbox_name)] }
   let(:virtual_machine) { OpenStruct.new(id: 1) }
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        OpenStruct.new(name: 'INT1', mac: 'fe:13:c6:44:29:24'),
-        OpenStruct.new(name: 'INT2', mac: 'fe:13:c6:44:29:22')
+        FactoryBot.build_stubbed(
+          :nic_base,
+          name: 'INT1',
+          mac: 'fe:13:c6:44:29:24',
+          ip: '10.0.0.1',
+          ip6: '1500:0:2d0:201::1'
+        ),
+        FactoryBot.build_stubbed(
+          :nic_base,
+          name: 'INT2',
+          mac: 'fe:13:c6:44:29:22',
+          ip: '10.0.0.2',
+          ip6: '1500:0:2d0:201::2'
+        ),
+        FactoryBot.build_stubbed(:nic_base, name: nil, mac: nil)
       ]
     )
   end
@@ -30,14 +43,14 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/interfaces/").with(
       body: {
         virtual_machine: virtual_machine.id,
-        name: host.interfaces.first.name,
+        name: host.interfaces.first.netbox_name,
         mac_address: host.interfaces.first.mac
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
       body: {
         id: 1,
-        name: host.interfaces.first.name
+        name: host.interfaces.first.netbox_name
       }.to_json
     )
 

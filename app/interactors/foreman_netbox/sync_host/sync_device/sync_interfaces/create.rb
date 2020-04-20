@@ -12,7 +12,7 @@ module ForemanNetbox
           def call
             context.host
                    .interfaces
-                   .select(&:netbox_name)
+                   .reject { |host_interface| host_interface.netbox_name.blank? }
                    .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.netbox_name) }
                    .map do |host_interface|
                      ForemanNetbox::API.client::DCIM::Interface.new(
