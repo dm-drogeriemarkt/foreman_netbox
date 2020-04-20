@@ -9,7 +9,7 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { [OpenStruct.new(id: 1, name: 'INT1')] }
+  let(:interfaces) { [OpenStruct.new(id: 1, name: host.interfaces.first.netbox_name)] }
   let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
   let(:subnet6) { FactoryBot.build_stubbed(:subnet_ipv6) }
   let(:host) do
@@ -17,7 +17,6 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
       interfaces: [
         FactoryBot.build_stubbed(
           :nic_base,
-          name: 'INT1',
           mac: 'fe:13:c6:44:29:24',
           ip: '10.0.0.1',
           ip6: '1500:0:2d0:201::1',

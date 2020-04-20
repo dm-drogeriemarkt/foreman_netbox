@@ -14,21 +14,9 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        FactoryBot.build_stubbed(
-          :nic_base,
-          name: 'INT1',
-          mac: 'fe:13:c6:44:29:24',
-          ip: '10.0.0.1',
-          ip6: '1500:0:2d0:201::1'
-        ),
-        FactoryBot.build_stubbed(
-          :nic_base,
-          name: 'INT2',
-          mac: 'fe:13:c6:44:29:22',
-          ip: '10.0.0.2',
-          ip6: '1500:0:2d0:201::2'
-        ),
-        FactoryBot.build_stubbed(:nic_base, name: nil, mac: nil)
+        FactoryBot.build_stubbed(:nic_base, mac: 'fe:13:c6:44:29:24', ip: '10.0.0.1', ip6: '1500:0:2d0:201::1'),
+        FactoryBot.build_stubbed(:nic_base, mac: 'fe:13:c6:44:29:22', ip: '10.0.0.2', ip6: '1500:0:2d0:201::2'),
+        FactoryBot.build_stubbed(:nic_base, identifier: nil, mac: nil)
       ]
     )
   end

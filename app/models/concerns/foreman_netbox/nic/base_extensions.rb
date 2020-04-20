@@ -4,7 +4,7 @@ module ForemanNetbox
   module Nic
     module BaseExtensions
       def netbox_name
-        name || (mac && "Interface #{mac}")
+        identifier || (mac && "Interface #{mac}")
       end
 
       def netbox_ips

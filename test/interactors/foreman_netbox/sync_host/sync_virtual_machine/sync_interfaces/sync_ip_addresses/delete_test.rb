@@ -16,12 +16,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        FactoryBot.build_stubbed(
-          :nic_base,
-          name: 'INT1',
-          ip: '10.0.0.1',
-          subnet: subnet
-        )
+        FactoryBot.build_stubbed(:nic_base, ip: '10.0.0.1', subnet: subnet)
       ]
     )
   end
@@ -41,7 +36,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       body: {
         count: 1,
         results: [
-          { id: interface_id, name: host.interfaces.first.name }
+          { id: interface_id, name: host.interfaces.first.netbox_name }
         ]
       }.to_json
     )

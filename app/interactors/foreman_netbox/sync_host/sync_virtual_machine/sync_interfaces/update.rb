@@ -31,15 +31,11 @@ module ForemanNetbox
           end
 
           def new_params(netbox_interface)
-            host_interface = host_interface_for(netbox_interface)
+            host_interface = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
 
             {
               mac_address: host_interface.mac
             }
-          end
-
-          def host_interface_for(netbox_interface)
-            context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
           end
         end
       end

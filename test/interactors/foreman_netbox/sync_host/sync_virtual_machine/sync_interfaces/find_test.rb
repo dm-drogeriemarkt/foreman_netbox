@@ -24,10 +24,7 @@ class FindVirtualMachineInterfacesTest < ActiveSupport::TestCase
         body: {
           count: 1,
           results: [
-            {
-              id: 1,
-              name: 'INT1'
-            }
+            { id: 1 }
           ]
         }.to_json
       )

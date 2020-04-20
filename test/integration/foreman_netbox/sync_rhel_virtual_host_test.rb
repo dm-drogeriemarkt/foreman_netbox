@@ -33,7 +33,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
       interfaces: [
         FactoryBot.build_stubbed(
           :nic_base,
-          name: 'INT1',
+          identifier: 'eth0',
           mac: 'C3:CD:63:54:21:60',
           ip: ip,
           subnet: FactoryBot.build_stubbed(
@@ -44,7 +44,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
         ),
         FactoryBot.build_stubbed(
           :nic_base,
-          name: 'INT2',
+          identifier: 'eth1',
           mac: '45:E9:6A:83:02:20',
           ip6: ip6,
           subnet6: FactoryBot.build_stubbed(

@@ -15,7 +15,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        FactoryBot.build_stubbed(:nic_base, name: 'INT1', mac: old_mac)
+        FactoryBot.build_stubbed(:nic_base, mac: old_mac)
       ]
     )
   end
@@ -37,7 +37,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: 'INT1',
+              name: host.interfaces.first.netbox_name,
               mac_address: new_mac
             }
           ]
@@ -69,7 +69,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: 'INT1',
+              name: host.interfaces.first.netbox_name,
               mac_address: old_mac
             }
           ]

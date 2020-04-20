@@ -10,20 +10,20 @@ module ForemanNetbox
       end
 
       describe '#netbox_name' do
-        context 'with name' do
-          let(:nic) { FactoryBot.build_stubbed(:nic_base, name: 'Interface') }
+        context 'with identifier' do
+          let(:nic) { FactoryBot.build_stubbed(:nic_base, identifier: 'eth1') }
 
-          it { assert_equal nic.name, nic.netbox_name }
+          it { assert_equal nic.identifier, nic.netbox_name }
         end
 
         context 'with mac' do
-          let(:nic) { FactoryBot.build_stubbed(:nic_base) }
+          let(:nic) { FactoryBot.build_stubbed(:nic_base, identifier: nil) }
 
           it { assert_equal "Interface #{nic.mac}", nic.netbox_name }
         end
 
-        context 'without name and mac' do
-          let(:nic) { FactoryBot.build_stubbed(:nic_base, name: nil, mac: nil) }
+        context 'without identifier and mac' do
+          let(:nic) { FactoryBot.build_stubbed(:nic_base, identifier: nil, mac: nil) }
 
           it { assert_nil nic.netbox_name }
         end
