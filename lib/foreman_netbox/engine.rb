@@ -32,7 +32,9 @@ module ForemanNetbox
 
     config.to_prepare do
       begin
-        Host::Managed.include(ForemanNetbox::HostExtensions)
+        ::Host::Managed.include(ForemanNetbox::HostExtensions)
+        ::Nic::Base.include(ForemanNetbox::Nic::BaseExtensions)
+
         NetboxClientRuby.configure do |config|
           config.netbox.api_base_url = Setting::Netbox['netbox_url']
           config.netbox.auth.token = Setting::Netbox['netbox_api_token']

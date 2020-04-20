@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -46,7 +46,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"Owner","slug":"owner","group":null,"description":"","comments":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T08:19:52.583370Z","circuit_count":null,"device_count":null,"ipaddress_count":null,"prefix_count":null,"rack_count":null,"site_count":null,"virtualmachine_count":null,"vlan_count":null,"vrf_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/virtualization/cluster-types.json?limit=50&slug=vmware
@@ -70,11 +70,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '52'
+      - '132'
       Connection:
       - keep-alive
       Vary:
@@ -91,58 +91,10 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":0,"next":null,"previous":null,"results":[]}'
+      string: '{"count":1,"next":null,"previous":null,"results":[{"id":3,"name":"VMware
+        ESXi","slug":"vmware","description":"","cluster_count":1}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
-- request:
-    method: post
-    uri: http://localhost:8000/api/virtualization/cluster-types/
-    body:
-      encoding: UTF-8
-      string: '{"name":"VMware ESXi","slug":"vmware"}'
-    headers:
-      Authorization:
-      - Token 0123456789abcdef0123456789abcdef01234567
-      User-Agent:
-      - Faraday v0.17.3
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 201
-      message: Created
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '62'
-      Connection:
-      - keep-alive
-      Vary:
-      - Accept, Cookie, Origin
-      Allow:
-      - GET, POST, HEAD, OPTIONS
-      Api-Version:
-      - '2.8'
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      P3p:
-      - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
-    body:
-      encoding: UTF-8
-      string: '{"id":2,"name":"VMware ESXi","slug":"vmware","description":""}'
-    http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/virtualization/clusters.json?limit=50&name=CLUSTER
@@ -166,11 +118,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '52'
+      - '398'
       Connection:
       - keep-alive
       Vary:
@@ -187,59 +139,10 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":0,"next":null,"previous":null,"results":[]}'
+      string: '{"count":1,"next":null,"previous":null,"results":[{"id":3,"name":"CLUSTER","type":{"id":3,"url":"http://localhost:8000/api/virtualization/cluster-types/3.json","name":"VMware
+        ESXi","slug":"vmware"},"group":null,"tenant":null,"site":null,"comments":"","tags":[],"custom_fields":{},"created":"2020-04-20","last_updated":"2020-04-20T12:55:36.443273Z","device_count":null,"virtualmachine_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
-- request:
-    method: post
-    uri: http://localhost:8000/api/virtualization/clusters/
-    body:
-      encoding: UTF-8
-      string: '{"type":2,"name":"CLUSTER"}'
-    headers:
-      Authorization:
-      - Token 0123456789abcdef0123456789abcdef01234567
-      User-Agent:
-      - Faraday v0.17.3
-      Content-Type:
-      - application/json
-      Accept-Encoding:
-      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
-      Accept:
-      - "*/*"
-  response:
-    status:
-      code: 201
-      message: Created
-    headers:
-      Server:
-      - nginx
-      Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
-      Content-Type:
-      - application/json
-      Content-Length:
-      - '294'
-      Connection:
-      - keep-alive
-      Vary:
-      - Accept, Cookie, Origin
-      Allow:
-      - GET, POST, HEAD, OPTIONS
-      Api-Version:
-      - '2.8'
-      X-Content-Type-Options:
-      - nosniff
-      X-Frame-Options:
-      - SAMEORIGIN
-      P3p:
-      - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
-    body:
-      encoding: UTF-8
-      string: '{"id":2,"name":"CLUSTER","type":{"id":2,"url":"http://localhost:8000/api/virtualization/cluster-types/2/","name":"VMware
-        ESXi","slug":"vmware"},"group":null,"tenant":null,"site":null,"comments":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:22.838080Z"}'
-    http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/virtualization/virtual-machines.json?limit=50&name=rhel_virtual_host.tier.example.com
@@ -263,7 +166,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -286,13 +189,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/virtualization/virtual-machines/
     body:
       encoding: UTF-8
-      string: '{"name":"rhel_virtual_host.tier.example.com","cluster":2,"tenant":1,"vcpus":1,"memory":1024,"disk":120}'
+      string: '{"name":"rhel_virtual_host.tier.example.com","cluster":3,"tenant":1,"vcpus":1,"memory":1024,"disk":120}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -312,11 +215,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '590'
+      - '591'
       Connection:
       - keep-alive
       Vary:
@@ -333,12 +236,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":4,"name":"rhel_virtual_host.tier.example.com","status":{"value":"active","label":"Active","id":1},"site":null,"cluster":{"id":2,"url":"http://localhost:8000/api/virtualization/clusters/2/","name":"CLUSTER"},"role":null,"tenant":{"id":1,"url":"http://localhost:8000/api/tenancy/tenants/1/","name":"Owner","slug":"owner"},"platform":null,"primary_ip":null,"primary_ip4":null,"primary_ip6":null,"vcpus":1,"memory":1024,"disk":120,"comments":"","local_context_data":null,"tags":[],"custom_fields":{},"config_context":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:23.034691Z"}'
+      string: '{"id":12,"name":"rhel_virtual_host.tier.example.com","status":{"value":"active","label":"Active","id":1},"site":null,"cluster":{"id":3,"url":"http://localhost:8000/api/virtualization/clusters/3/","name":"CLUSTER"},"role":null,"tenant":{"id":1,"url":"http://localhost:8000/api/tenancy/tenants/1/","name":"Owner","slug":"owner"},"platform":null,"primary_ip":null,"primary_ip4":null,"primary_ip6":null,"vcpus":1,"memory":1024,"disk":120,"comments":"","local_context_data":null,"tags":[],"custom_fields":{},"config_context":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:43.698187Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=4
+    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=12
     body:
       encoding: US-ASCII
       string: ''
@@ -359,7 +262,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -382,13 +285,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/virtualization/interfaces/
     body:
       encoding: UTF-8
-      string: '{"virtual_machine":4,"name":"INT1","mac_address":"C3:CD:63:54:21:60"}'
+      string: '{"virtual_machine":12,"name":"INT1","mac_address":"C3:CD:63:54:21:60"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -408,11 +311,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:43 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '346'
+      - '348'
       Connection:
       - keep-alive
       Vary:
@@ -429,15 +332,15 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":19,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4/","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}'
+      string: '{"id":65,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12/","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:43 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/virtualization/interfaces/
     body:
       encoding: UTF-8
-      string: '{"virtual_machine":4,"name":"INT2","mac_address":"45:E9:6A:83:02:20"}'
+      string: '{"virtual_machine":12,"name":"INT2","mac_address":"45:E9:6A:83:02:20"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -457,11 +360,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '346'
+      - '348'
       Connection:
       - keep-alive
       Vary:
@@ -478,12 +381,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":20,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4/","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}'
+      string: '{"id":66,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12/","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=4
+    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=12
     body:
       encoding: US-ASCII
       string: ''
@@ -504,11 +407,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '753'
+      - '757'
       Connection:
       - keep-alive
       Vary:
@@ -525,12 +428,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":2,"next":null,"previous":null,"results":[{"id":19,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]},{"id":20,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}]}'
+      string: '{"count":2,"next":null,"previous":null,"results":[{"id":65,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]},{"id":66,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=4
+    uri: http://localhost:8000/api/virtualization/interfaces.json?limit=50&virtual_machine_id=12
     body:
       encoding: US-ASCII
       string: ''
@@ -551,11 +454,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '753'
+      - '757'
       Connection:
       - keep-alive
       Vary:
@@ -572,12 +475,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":2,"next":null,"previous":null,"results":[{"id":19,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]},{"id":20,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}]}'
+      string: '{"count":2,"next":null,"previous":null,"results":[{"id":65,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"C3:CD:63:54:21:60","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]},{"id":66,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12.json","name":"rhel_virtual_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual"},"enabled":true,"mtu":null,"mac_address":"45:E9:6A:83:02:20","description":"","mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[]}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?limit=50&virtual_machine_id=4
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?limit=50&virtual_machine_id=12
     body:
       encoding: US-ASCII
       string: ''
@@ -598,7 +501,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -621,10 +524,10 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=10.0.0.7/24&interface_id=19&limit=50
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=10.0.0.7/24&interface_id=65&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -645,7 +548,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -668,13 +571,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/ipam/ip-addresses/
     body:
       encoding: UTF-8
-      string: '{"interface":19,"address":"10.0.0.7/24"}'
+      string: '{"interface":65,"address":"10.0.0.7/24"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -694,11 +597,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '577'
+      - '579'
       Connection:
       - keep-alive
       Vary:
@@ -715,12 +618,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":19,"family":{"value":4,"label":"IPv4"},"address":"10.0.0.7/24","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":19,"url":"http://localhost:8000/api/virtualization/interfaces/19/","device":null,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4/","name":"rhel_virtual_host.tier.example.com"},"name":"INT1"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:23.810229Z"}'
+      string: '{"id":60,"family":{"value":4,"label":"IPv4"},"address":"10.0.0.7/24","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":65,"url":"http://localhost:8000/api/virtualization/interfaces/65/","device":null,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12/","name":"rhel_virtual_host.tier.example.com"},"name":"INT1"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:44.273078Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=1600:0:2d0:202::17/32&interface_id=20&limit=50
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=1600:0:2d0:202::17/64&interface_id=66&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -741,7 +644,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -764,13 +667,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/ipam/ip-addresses/
     body:
       encoding: UTF-8
-      string: '{"interface":20,"address":"1600:0:2d0:202::17/32"}'
+      string: '{"interface":66,"address":"1600:0:2d0:202::17/64"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -790,11 +693,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:23 GMT
+      - Mon, 20 Apr 2020 13:03:44 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '587'
+      - '589'
       Connection:
       - keep-alive
       Vary:
@@ -811,7 +714,7 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":20,"family":{"value":6,"label":"IPv6"},"address":"1600:0:2d0:202::17/32","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":20,"url":"http://localhost:8000/api/virtualization/interfaces/20/","device":null,"virtual_machine":{"id":4,"url":"http://localhost:8000/api/virtualization/virtual-machines/4/","name":"rhel_virtual_host.tier.example.com"},"name":"INT2"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:23.928604Z"}'
+      string: '{"id":61,"family":{"value":6,"label":"IPv6"},"address":"1600:0:2d0:202::17/64","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":66,"url":"http://localhost:8000/api/virtualization/interfaces/66/","device":null,"virtual_machine":{"id":12,"url":"http://localhost:8000/api/virtualization/virtual-machines/12/","name":"rhel_virtual_host.tier.example.com"},"name":"INT2"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:44.379676Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:23 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:44 GMT
 recorded_with: VCR 5.1.0

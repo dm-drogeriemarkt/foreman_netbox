@@ -32,7 +32,7 @@ module ForemanNetbox
           end
 
           def host_interface_for(netbox_interface)
-            context.host.interfaces.find { |i| i.name == netbox_interface.name }
+            context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
           end
         end
       end

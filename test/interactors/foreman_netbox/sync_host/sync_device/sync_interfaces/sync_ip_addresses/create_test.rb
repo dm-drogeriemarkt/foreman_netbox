@@ -10,14 +10,19 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
   end
 
   let(:interfaces) { [OpenStruct.new(id: 1, name: 'INT1')] }
+  let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
+  let(:subnet6) { FactoryBot.build_stubbed(:subnet_ipv6) }
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        OpenStruct.new(
+        FactoryBot.build_stubbed(
+          :nic_base,
           name: 'INT1',
           mac: 'fe:13:c6:44:29:24',
-          ip: '10.0.0.1/24',
-          ip6: '1500:0:2d0:201::1/32'
+          ip: '10.0.0.1',
+          ip6: '1500:0:2d0:201::1',
+          subnet: subnet,
+          subnet6: subnet6
         )
       ]
     )
@@ -26,7 +31,7 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
   setup do
     setup_default_netbox_settings
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.ip }
+      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -35,7 +40,7 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.ip6 }
+      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip6 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -49,7 +54,7 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.ip
+        address: host.interfaces.first.netbox_ip
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -59,7 +64,7 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.ip6
+        address: host.interfaces.first.netbox_ip6
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

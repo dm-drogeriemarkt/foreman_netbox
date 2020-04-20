@@ -15,24 +15,13 @@ module ForemanNetbox
               end
 
               context.interfaces.each do |netbox_interface|
-                host_interface = host_interface_for(netbox_interface)
-                host_interface_ips = ips_for(host_interface)
+                host_interface = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
 
                 context.ip_addresses
                        .select { |ip| ip['interface']['id'] == netbox_interface.id }
-                       .reject { |ip| host_interface_ips.include?(ip['address']) }
+                       .reject { |ip| host_interface.netbox_ips.include?(ip['address']) }
                        .each(&:delete)
               end
-            end
-
-            private
-
-            def host_interface_for(netbox_interface)
-              context.host.interfaces.find { |i| i.name == netbox_interface.name }
-            end
-
-            def ips_for(host_interface)
-              [host_interface&.ip, host_interface&.ip6].compact
             end
           end
         end

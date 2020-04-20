@@ -11,12 +11,16 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
   let(:ip_addresses) { ForemanNetbox::API.client::IPAM::IpAddresses.new }
+
+  let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        OpenStruct.new(
+        FactoryBot.build_stubbed(
+          :nic_base,
           name: 'INT1',
-          ip: ip_addresses_v4
+          ip: '10.0.0.1',
+          subnet: subnet
         )
       ]
     )
@@ -25,7 +29,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   let(:interface_id) { 1 }
   let(:ip_addresses_v4_id) { 1 }
   let(:ip_addresses_v6_id) { 2 }
-  let(:ip_addresses_v4) { '10.0.0.1/24' }
+  let(:ip_addresses_v4) { host.interfaces.first.netbox_ip }
   let(:ip_addresses_v6) { '1500:0:2d0:201::1/32' }
 
   setup do

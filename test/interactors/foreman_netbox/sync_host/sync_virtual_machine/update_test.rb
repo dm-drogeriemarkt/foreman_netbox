@@ -94,11 +94,6 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
             OpenStruct.new(size_gb: virtual_machine.disk * 2)
           ]
         )
-        # facts: {
-        #   'processors::count': virtual_machine.vcpus * 2,
-        #   memorysize_mb: virtual_machine.memory * 2,
-        #   blockdevice_sda_size: virtual_machine.disk * 2 * Numeric::GIGABYTE
-        # }
       )
     end
 

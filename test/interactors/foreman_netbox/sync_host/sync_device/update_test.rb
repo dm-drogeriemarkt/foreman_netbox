@@ -9,7 +9,6 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       host: host,
       device_role: device_role,
       device_type: device_type,
-      cluster: cluster,
       site: site,
       tenant: tenant,
       ip_addresses: ip_addresses
@@ -34,17 +33,13 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         address: OpenStruct.new(
           address: '1500:0:2d0:201::1'
         )
-      ),
-      cluster: {
-        id: 1
-      }
+      )
     )
   end
 
   let(:device_role) { device.device_role }
   let(:device_type) { device.device_type }
   let(:site) { device.site }
-  let(:cluster) { OpenStruct.new(id: device.cluster.fetch(:id)) }
   let(:tenant) { device.tenant }
   let(:primary_ip4) { device.primary_ip4 }
   let(:primary_ip6) { device.primary_ip6 }
@@ -102,8 +97,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           site: site.id,
           tenant: tenant.id,
           primary_ip4: primary_ip4.id,
-          primary_ip6: primary_ip6.id,
-          cluster: cluster.id
+          primary_ip6: primary_ip6.id
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

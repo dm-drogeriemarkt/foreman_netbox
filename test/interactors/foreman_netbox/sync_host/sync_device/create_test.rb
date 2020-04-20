@@ -10,8 +10,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
       device_role: device_role,
       site: site,
       tenant: tenant,
-      device: device,
-      cluster: cluster
+      device: device
     )
   end
 
@@ -20,7 +19,6 @@ class CreateDeviceTest < ActiveSupport::TestCase
   let(:device_type) { OpenStruct.new(id: 1) }
   let(:device_role) { OpenStruct.new(id: 1) }
   let(:site) { OpenStruct.new(id: 1) }
-  let(:cluster) { OpenStruct.new(id: 1) }
   let(:tenant) { OpenStruct.new(id: 1) }
 
   setup do
@@ -37,7 +35,6 @@ class CreateDeviceTest < ActiveSupport::TestCase
           device_role: device_role.id,
           site: site.id,
           name: host.name,
-          cluster: cluster.id,
           tenant: tenant.id
         }.to_json
       ).to_return(

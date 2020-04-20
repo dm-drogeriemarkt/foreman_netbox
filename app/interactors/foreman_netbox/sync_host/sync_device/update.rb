@@ -5,6 +5,7 @@ module ForemanNetbox
     module SyncDevice
       class Update
         include ::Interactor
+        include ForemanNetbox::Concerns::PrimaryIps
 
         def call
           return unless context.device
@@ -19,45 +20,24 @@ module ForemanNetbox
 
         def old_params
           {
-            device_type: context.device.device_type.id,
             device_role: context.device.device_role.id,
-            site: context.device.site.id,
-            cluster: context.device.cluster&.symbolize_keys&.fetch(:id),
-            tenant: context.device.tenant&.id,
+            device_type: context.device.device_type.id,
             primary_ip4: context.device.primary_ip4&.id,
-            primary_ip6: context.device.primary_ip6&.id
+            primary_ip6: context.device.primary_ip6&.id,
+            site: context.device.site.id,
+            tenant: context.device.tenant&.id
           }
         end
 
         def new_params
           {
-            device_type: context.device_type.id,
             device_role: context.device_role.id,
-            site: context.site.id,
-            cluster: context.cluster&.id,
-            tenant: context.tenant&.id,
+            device_type: context.device_type.id,
             primary_ip4: primary_ip4,
-            primary_ip6: primary_ip6
+            primary_ip6: primary_ip6,
+            site: context.site.id,
+            tenant: context.tenant&.id
           }
-        end
-
-        def primary_ip4
-          return if context.host.ip.blank?
-
-          ip_addresses_map[IPAddr.new(context.host.ip).to_i]
-        end
-
-        def primary_ip6
-          return if context.host.ip6.blank?
-
-          ip_addresses_map[IPAddr.new(context.host.ip6).to_i]
-        end
-
-        def ip_addresses_map
-          @ip_addresses_map ||= context.ip_addresses.each_with_object({}) do |ip, hash|
-            key = IPAddr.new(ip.address.address).to_i
-            hash[key] = ip.id
-          end
         end
       end
     end

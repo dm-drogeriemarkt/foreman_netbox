@@ -23,7 +23,6 @@ module ForemanNetbox
             device_role: context.device_role.id,
             site: context.site.id,
             name: context.host.name,
-            cluster: context.cluster&.id,
             tenant: context.tenant&.id
           }
         end

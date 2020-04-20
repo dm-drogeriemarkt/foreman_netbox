@@ -14,17 +14,19 @@ class CreateDeviceInterfacesTest < ActiveSupport::TestCase
   let(:host) do
     OpenStruct.new(
       interfaces: [
-        OpenStruct.new(
+        FactoryBot.build_stubbed(
+          :nic_base,
           name: 'INT1',
           mac: 'fe:13:c6:44:29:24',
-          subnet: OpenStruct.new(network_address: '10.0.0.1/24'),
-          subnet6: OpenStruct.new(network_address: '1500:0:2d0:201::1/32')
+          ip: '10.0.0.1',
+          ip6: '1500:0:2d0:201::1'
         ),
-        OpenStruct.new(
+        FactoryBot.build_stubbed(
+          :nic_base,
           name: 'INT2',
           mac: 'fe:13:c6:44:29:22',
-          subnet: OpenStruct.new(network_address: '10.0.0.2/24'),
-          subnet6: OpenStruct.new(network_address: '1500:0:2d0:201::2/32')
+          ip: '10.0.0.2',
+          ip6: '1500:0:2d0:201::2'
         )
       ]
     )

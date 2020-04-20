@@ -23,7 +23,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:20 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -46,7 +46,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"Owner","slug":"owner","group":null,"description":"","comments":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T08:19:52.583370Z","circuit_count":null,"device_count":null,"ipaddress_count":null,"prefix_count":null,"rack_count":null,"site_count":null,"virtualmachine_count":null,"vlan_count":null,"vrf_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:20 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/dcim/sites.json?limit=50&slug=location
@@ -70,7 +70,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:20 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -93,7 +93,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"Location","slug":"location","status":{"value":"active","label":"Active","id":1},"region":null,"tenant":null,"facility":"","asn":null,"time_zone":null,"description":"","physical_address":"","shipping_address":"","latitude":null,"longitude":null,"contact_name":"","contact_phone":"","contact_email":"","comments":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T08:20:21.042820Z","circuit_count":null,"device_count":null,"prefix_count":null,"rack_count":null,"virtualmachine_count":null,"vlan_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:20 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/dcim/device-roles.json?limit=50&slug=server
@@ -117,7 +117,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:20 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -140,7 +140,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":1,"next":null,"previous":null,"results":[{"id":1,"name":"Server","slug":"server","color":"61affe","vm_role":true,"description":"","device_count":null,"virtualmachine_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:20 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/dcim/manufacturers.json?limit=50&slug=hp
@@ -164,7 +164,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:20 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -187,7 +187,7 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":1,"next":null,"previous":null,"results":[{"id":2,"name":"HP","slug":"hp","description":"","devicetype_count":1,"inventoryitem_count":null,"platform_count":null}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:20 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/dcim/device-types.json?limit=50&slug=proliant-dl380-gen9
@@ -211,7 +211,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:20 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -236,7 +236,7 @@ http_interactions:
         DL380 Gen9","slug":"proliant-dl380-gen9","display_name":"HP ProLiant DL380
         Gen9","part_number":"","u_height":1,"is_full_depth":true,"subdevice_role":null,"front_image":null,"rear_image":null,"comments":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T08:55:02.882565Z","device_count":0}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:20 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
     uri: http://localhost:8000/api/dcim/devices.json?limit=50&name=rhel_physical_host.tier.example.com
@@ -260,7 +260,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -283,13 +283,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/dcim/devices/
     body:
       encoding: UTF-8
-      string: '{"device_type":2,"device_role":1,"site":1,"name":"rhel_physical_host.tier.example.com","cluster":null,"tenant":1}'
+      string: '{"device_type":2,"device_role":1,"site":1,"name":"rhel_physical_host.tier.example.com","tenant":1}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -309,11 +309,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1145'
+      - '1146'
       Connection:
       - keep-alive
       Vary:
@@ -330,14 +330,14 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":7,"name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com","device_type":{"id":2,"url":"http://localhost:8000/api/dcim/device-types/2/","manufacturer":{"id":2,"url":"http://localhost:8000/api/dcim/manufacturers/2/","name":"HP","slug":"hp"},"model":"ProLiant
+      string: '{"id":23,"name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com","device_type":{"id":2,"url":"http://localhost:8000/api/dcim/device-types/2/","manufacturer":{"id":2,"url":"http://localhost:8000/api/dcim/manufacturers/2/","name":"HP","slug":"hp"},"model":"ProLiant
         DL380 Gen9","slug":"proliant-dl380-gen9","display_name":"HP ProLiant DL380
-        Gen9"},"device_role":{"id":1,"url":"http://localhost:8000/api/dcim/device-roles/1/","name":"Server","slug":"server"},"tenant":{"id":1,"url":"http://localhost:8000/api/tenancy/tenants/1/","name":"Owner","slug":"owner"},"platform":null,"serial":"","asset_tag":null,"site":{"id":1,"url":"http://localhost:8000/api/dcim/sites/1/","name":"Location","slug":"location"},"rack":null,"position":null,"face":null,"parent_device":null,"status":{"value":"active","label":"Active","id":1},"primary_ip":null,"primary_ip4":null,"primary_ip6":null,"cluster":null,"virtual_chassis":null,"vc_position":null,"vc_priority":null,"comments":"","local_context_data":null,"tags":[],"custom_fields":{},"config_context":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:21.157053Z"}'
+        Gen9"},"device_role":{"id":1,"url":"http://localhost:8000/api/dcim/device-roles/1/","name":"Server","slug":"server"},"tenant":{"id":1,"url":"http://localhost:8000/api/tenancy/tenants/1/","name":"Owner","slug":"owner"},"platform":null,"serial":"","asset_tag":null,"site":{"id":1,"url":"http://localhost:8000/api/dcim/sites/1/","name":"Location","slug":"location"},"rack":null,"position":null,"face":null,"parent_device":null,"status":{"value":"active","label":"Active","id":1},"primary_ip":null,"primary_ip4":null,"primary_ip6":null,"cluster":null,"virtual_chassis":null,"vc_position":null,"vc_priority":null,"comments":"","local_context_data":null,"tags":[],"custom_fields":{},"config_context":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:45.381417Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=7&limit=50
+    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=23&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -358,7 +358,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -381,13 +381,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/dcim/interfaces/
     body:
       encoding: UTF-8
-      string: '{"device":7,"name":"INT1","mac_address":"C3:CD:63:54:21:60","type":"virtual"}'
+      string: '{"device":23,"name":"INT1","mac_address":"C3:CD:63:54:21:60","type":"virtual"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -407,11 +407,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '525'
+      - '527'
       Connection:
       - keep-alive
       Vary:
@@ -428,15 +428,15 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":17,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}'
+      string: '{"id":67,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/dcim/interfaces/
     body:
       encoding: UTF-8
-      string: '{"device":7,"name":"INT2","mac_address":"45:E9:6A:83:02:20","type":"virtual"}'
+      string: '{"device":23,"name":"INT2","mac_address":"45:E9:6A:83:02:20","type":"virtual"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -456,11 +456,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '525'
+      - '527'
       Connection:
       - keep-alive
       Vary:
@@ -477,12 +477,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":18,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}'
+      string: '{"id":68,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=7&limit=50
+    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=23&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -503,11 +503,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1111'
+      - '1115'
       Connection:
       - keep-alive
       Vary:
@@ -524,12 +524,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":2,"next":null,"previous":null,"results":[{"id":17,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0},{"id":18,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}]}'
+      string: '{"count":2,"next":null,"previous":null,"results":[{"id":67,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0},{"id":68,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=7&limit=50
+    uri: http://localhost:8000/api/dcim/interfaces.json?device_id=23&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -550,11 +550,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1111'
+      - '1115'
       Connection:
       - keep-alive
       Vary:
@@ -571,12 +571,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"count":2,"next":null,"previous":null,"results":[{"id":17,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0},{"id":18,"device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}]}'
+      string: '{"count":2,"next":null,"previous":null,"results":[{"id":67,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT1","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"C3:CD:63:54:21:60","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0},{"id":68,"device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23.json","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"name":"INT2","type":{"value":"virtual","label":"Virtual","id":0},"enabled":true,"lag":null,"mtu":null,"mac_address":"45:E9:6A:83:02:20","mgmt_only":false,"description":"","connected_endpoint_type":null,"connected_endpoint":null,"connection_status":null,"cable":null,"mode":null,"untagged_vlan":null,"tagged_vlans":[],"tags":[],"count_ipaddresses":0}]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?device_id=7&limit=50
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?device_id=23&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -597,7 +597,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:45 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -620,10 +620,10 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:45 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=10.0.0.7/24&interface_id=17&limit=50
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=10.0.0.7/24&interface_id=67&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -644,7 +644,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:46 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -667,13 +667,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:46 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/ipam/ip-addresses/
     body:
       encoding: UTF-8
-      string: '{"interface":17,"address":"10.0.0.7/24"}'
+      string: '{"interface":67,"address":"10.0.0.7/24"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -693,11 +693,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:21 GMT
+      - Mon, 20 Apr 2020 13:03:46 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '602'
+      - '604'
       Connection:
       - keep-alive
       Vary:
@@ -714,12 +714,12 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":17,"family":{"value":4,"label":"IPv4"},"address":"10.0.0.7/24","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":17,"url":"http://localhost:8000/api/dcim/interfaces/17/","device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"virtual_machine":null,"name":"INT1"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:21.948939Z"}'
+      string: '{"id":62,"family":{"value":4,"label":"IPv4"},"address":"10.0.0.7/24","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":67,"url":"http://localhost:8000/api/dcim/interfaces/67/","device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"virtual_machine":null,"name":"INT1"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:46.054321Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:21 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:46 GMT
 - request:
     method: get
-    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=1600:0:2d0:202::17/32&interface_id=18&limit=50
+    uri: http://localhost:8000/api/ipam/ip-addresses.json?address=1600:0:2d0:202::17/64&interface_id=68&limit=50
     body:
       encoding: US-ASCII
       string: ''
@@ -740,7 +740,7 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:46 GMT
       Content-Type:
       - application/json
       Content-Length:
@@ -763,13 +763,13 @@ http_interactions:
       encoding: UTF-8
       string: '{"count":0,"next":null,"previous":null,"results":[]}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:46 GMT
 - request:
     method: post
     uri: http://localhost:8000/api/ipam/ip-addresses/
     body:
       encoding: UTF-8
-      string: '{"interface":18,"address":"1600:0:2d0:202::17/32"}'
+      string: '{"interface":68,"address":"1600:0:2d0:202::17/64"}'
     headers:
       Authorization:
       - Token 0123456789abcdef0123456789abcdef01234567
@@ -789,11 +789,11 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Fri, 17 Apr 2020 12:58:22 GMT
+      - Mon, 20 Apr 2020 13:03:46 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '612'
+      - '614'
       Connection:
       - keep-alive
       Vary:
@@ -810,7 +810,7 @@ http_interactions:
       - CP="ALL DSP COR PSAa PSDa OUR NOR ONL UNI COM NAV"
     body:
       encoding: UTF-8
-      string: '{"id":18,"family":{"value":6,"label":"IPv6"},"address":"1600:0:2d0:202::17/32","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":18,"url":"http://localhost:8000/api/dcim/interfaces/18/","device":{"id":7,"url":"http://localhost:8000/api/dcim/devices/7/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"virtual_machine":null,"name":"INT2"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-17","last_updated":"2020-04-17T12:58:22.065755Z"}'
+      string: '{"id":63,"family":{"value":6,"label":"IPv6"},"address":"1600:0:2d0:202::17/64","vrf":null,"tenant":null,"status":{"value":"active","label":"Active","id":1},"role":null,"interface":{"id":68,"url":"http://localhost:8000/api/dcim/interfaces/68/","device":{"id":23,"url":"http://localhost:8000/api/dcim/devices/23/","name":"rhel_physical_host.tier.example.com","display_name":"rhel_physical_host.tier.example.com"},"virtual_machine":null,"name":"INT2"},"nat_inside":null,"nat_outside":null,"dns_name":"","description":"","tags":[],"custom_fields":{},"created":"2020-04-20","last_updated":"2020-04-20T13:03:46.168981Z"}'
     http_version: null
-  recorded_at: Fri, 17 Apr 2020 12:58:22 GMT
+  recorded_at: Mon, 20 Apr 2020 13:03:46 GMT
 recorded_with: VCR 5.1.0

@@ -12,11 +12,12 @@ module ForemanNetbox
           def call
             context.host
                    .interfaces
-                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.name) }
+                   .select(&:netbox_name)
+                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.netbox_name) }
                    .map do |host_interface|
                      ForemanNetbox::API.client::DCIM::Interface.new(
                        device: context.device.id,
-                       name: host_interface.name,
+                       name: host_interface.netbox_name,
                        mac_address: host_interface.mac,
                        type: TYPE
                      ).save
