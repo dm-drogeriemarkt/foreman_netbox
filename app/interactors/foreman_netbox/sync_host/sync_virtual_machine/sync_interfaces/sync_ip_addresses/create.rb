@@ -10,9 +10,9 @@ module ForemanNetbox
 
             def call
               context.interfaces.each do |netbox_interface|
-                host_interface = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
+                host_interface_ips = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }&.netbox_ips || []
 
-                host_interface.netbox_ips.each do |ip|
+                host_interface_ips.each do |ip|
                   next unless ForemanNetbox::API.client.ipam.ip_addresses
                                                 .filter(interface_id: netbox_interface.id, address: ip)
                                                 .total.zero?
