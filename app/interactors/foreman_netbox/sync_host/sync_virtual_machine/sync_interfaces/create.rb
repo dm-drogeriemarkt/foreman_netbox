@@ -7,6 +7,10 @@ module ForemanNetbox
         class Create
           include ::Interactor
 
+          after do
+            context.interfaces.reload
+          end
+
           def call
             context.host
                    .interfaces
@@ -19,7 +23,6 @@ module ForemanNetbox
                        mac_address: host_interface.mac
                      ).save
                    end
-            context.interfaces.reload
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)
             context.fail!(error: "#{self.class}: #{e}")

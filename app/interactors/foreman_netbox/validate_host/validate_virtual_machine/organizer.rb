@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module ForemanNetbox
-  module SyncHost
-    module SyncVirtualMachine
-      class ValidationOrganizer
+  module ValidateHost
+    module ValidateVirtualMachine
+      class Organizer
         include ::Interactor::Organizer
 
-        organize SyncVirtualMachine::SyncCluster::ValidationOrganizer
+        organize ValidateVirtualMachine::ValidateCluster::Organizer
 
         def call
           return unless context.host.compute?

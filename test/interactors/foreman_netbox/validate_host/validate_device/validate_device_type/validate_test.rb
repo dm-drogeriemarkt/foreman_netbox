@@ -3,7 +3,8 @@
 require 'test_plugin_helper'
 
 class ValidateDeviceTypeTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Validate.call(host: host) }
+  let(:interactor) { ForemanNetbox::ValidateHost::ValidateDevice::ValidateDeviceType::Validate }
+  subject { interactor.call(host: host) }
 
   context 'with facts' do
     let(:host) do
@@ -14,9 +15,7 @@ class ValidateDeviceTypeTest < ActiveSupport::TestCase
       )
     end
 
-    it 'does not raise an error' do
-      assert_nothing_raised { subject }
-    end
+    it { assert subject.success? }
   end
 
   context 'without facts' do
@@ -26,8 +25,6 @@ class ValidateDeviceTypeTest < ActiveSupport::TestCase
       )
     end
 
-    it 'does not raise an error' do
-      assert_nothing_raised { subject }
-    end
+    it { assert subject.success? }
   end
 end
