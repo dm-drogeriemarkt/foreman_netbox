@@ -15,17 +15,17 @@ module Orchestration
       return unless errors.empty?
 
       queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
-                   action: [self, :push_netbox])
+                   action: [self, :set_netbox])
     end
 
     def queue_netbox_destroy
       return unless errors.empty?
 
       queue.create(name: _('Delete host %s from Netbox') % self, priority: 60,
-                   action: [self, :delete_netbox])
+                   action: [self, :del_netbox])
     end
 
-    def push_netbox
+    def set_netbox
       logger.info "Pushing #{name} to Netbox"
 
       result = push_to_netbox
@@ -37,7 +37,7 @@ module Orchestration
       failure format(_('Failed to push %{name} to Netbox: %{message}\n '), name: name, message: e.message), e
     end
 
-    def delete_netbox
+    def del_netbox
       logger.info "Deleting #{name} from Netbox"
 
       result = delete_from_netbox

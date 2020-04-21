@@ -5,10 +5,6 @@ require 'test_plugin_helper'
 module ForemanNetbox
   module Nic
     class BaseTest < ActiveSupport::TestCase
-      setup do
-        disable_orchestration
-      end
-
       describe '#netbox_name' do
         context 'with identifier' do
           let(:nic) { FactoryBot.build_stubbed(:nic_base, identifier: 'eth1') }

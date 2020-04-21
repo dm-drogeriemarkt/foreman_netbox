@@ -7,8 +7,6 @@ module ForemanNetbox
 
       organize ValidateHost::ValidateDevice::Organizer,
                ValidateHost::ValidateVirtualMachine::Organizer
-
-      # class HostAttributeError < StandardError; end
     end
   end
 end

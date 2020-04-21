@@ -28,20 +28,20 @@ module Host
         assert_equal 1, tasks.size
       end
 
-      test '#push_netbox is called during orchestration' do
+      test '#set_netbox is called during orchestration' do
         host.stubs(:skip_orchestration_for_testing?).returns(false) # Explicitly enable orchestration
-        host.expects(:push_netbox).returns(true)
+        host.expects(:set_netbox).returns(true)
         assert host.save
       end
 
-      test '#push_netbox' do
+      test '#set_netbox' do
         ::ForemanNetbox::SyncHost::Organizer.any_instance.expects(:call)
-        host.send(:push_netbox)
+        host.send(:set_netbox)
       end
 
-      test '#delete_netbox' do
+      test '#del_netbox' do
         ::ForemanNetbox::DeleteHost::Organizer.any_instance.expects(:call)
-        host.send(:delete_netbox)
+        host.send(:del_netbox)
       end
     end
   end
