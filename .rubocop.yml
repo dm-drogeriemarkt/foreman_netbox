@@ -11,11 +11,22 @@ Style/Documentation:
 Rails/ActionFilter:
   EnforcedStyle: filter
 
+Metrics/ClassLength:
+  Exclude:
+    - 'test/**/*'
+
 Metrics/MethodLength:
   Max: 20
 
 Metrics/LineLength:
   Max: 200
+
+Metrics/AbcSize:
+  Max: 30
+
+Metrics/BlockLength:
+  Exclude:
+    - 'test/**/*'
 
 Style/Next:
   Enabled: false
