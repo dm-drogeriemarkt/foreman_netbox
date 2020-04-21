@@ -9,8 +9,10 @@ module ForemanNetbox
             module Manufacturer
               include ForemanNetbox::Concerns::Facts
 
+              UNKNOWN = 'Unknown'
+
               def manufacturer
-                facts[:manufacturer] || facts[:'dmi::manufacturer']
+                facts[:manufacturer] || facts[:'dmi::manufacturer'] || UNKNOWN
               end
             end
           end

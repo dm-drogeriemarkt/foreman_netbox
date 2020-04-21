@@ -8,8 +8,10 @@ module ForemanNetbox
           module Productname
             include ForemanNetbox::Concerns::Facts
 
+            UNKNOWN = 'Unknown'
+
             def productname
-              facts[:productname] || facts[:'dmi::product::name']
+              facts[:productname] || facts[:'dmi::product::name'] || UNKNOWN
             end
           end
         end
