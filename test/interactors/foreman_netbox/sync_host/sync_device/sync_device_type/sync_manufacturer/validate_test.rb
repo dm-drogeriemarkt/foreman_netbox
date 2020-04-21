@@ -5,7 +5,7 @@ require 'test_plugin_helper'
 class ValidateManufacturerTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::SyncManufacturer::Validate.call(host: host) }
 
-  context 'with valid attributes' do
+  context 'with facts' do
     let(:host) do
       OpenStruct.new(
         facts: {
@@ -19,17 +19,15 @@ class ValidateManufacturerTest < ActiveSupport::TestCase
     end
   end
 
-  context 'with invalid attributes' do
+  context 'without facts' do
     let(:host) do
       OpenStruct.new(
         facts: {}
       )
     end
 
-    it 'raises an error' do
-      assert_raises ForemanNetbox::SyncHost::ValidationOrganizer::HostAttributeError do
-        subject
-      end
+    it 'does not raise an error' do
+      assert_nothing_raised { subject }
     end
   end
 end
