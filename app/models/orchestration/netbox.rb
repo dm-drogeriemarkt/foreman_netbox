@@ -14,7 +14,7 @@ module Orchestration
     def queue_netbox_push
       return unless errors.empty?
 
-      queue.create(name: _('Push host %s to Netbox') % self, priority: 20,
+      queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
                    action: [self, :push_netbox])
     end
 
