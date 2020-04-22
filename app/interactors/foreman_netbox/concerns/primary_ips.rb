@@ -17,8 +17,7 @@ module ForemanNetbox
 
       def ip_addresses_map
         @ip_addresses_map ||= context.ip_addresses.each_with_object({}) do |ip, hash|
-          key = IPAddr.new(ip.address.address).to_i
-          hash[key] = ip.id
+          hash[ip.address.to_i] = ip.id
         end
       end
     end

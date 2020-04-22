@@ -6,6 +6,10 @@ module ForemanNetbox
       class Organizer
         include ::Interactor::Organizer
 
+        around do |interactor|
+          interactor.call unless context.host.compute?
+        end
+
         organize SyncDevice::SyncSite::Organizer,
                  SyncDevice::SyncDeviceRole::Organizer,
                  SyncDevice::SyncDeviceType::Organizer,
@@ -13,12 +17,6 @@ module ForemanNetbox
                  SyncDevice::Create,
                  SyncDevice::SyncInterfaces::Organizer,
                  SyncDevice::Update
-
-        def call
-          return if context.host.compute?
-
-          super
-        end
       end
     end
   end

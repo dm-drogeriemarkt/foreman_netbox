@@ -6,13 +6,17 @@ module ForemanNetbox
       module SyncDeviceType
         module SyncManufacturer
           module Concerns
-            module Manufacturer
+            module Params
               include ForemanNetbox::Concerns::Facts
 
               UNKNOWN = 'Unknown'
 
               def manufacturer
                 facts[:manufacturer] || facts[:'dmi::manufacturer'] || UNKNOWN
+              end
+
+              def slug
+                manufacturer.parameterize
               end
             end
           end

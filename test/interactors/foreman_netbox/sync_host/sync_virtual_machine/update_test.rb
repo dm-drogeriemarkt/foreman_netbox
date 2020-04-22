@@ -39,7 +39,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   let(:tenant) { virtual_machine.tenant }
   let(:primary_ip4) { virtual_machine.primary_ip4 }
   let(:primary_ip6) { virtual_machine.primary_ip6 }
-  let(:ip_addresses) { [primary_ip4, primary_ip6] }
+  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: virtual_machine.id) }
   let(:host) do
     OpenStruct.new(
       ip: primary_ip4.address.address,
@@ -56,6 +56,18 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+      query: { limit: 50, virtual_machine_id: virtual_machine.id }
+    ).to_return(
+      status: 200, headers: { 'Content-Type': 'application/json' },
+      body: {
+        count: 2,
+        results: [
+          { id: primary_ip4.id, address: primary_ip4.address.address },
+          { id: primary_ip6.id, address: primary_ip6.address.address }
+        ]
+      }.to_json
+    )
   end
 
   context 'if the host has not been updated since the last synchronization' do

@@ -6,11 +6,13 @@ module ForemanNetbox
       module SyncDeviceType
         class Create
           include ::Interactor
-          include SyncDeviceType::Concerns::Productname
+          include SyncDeviceType::Concerns::Params
+
+          around do |interactor|
+            interactor.call unless context.device_type
+          end
 
           def call
-            return if context.device_type
-
             context.device_type = ForemanNetbox::API.client::DCIM::DeviceType.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)
@@ -19,11 +21,13 @@ module ForemanNetbox
 
           private
 
+          delegate :manufacturer, to: :context
+
           def params
             {
               model: productname,
-              slug: productname&.parameterize,
-              manufacturer: context.manufacturer.id
+              slug: slug,
+              manufacturer: manufacturer.id
             }
           end
         end

@@ -15,9 +15,11 @@ module ForemanNetbox
 
         private
 
+        delegate :name, to: :'context.host'
+
         def params
           {
-            name: context.host.name
+            name: name
           }
         end
       end

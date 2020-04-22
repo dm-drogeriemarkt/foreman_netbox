@@ -3,11 +3,10 @@
 require 'test_plugin_helper'
 
 class CreateDeviceRoleTest < ActiveSupport::TestCase
-  subject do
-    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Create.call(device_role: device_role)
-  end
+  let(:klass) { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Create }
+  let(:device_role_params) { klass.new }
 
-  let(:device_role_params) { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Organizer::DEVICE_ROLE }
+  subject { klass.call(device_role: device_role) }
 
   setup do
     setup_default_netbox_settings
@@ -19,9 +18,9 @@ class CreateDeviceRoleTest < ActiveSupport::TestCase
     it 'assigns device_role to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/device-roles/").with(
         body: {
-          name: device_role_params[:name],
-          slug: device_role_params[:name].parameterize,
-          color: device_role_params[:color]
+          name: device_role_params.name,
+          slug: device_role_params.slug,
+          color: device_role_params.color
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },
