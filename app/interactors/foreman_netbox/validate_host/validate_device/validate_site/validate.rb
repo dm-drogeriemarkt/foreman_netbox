@@ -8,10 +8,13 @@ module ForemanNetbox
           include ::Interactor
 
           def call
-            return if context.host.location&.name
+            return true if netbox_site_name && netbox_site_slug
 
-            context.fail!(error: _('%s: Invalid manufacturer attributes') % self.class)
+            context.fail!(error: _('%s: Invalid site attributes') % self.class)
           end
+
+          delegate :netbox_site_name, to: :'context.host.location', allow_nil: true
+          delegate :netbox_site_slug, to: :'context.host.location', allow_nil: true
         end
       end
     end

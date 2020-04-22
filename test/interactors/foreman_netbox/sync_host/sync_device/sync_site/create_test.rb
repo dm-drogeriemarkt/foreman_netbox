@@ -8,9 +8,7 @@ class CreateSiteTest < ActiveSupport::TestCase
   let(:site_id) { 1 }
   let(:host) do
     OpenStruct.new(
-      location: OpenStruct.new(
-        name: 'Location'
-      )
+      location: FactoryBot.build_stubbed(:location)
     )
   end
 
@@ -24,8 +22,8 @@ class CreateSiteTest < ActiveSupport::TestCase
     it 'assigns site to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/sites/").with(
         body: {
-          name: host.location.name,
-          slug: host.location.name.parameterize
+          name: host.location.netbox_site_name,
+          slug: host.location.netbox_site_slug
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

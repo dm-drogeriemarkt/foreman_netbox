@@ -7,9 +7,7 @@ class FindSiteTest < ActiveSupport::TestCase
 
   let(:host) do
     OpenStruct.new(
-      location: OpenStruct.new(
-        name: 'Location'
-      )
+      location: FactoryBot.build_stubbed(:location)
     )
   end
 
@@ -20,13 +18,13 @@ class FindSiteTest < ActiveSupport::TestCase
   context 'when site exists in Netbox' do
     it 'assigns site to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/sites.json").with(
-        query: { limit: 50, slug: host.location.name.parameterize }
+        query: { limit: 50, slug: host.location.netbox_site_slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 1,
           results: [
-            { id: 1, name: host.location.name, slug: host.location.name.parameterize }
+            { id: 1, name: host.location.netbox_site_name, slug: host.location.netbox_site_slug }
           ]
         }.to_json
       )
@@ -39,7 +37,7 @@ class FindSiteTest < ActiveSupport::TestCase
   context 'when site does not exist in NetBox' do
     it 'does not assign site to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/sites.json").with(
-        query: { limit: 50, slug: host.location.name.parameterize }
+        query: { limit: 50, slug: host.location.netbox_site_slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
