@@ -9,6 +9,10 @@ module ForemanNetbox
 
           TYPE = 'virtual'
 
+          after do
+            context.interfaces.reload
+          end
+
           def call
             context.host
                    .interfaces
@@ -22,7 +26,6 @@ module ForemanNetbox
                        type: TYPE
                      ).save
                    end
-            context.interfaces.reload
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)
             context.fail!(error: "#{self.class}: #{e}")

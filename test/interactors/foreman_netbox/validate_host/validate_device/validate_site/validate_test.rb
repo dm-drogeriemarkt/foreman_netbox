@@ -3,7 +3,8 @@
 require 'test_plugin_helper'
 
 class ValidateSiteTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncSite::Validate.call(host: host) }
+  let(:interactor) { ForemanNetbox::ValidateHost::ValidateDevice::ValidateSite::Validate }
+  subject { interactor.call(host: host) }
 
   context 'with valid attributes' do
     let(:host) do
@@ -14,9 +15,7 @@ class ValidateSiteTest < ActiveSupport::TestCase
       )
     end
 
-    it 'does not raise an error' do
-      assert_nothing_raised { subject }
-    end
+    it { assert subject.success? }
   end
 
   context 'with invalid attributes' do
@@ -26,10 +25,6 @@ class ValidateSiteTest < ActiveSupport::TestCase
       )
     end
 
-    it 'raises an error' do
-      assert_raises ForemanNetbox::SyncHost::ValidationOrganizer::HostAttributeError do
-        subject
-      end
-    end
+    it { assert_not subject.success? }
   end
 end

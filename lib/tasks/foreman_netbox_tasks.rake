@@ -2,12 +2,21 @@
 
 require 'rake/testtask'
 
-# Tasks
 namespace :foreman_netbox do
-  namespace :example do
+  namespace :sync do
     desc 'Example Task'
-    task task: :environment do
-      # Task goes here
+    task full: :environment do
+      User.as_anonymous_admin do
+        Host::Managed.where(managed: true).each do |host|
+          puts "Pushing #{host.name} to Netbox"
+          result = host.push_to_netbox
+          if result.success?
+            puts "#{host.name} pushed"
+          else
+            puts "Failed to push #{host.name}: #{result.error}"
+          end
+        end
+      end
     end
   end
 end

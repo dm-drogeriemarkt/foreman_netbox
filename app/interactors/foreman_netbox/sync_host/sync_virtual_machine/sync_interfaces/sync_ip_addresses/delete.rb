@@ -8,8 +8,12 @@ module ForemanNetbox
           class Delete
             include ::Interactor
 
+            before do
+              context.interfaces.reload
+            end
+
             def call
-              if context.interfaces.reload.total.zero?
+              if context.interfaces.total.zero?
                 context.ip_addresses.each(&:delete)
                 return
               end

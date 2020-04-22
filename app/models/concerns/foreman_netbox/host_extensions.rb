@@ -2,15 +2,18 @@
 
 module ForemanNetbox
   module HostExtensions
+    extend ActiveSupport::Concern
+
+    included do
+      include ::Orchestration::Netbox
+    end
+
     def push_to_netbox
-      ForemanNetbox::SyncHost::Organizer.call(host: self).success?
+      ForemanNetbox::SyncHost::Organizer.call(host: self)
     end
 
-    def push_to_netbox!
-      result = ForemanNetbox::SyncHost::Organizer.call(host: self)
-      result.success? || raise(PushToNetboxError, result.error)
+    def delete_from_netbox
+      ForemanNetbox::DeleteHost::Organizer.call(host: self)
     end
-
-    class PushToNetboxError < StandardError; end
   end
 end

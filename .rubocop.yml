@@ -34,3 +34,6 @@ Style/Next:
 # Support both ruby19 and hash_rockets
 Style/HashSyntax:
   Enabled: false
+
+Style/FormatStringToken:
+  EnforcedStyle: template
