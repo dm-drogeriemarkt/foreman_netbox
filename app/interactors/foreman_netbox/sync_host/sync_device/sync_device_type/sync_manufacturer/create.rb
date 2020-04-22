@@ -7,11 +7,13 @@ module ForemanNetbox
         module SyncManufacturer
           class Create
             include ::Interactor
-            include SyncManufacturer::Concerns::Manufacturer
+            include SyncManufacturer::Concerns::Params
+
+            around do |interactor|
+              interactor.call unless context.manufacturer
+            end
 
             def call
-              return if context.manufacturer
-
               context.manufacturer = ForemanNetbox::API.client::DCIM::Manufacturer.new(params).save
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
               Foreman::Logging.exception("#{self.class} error:", e)
@@ -23,7 +25,7 @@ module ForemanNetbox
             def params
               {
                 name: manufacturer,
-                slug: manufacturer.parameterize
+                slug: slug
               }
             end
           end

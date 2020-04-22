@@ -7,11 +7,6 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
-          DEVICE_ROLE = {
-            name: 'Server',
-            color: '61affe'
-          }.freeze
-
           organize SyncDeviceRole::Find,
                    SyncDeviceRole::Create
         end

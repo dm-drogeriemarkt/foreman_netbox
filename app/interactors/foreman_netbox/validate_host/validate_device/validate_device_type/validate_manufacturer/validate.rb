@@ -7,7 +7,7 @@ module ForemanNetbox
         module ValidateManufacturer
           class Validate
             include ::Interactor
-            include ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::SyncManufacturer::Concerns::Manufacturer
+            include ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::SyncManufacturer::Concerns::Params
 
             def call
               return true if manufacturer

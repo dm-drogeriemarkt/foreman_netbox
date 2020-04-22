@@ -5,13 +5,17 @@ module ForemanNetbox
     module SyncDevice
       module SyncDeviceType
         module Concerns
-          module Productname
+          module Params
             include ForemanNetbox::Concerns::Facts
 
             UNKNOWN = 'Unknown'
 
             def productname
               facts[:productname] || facts[:'dmi::product::name'] || UNKNOWN
+            end
+
+            def slug
+              productname.parameterize
             end
           end
         end

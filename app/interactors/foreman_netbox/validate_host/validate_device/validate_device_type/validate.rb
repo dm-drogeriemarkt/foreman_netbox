@@ -6,7 +6,7 @@ module ForemanNetbox
       module ValidateDeviceType
         class Validate
           include ::Interactor
-          include ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Concerns::Productname
+          include ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Concerns::Params
 
           def call
             return true if productname

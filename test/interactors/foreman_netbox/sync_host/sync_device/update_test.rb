@@ -43,7 +43,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   let(:tenant) { device.tenant }
   let(:primary_ip4) { device.primary_ip4 }
   let(:primary_ip6) { device.primary_ip6 }
-  let(:ip_addresses) { [primary_ip4, primary_ip6] }
+  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: device.id) }
+
   let(:host) do
     OpenStruct.new(
       ip: primary_ip4.address.address,
@@ -53,6 +54,18 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+      query: { limit: 50, device_id: device.id }
+    ).to_return(
+      status: 200, headers: { 'Content-Type': 'application/json' },
+      body: {
+        count: 2,
+        results: [
+          { id: primary_ip4.id, address: primary_ip4.address.address },
+          { id: primary_ip6.id, address: primary_ip6.address.address }
+        ]
+      }.to_json
+    )
   end
 
   context 'if the host has not been updated since the last synchronization' do

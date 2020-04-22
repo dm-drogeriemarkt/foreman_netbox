@@ -3,9 +3,10 @@
 require 'test_plugin_helper'
 
 class FindDeviceRoleTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Find.call }
+  let(:klass) { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Find }
+  let(:device_role_params) { klass.new }
 
-  let(:device_role_params) { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Organizer::DEVICE_ROLE }
+  subject { klass.call }
 
   setup do
     setup_default_netbox_settings
@@ -14,7 +15,7 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
   context 'when device_role exists in Netbox' do
     it 'assigns device_role to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles.json").with(
-        query: { limit: 50, slug: device_role_params[:name].parameterize }
+        query: { limit: 50, slug: device_role_params.slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
@@ -22,8 +23,8 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: device_role_params[:name],
-              slug: device_role_params[:name].parameterize
+              name: device_role_params.name,
+              slug: device_role_params.slug
             }
           ]
         }.to_json
@@ -37,7 +38,7 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
   context 'when device_role does not exist in NetBox' do
     it 'does not assign device_role to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles.json").with(
-        query: { limit: 50, slug: device_role_params[:name].parameterize }
+        query: { limit: 50, slug: device_role_params.slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {

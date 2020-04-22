@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncDeviceRole
         class Find
           include ::Interactor
+          include SyncDeviceRole::Concerns::Params
 
           def call
             context.device_role = ForemanNetbox::API.client.dcim.device_roles.find_by(params)
@@ -18,7 +19,7 @@ module ForemanNetbox
 
           def params
             {
-              slug: SyncDeviceRole::Organizer::DEVICE_ROLE.fetch(:name).parameterize
+              slug: slug
             }
           end
         end

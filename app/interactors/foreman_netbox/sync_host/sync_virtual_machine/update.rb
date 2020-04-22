@@ -7,9 +7,15 @@ module ForemanNetbox
         include ::Interactor
         include ForemanNetbox::Concerns::PrimaryIps
 
-        def call
-          return unless context.virtual_machine
+        around do |interactor|
+          interactor.call if context.virtual_machine
+        end
 
+        before do
+          context.ip_addresses.reload
+        end
+
+        def call
           context.virtual_machine.update(new_params) if old_params != new_params
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           Foreman::Logging.exception("#{self.class} error:", e)

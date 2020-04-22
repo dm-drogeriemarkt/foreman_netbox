@@ -15,9 +15,13 @@ module ForemanNetbox
               context.fail!(error: "#{self.class}: #{e}")
             end
 
+            private
+
+            delegate :device, to: :context
+
             def params
               {
-                device_id: context.device.id
+                device_id: device.id
               }
             end
           end

@@ -7,9 +7,15 @@ module ForemanNetbox
         include ::Interactor
         include ForemanNetbox::Concerns::PrimaryIps
 
-        def call
-          return unless context.device
+        around do |interactor|
+          interactor.call if context.device
+        end
 
+        before do
+          context.ip_addresses.reload
+        end
+
+        def call
           context.device.update(new_params) if old_params != new_params
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           Foreman::Logging.exception("#{self.class} error:", e)
@@ -18,25 +24,28 @@ module ForemanNetbox
 
         private
 
+        delegate :device, :device_type, :device_role, :site, :host, to: :context
+        delegate :tenant, to: :context, allow_nil: true
+
         def old_params
           {
-            device_role: context.device.device_role.id,
-            device_type: context.device.device_type.id,
-            primary_ip4: context.device.primary_ip4&.id,
-            primary_ip6: context.device.primary_ip6&.id,
-            site: context.device.site.id,
-            tenant: context.device.tenant&.id
+            device_role: device.device_role.id,
+            device_type: device.device_type.id,
+            primary_ip4: device.primary_ip4&.id,
+            primary_ip6: device.primary_ip6&.id,
+            site: device.site.id,
+            tenant: device.tenant&.id
           }
         end
 
         def new_params
           {
-            device_role: context.device_role.id,
-            device_type: context.device_type.id,
+            device_role: device_role.id,
+            device_type: device_type.id,
             primary_ip4: primary_ip4,
             primary_ip6: primary_ip6,
-            site: context.site.id,
-            tenant: context.tenant&.id
+            site: site.id,
+            tenant: tenant&.id
           }
         end
       end

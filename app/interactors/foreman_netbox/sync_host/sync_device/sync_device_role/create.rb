@@ -6,10 +6,13 @@ module ForemanNetbox
       module SyncDeviceRole
         class Create
           include ::Interactor
+          include SyncDeviceRole::Concerns::Params
+
+          around do |interactor|
+            interactor.call unless context.device_role
+          end
 
           def call
-            return if context.device_role
-
             context.device_role = ForemanNetbox::API.client::DCIM::DeviceRole.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)
@@ -19,12 +22,10 @@ module ForemanNetbox
           private
 
           def params
-            device_role_params = SyncDeviceRole::Organizer::DEVICE_ROLE
-
             {
-              name: device_role_params[:name],
-              slug: device_role_params[:name].parameterize,
-              color: device_role_params[:color]
+              name: name,
+              slug: slug,
+              color: color
             }
           end
         end
