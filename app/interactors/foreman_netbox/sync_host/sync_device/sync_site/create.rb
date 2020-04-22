@@ -7,9 +7,11 @@ module ForemanNetbox
         class Create
           include ::Interactor
 
-          def call
-            return if context.site
+          around do |interactor|
+            interactor.call unless context.site
+          end
 
+          def call
             context.site = ForemanNetbox::API.client::DCIM::Site.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)
@@ -18,12 +20,13 @@ module ForemanNetbox
 
           private
 
-          def params
-            site_name = context.host.location.name
+          delegate :netbox_site_name, to: :'context.host.location'
+          delegate :netbox_site_slug, to: :'context.host.location'
 
+          def params
             {
-              name: site_name,
-              slug: site_name.parameterize
+              name: netbox_site_name,
+              slug: netbox_site_slug
             }
           end
         end

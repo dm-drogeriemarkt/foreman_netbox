@@ -22,9 +22,7 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
           OpenStruct.new(size_gb: 128)
         ]
       ),
-      location: OpenStruct.new(
-        name: 'Location'
-      )
+      location: FactoryBot.build_stubbed(:location)
     )
   end
   let(:cluster) { OpenStruct.new(id: 1) }

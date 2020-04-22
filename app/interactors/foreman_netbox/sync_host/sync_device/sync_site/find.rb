@@ -16,9 +16,11 @@ module ForemanNetbox
 
           private
 
+          delegate :netbox_site_slug, to: :'context.host.location'
+
           def params
             {
-              slug: context.host.location.name.parameterize
+              slug: netbox_site_slug
             }
           end
         end

@@ -7,14 +7,12 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          around do |interactor|
+            interactor.call if context.host.location
+          end
+
           organize SyncSite::Find,
                    SyncSite::Create
-
-          def call
-            return unless context.host.location
-
-            super
-          end
         end
       end
     end

@@ -20,7 +20,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
       compute?: true,
       owner_type: 'Usergroup',
       owner: OpenStruct.new(name: 'Owner'),
-      location: OpenStruct.new(name: 'Location'),
+      location: FactoryBot.build_stubbed(:location, name: 'Location'),
       compute_resource: OpenStruct.new(type: 'Foreman::Model::Vmware'),
       compute_object: OpenStruct.new(
         cluster: 'CLUSTER',

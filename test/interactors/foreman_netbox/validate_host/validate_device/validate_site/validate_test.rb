@@ -6,24 +6,18 @@ class ValidateSiteTest < ActiveSupport::TestCase
   let(:interactor) { ForemanNetbox::ValidateHost::ValidateDevice::ValidateSite::Validate }
   subject { interactor.call(host: host) }
 
-  context 'with valid attributes' do
+  context 'with location' do
     let(:host) do
       OpenStruct.new(
-        location: OpenStruct.new(
-          name: 'Location'
-        )
+        location: FactoryBot.build_stubbed(:location)
       )
     end
 
     it { assert subject.success? }
   end
 
-  context 'with invalid attributes' do
-    let(:host) do
-      OpenStruct.new(
-        location: OpenStruct.new
-      )
-    end
+  context 'without location' do
+    let(:host) { OpenStruct.new }
 
     it { assert_not subject.success? }
   end
