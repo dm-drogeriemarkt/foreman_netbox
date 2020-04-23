@@ -11,7 +11,7 @@ module ForemanNetbox
             CLUSTER_TYPES = {
               :'Foreman::Model::Vmware' => {
                 name: 'VMware ESXi',
-                slug: 'vmware'
+                slug: 'vmware-esxi'
               }
             }.freeze
 

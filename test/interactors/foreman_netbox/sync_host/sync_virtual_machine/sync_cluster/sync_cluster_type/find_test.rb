@@ -5,11 +5,16 @@ require 'test_plugin_helper'
 class FindClusterTypeTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Find.call(host: host) }
 
+  let(:cluster_type_params) do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Organizer::CLUSTER_TYPES[cluster_type]
+  end
+
+  let(:cluster_type) { :'Foreman::Model::Vmware' }
   let(:host) do
     OpenStruct.new(
       name: 'host.development.example.com',
       compute_resource: OpenStruct.new(
-        type: 'Foreman::Model::Vmware'
+        type: cluster_type
       )
     )
   end
@@ -21,7 +26,7 @@ class FindClusterTypeTest < ActiveSupport::TestCase
   context 'when cluster type exists in Netbox' do
     it 'assigns cluster_type to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/cluster-types.json").with(
-        query: { limit: 50, slug: 'vmware' }
+        query: { limit: 50, slug: cluster_type_params[:slug] }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
@@ -29,8 +34,8 @@ class FindClusterTypeTest < ActiveSupport::TestCase
           results: [
             {
               id: 1,
-              name: 'VMware vSphere',
-              slug: 'vmware'
+              name: cluster_type_params[:name],
+              slug: cluster_type_params[:slug]
             }
           ]
         }.to_json
@@ -44,7 +49,7 @@ class FindClusterTypeTest < ActiveSupport::TestCase
   context 'when cluster type does not exist in NetBox' do
     it 'does not assign cluster_type to context' do
       stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/cluster-types.json").with(
-        query: { limit: 50, slug: 'vmware' }
+        query: { limit: 50, slug: cluster_type_params[:slug] }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
