@@ -22,6 +22,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       device_type: OpenStruct.new(id: 1),
       site: OpenStruct.new(id: 1),
       tenant: OpenStruct.new(id: 1),
+      serial: serialnumber,
       primary_ip4: OpenStruct.new(
         id: 1,
         address: OpenStruct.new(
@@ -43,13 +44,17 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   let(:tenant) { device.tenant }
   let(:primary_ip4) { device.primary_ip4 }
   let(:primary_ip6) { device.primary_ip6 }
+  let(:serialnumber) { 'abc123' }
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: device.id) }
 
   let(:host) do
-    OpenStruct.new(
+    FactoryBot.build_stubbed(
+      :host,
       ip: primary_ip4.address.address,
       ip6: primary_ip6.address.address
-    )
+    ).tap do |host|
+      host.stubs(:facts).returns({ 'serialnumber' => serialnumber })
+    end
   end
 
   setup do
@@ -95,12 +100,6 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         )
       )
     end
-    let(:host) do
-      OpenStruct.new(
-        ip: primary_ip4.address.address,
-        ip6: primary_ip6.address.address
-      )
-    end
 
     it 'updates device' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
@@ -109,6 +108,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           device_type: device_type.id,
           site: site.id,
           tenant: tenant.id,
+          serial: serialnumber,
           primary_ip4: primary_ip4.id,
           primary_ip6: primary_ip6.id
         }.to_json

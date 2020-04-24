@@ -15,7 +15,11 @@ class CreateDeviceTest < ActiveSupport::TestCase
   end
 
   let(:device_id) { 1 }
-  let(:host) { OpenStruct.new(name: 'host.dev.example.com') }
+  let(:host) do
+    FactoryBot.build_stubbed(:host, hostname: 'host.dev.example.com').tap do |host|
+      host.stubs(:facts).returns({ 'serialnumber' => 'abc123' })
+    end
+  end
   let(:device_type) { OpenStruct.new(id: 1) }
   let(:device_role) { OpenStruct.new(id: 1) }
   let(:site) { OpenStruct.new(id: 1) }
@@ -35,7 +39,8 @@ class CreateDeviceTest < ActiveSupport::TestCase
           device_role: device_role.id,
           site: site.id,
           name: host.name,
-          tenant: tenant.id
+          tenant: tenant.id,
+          serial: host.facts['serialnumber']
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

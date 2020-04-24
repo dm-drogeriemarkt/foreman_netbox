@@ -21,6 +21,7 @@ module ForemanNetbox
 
         delegate :device_type, :device_role, :site, :host, to: :context
         delegate :tenant, to: :context, allow_nil: true
+        delegate :facts, to: :host
 
         def params
           {
@@ -28,7 +29,8 @@ module ForemanNetbox
             device_role: device_role.id,
             site: site.id,
             name: host.name,
-            tenant: tenant&.id
+            tenant: tenant&.id,
+            serial: facts&.symbolize_keys&.fetch(:serialnumber, nil)
           }
         end
       end

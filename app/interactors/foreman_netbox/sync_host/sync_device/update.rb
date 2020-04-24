@@ -26,6 +26,7 @@ module ForemanNetbox
 
         delegate :device, :device_type, :device_role, :site, :host, to: :context
         delegate :tenant, to: :context, allow_nil: true
+        delegate :facts, to: :host
 
         def old_params
           {
@@ -34,7 +35,8 @@ module ForemanNetbox
             primary_ip4: device.primary_ip4&.id,
             primary_ip6: device.primary_ip6&.id,
             site: device.site.id,
-            tenant: device.tenant&.id
+            tenant: device.tenant&.id,
+            serial: device.serial
           }
         end
 
@@ -45,7 +47,8 @@ module ForemanNetbox
             primary_ip4: primary_ip4,
             primary_ip6: primary_ip6,
             site: site.id,
-            tenant: tenant&.id
+            tenant: tenant&.id,
+            serial: facts&.symbolize_keys&.fetch(:serialnumber, nil)
           }
         end
       end
