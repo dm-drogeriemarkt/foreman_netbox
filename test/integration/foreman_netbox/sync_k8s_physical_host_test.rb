@@ -50,6 +50,7 @@ class SyncK8sPhysicalHostTest < ActiveSupport::TestCase
     assert_equal host.location.netbox_site_name,    subject.device.site.name
     assert_equal host.facts['manufacturer'],        subject.device.device_type.manufacturer.name
     assert_equal host.facts['productname'],         subject.device.device_type.model
+    assert_equal host.facts['serialnumber'],        subject.device.serial
 
     assert_equal IPAddress.parse("#{host.ip}/24"),  subject.device.primary_ip4.address
     assert_equal IPAddress.parse("#{host.ip6}/64"), subject.device.primary_ip6.address
