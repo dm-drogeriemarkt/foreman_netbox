@@ -23,7 +23,7 @@ jobs:
     services:
       postgres:
         image: postgres:12.1
-        ports: ["5432:5432"]
+        ports: ['5432:5432']
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
       fail-fast: false
@@ -37,6 +37,24 @@ jobs:
           - foreman-core-branch: develop
             ruby-version: 2.3
     steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: netbox-community/netbox-docker
+          ref: release
+          path: netbox-docker
+      - name: Setup Netbox
+        working-directory: netbox-docker
+        run: |
+          tee docker-compose.override.yml <<EOF
+          version: '3.4'
+          services:
+            nginx:
+              ports:
+              - 8000:8080
+          EOF
+          docker-compose pull
+          docker-compose up -d
+          sleep 60
       - uses: actions/checkout@v2
         with:
           repository: theforeman/foreman
@@ -58,3 +76,6 @@ jobs:
           plugin-name: ${{ env.FOREMAN_PLUGIN_NAME }}
       - name: Run plugin tests
         run: bundle exec rake test:${FOREMAN_PLUGIN_NAME}
+        env:
+          FOREMAN_NETBOX_URL: http://0.0.0.0:8000
+          FOREMAN_NETBOX_TOKEN: 0123456789abcdef0123456789abcdef01234567

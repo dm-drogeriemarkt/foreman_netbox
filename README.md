@@ -7,6 +7,14 @@ This is a plugin for Foreman that introduces integration with [NetBox](https://n
 See [How_to_Install_a_Plugin](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Plugin)
 for how to install Foreman plugins
 
+## Integration tests
+
+The easiest way to start Netbox is to use [netbox-docker](https://github.com/netbox-community/netbox-docker). To run integration tests provide `FOREMAN_NETBOX_URL` and `FOREMAN_NETBOX_TOKEN` variables, eg.
+
+```
+$ FOREMAN_NETBOX_URL=http://0.0.0.0:8000 FOREMAN_NETBOX_TOKEN=0123456789abcdef0123456789abcdef01234567 bundle exec rake test:foreman_netbox
+```
+
 ## Contributing
 
 Fork and send a Pull Request. Thanks!
