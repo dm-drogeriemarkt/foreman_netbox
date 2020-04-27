@@ -35,6 +35,8 @@ module ForemanNetbox
         ::Host::Managed.include(ForemanNetbox::HostExtensions)
         ::Location.include(ForemanNetbox::LocationExtensions)
         ::Nic::Base.include(ForemanNetbox::Nic::BaseExtensions)
+        ::User.include(ForemanNetbox::UserUsergroupCommonExtensions)
+        ::Usergroup.include(ForemanNetbox::UserUsergroupCommonExtensions)
 
         NetboxClientRuby.configure do |config|
           config.netbox.api_base_url = Setting::Netbox['netbox_url']

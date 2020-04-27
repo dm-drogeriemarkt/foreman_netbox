@@ -6,14 +6,12 @@ module ForemanNetbox
       class Organizer
         include ::Interactor::Organizer
 
+        around do |interactor|
+          interactor.call unless context.host.compute?
+        end
+
         organize ValidateHost::ValidateDevice::ValidateDeviceType::Organizer,
                  ValidateHost::ValidateDevice::ValidateSite::Validate
-
-        def call
-          return if context.host.compute?
-
-          super
-        end
       end
     end
   end

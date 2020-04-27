@@ -46,7 +46,7 @@ class SyncK8sPhysicalHostTest < ActiveSupport::TestCase
     assert subject.success?
 
     assert_equal host.name,                         subject.device.name
-    assert_equal host.owner.name,                   subject.device.tenant.name
+    assert_equal host.owner.netbox_tenant_name,     subject.device.tenant.name
     assert_equal host.location.netbox_site_name,    subject.device.site.name
     assert_equal host.facts['manufacturer'],        subject.device.device_type.manufacturer.name
     assert_equal host.facts['productname'],         subject.device.device_type.model
