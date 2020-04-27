@@ -6,17 +6,15 @@ module ForemanNetbox
       class Organizer
         include ::Interactor::Organizer
 
+        around do |interactor|
+          interactor.call if context.host.compute?
+        end
+
         organize SyncVirtualMachine::SyncCluster::Organizer,
                  SyncVirtualMachine::Find,
                  SyncVirtualMachine::Create,
                  SyncVirtualMachine::SyncInterfaces::Organizer,
                  SyncVirtualMachine::Update
-
-        def call
-          return unless context.host.compute?
-
-          super
-        end
       end
     end
   end

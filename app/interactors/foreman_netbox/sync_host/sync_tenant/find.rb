@@ -15,9 +15,11 @@ module ForemanNetbox
 
         private
 
+        delegate :netbox_tenant_slug, to: :'context.host.owner'
+
         def params
           {
-            slug: context.host.owner.name.parameterize
+            slug: netbox_tenant_slug
           }
         end
       end

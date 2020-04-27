@@ -6,13 +6,11 @@ module ForemanNetbox
       class Organizer
         include ::Interactor::Organizer
 
-        organize ValidateVirtualMachine::ValidateCluster::Organizer
-
-        def call
-          return unless context.host.compute?
-
-          super
+        around do |interactor|
+          interactor.call if context.host.compute?
         end
+
+        organize ValidateVirtualMachine::ValidateCluster::Organizer
       end
     end
   end

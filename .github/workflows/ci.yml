@@ -54,7 +54,7 @@ jobs:
           EOF
           docker-compose pull
           docker-compose up -d
-          sleep 60
+          sleep 90
       - uses: actions/checkout@v2
         with:
           repository: theforeman/foreman

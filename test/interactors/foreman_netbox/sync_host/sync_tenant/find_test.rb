@@ -6,10 +6,9 @@ class FindTenantTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::SyncTenant::Find.call(host: host) }
 
   let(:host) do
-    OpenStruct.new(
-      owner: OpenStruct.new(
-        name: 'Owner'
-      )
+    FactoryBot.build_stubbed(
+      :host,
+      owner: FactoryBot.build_stubbed(:usergroup, name: 'Owner')
     )
   end
 
