@@ -16,35 +16,54 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
 
   let(:device) do
-    ForemanNetbox::API.client::DCIM::Device.new(
-      id: 1,
-      device_role: OpenStruct.new(id: 1),
-      device_type: OpenStruct.new(id: 1),
-      site: OpenStruct.new(id: 1),
-      tenant: OpenStruct.new(id: 1),
-      serial: serialnumber,
-      primary_ip4: OpenStruct.new(
-        id: 1,
-        address: OpenStruct.new(
-          address: '10.0.0.1'
-        )
-      ),
-      primary_ip6: OpenStruct.new(
-        id: 2,
-        address: OpenStruct.new(
-          address: '1500:0:2d0:201::1'
-        )
+    ForemanNetbox::API.client::DCIM::Device.new(id: 1).tap do |device|
+      device.instance_variable_set(
+        :@data,
+        {
+          'id' => 1,
+          'device_role' => { 'id' => 1 },
+          'device_type' => { 'id' => 1 },
+          'site' => { 'id' => 1 },
+          'tenant' => { 'id' => 1 },
+          'serial' => 'old123',
+          'primary_ip4' => {
+            'id' => 1,
+            'family' => 4,
+            'address' => '10.0.0.8/24'
+          },
+          'primary_ip6' => {
+            'id' => 2,
+            'family' => 6,
+            'address' => '1600:0:2d0:202::18/64'
+          }
+        }
+      )
+    end
+  end
+
+  let(:device_data) { device.instance_variable_get(:@data).deep_symbolize_keys }
+
+  let(:device_role) { OpenStruct.new(id: device_data.dig(:device_role, :id)) }
+  let(:device_type) { OpenStruct.new(id: device_data.dig(:device_type, :id)) }
+  let(:site) { OpenStruct.new(id: device_data.dig(:site, :id)) }
+  let(:tenant) { OpenStruct.new(id: device_data.dig(:tenant, :id)) }
+  let(:primary_ip4) do
+    OpenStruct.new(
+      id: device_data.dig(:primary_ip4, :id),
+      address: OpenStruct.new(
+        address: device_data.dig(:primary_ip4, :address).split('/')[0]
       )
     )
   end
-
-  let(:device_role) { device.device_role }
-  let(:device_type) { device.device_type }
-  let(:site) { device.site }
-  let(:tenant) { device.tenant }
-  let(:primary_ip4) { device.primary_ip4 }
-  let(:primary_ip6) { device.primary_ip6 }
-  let(:serialnumber) { 'abc123' }
+  let(:primary_ip6) do
+    OpenStruct.new(
+      id: device_data.dig(:primary_ip6, :id),
+      address: OpenStruct.new(
+        address: device_data.dig(:primary_ip6, :address).split('/')[0]
+      )
+    )
+  end
+  let(:serialnumber) { device_data.dig(:serial) }
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: device.id) }
 
   let(:host) do
@@ -75,7 +94,10 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
   context 'if the host has not been updated since the last synchronization' do
     it 'does not update device' do
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
+
       assert_equal device, subject.device
+      assert_not_requested(stub_patch)
     end
   end
 
@@ -84,6 +106,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
     let(:device_type) { OpenStruct.new(id: 2) }
     let(:site) { OpenStruct.new(id: 2) }
     let(:tenant) { OpenStruct.new(id: 2) }
+    let(:serialnumber) { 'new123' }
     let(:primary_ip4) do
       OpenStruct.new(
         id: 3,
@@ -106,11 +129,11 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         body: {
           device_role: device_role.id,
           device_type: device_type.id,
+          primary_ip4: primary_ip4.id,
+          primary_ip6: primary_ip6.id,
           site: site.id,
           tenant: tenant.id,
-          serial: serialnumber,
-          primary_ip4: primary_ip4.id,
-          primary_ip6: primary_ip6.id
+          serial: serialnumber
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -119,6 +142,29 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
       subject
       assert_requested(stub_patch)
+    end
+
+    context 'when serialnumber is empty' do
+      let(:serialnumber) { nil }
+
+      it 'updates device' do
+        stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
+          body: {
+            device_role: device_role.id,
+            device_type: device_type.id,
+            primary_ip4: primary_ip4.id,
+            primary_ip6: primary_ip6.id,
+            site: site.id,
+            tenant: tenant.id
+          }.to_json
+        ).to_return(
+          status: 200, headers: { 'Content-Type': 'application/json' },
+          body: { id: 1 }.to_json
+        )
+
+        subject
+        assert_requested(stub_patch)
+      end
     end
   end
 end

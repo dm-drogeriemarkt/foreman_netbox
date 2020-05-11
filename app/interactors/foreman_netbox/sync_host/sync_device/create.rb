@@ -31,7 +31,7 @@ module ForemanNetbox
             name: host.name,
             tenant: tenant&.id,
             serial: facts&.symbolize_keys&.fetch(:serialnumber, nil)
-          }
+          }.compact
         end
       end
     end
