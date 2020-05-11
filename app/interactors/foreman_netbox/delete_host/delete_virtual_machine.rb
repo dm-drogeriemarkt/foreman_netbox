@@ -5,9 +5,11 @@ module ForemanNetbox
     class DeleteVirtualMachine
       include ::Interactor
 
-      def call
-        return unless context.host.compute?
+      around do |interactor|
+        interactor.call if context.host.compute?
+      end
 
+      def call
         ForemanNetbox::API.client.virtualization.virtual_machines.find_by(name: context.host.name)&.delete
       rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
         Foreman::Logging.exception("#{self.class} error:", e)
