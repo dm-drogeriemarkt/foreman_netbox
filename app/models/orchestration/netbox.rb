@@ -12,14 +12,14 @@ module Orchestration
     protected
 
     def queue_netbox_push
-      return unless errors.empty?
+      return unless errors.empty? && managed?
 
       queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
                    action: [self, :set_netbox])
     end
 
     def queue_netbox_destroy
-      return unless errors.empty?
+      return unless errors.empty? && managed?
 
       queue.create(name: _('Delete host %s from Netbox') % self, priority: 60,
                    action: [self, :del_netbox])
