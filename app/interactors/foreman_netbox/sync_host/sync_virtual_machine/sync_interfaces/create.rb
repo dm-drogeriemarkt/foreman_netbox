@@ -20,7 +20,8 @@ module ForemanNetbox
                      ForemanNetbox::API.client::Virtualization::Interface.new(
                        virtual_machine: context.virtual_machine.id,
                        name: host_interface.netbox_name,
-                       mac_address: host_interface.mac
+                       mac_address: host_interface.mac,
+                       tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
                      ).save
                    end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

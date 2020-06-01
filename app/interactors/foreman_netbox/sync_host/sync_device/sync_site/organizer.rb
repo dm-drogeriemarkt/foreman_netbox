@@ -12,6 +12,7 @@ module ForemanNetbox
           end
 
           organize SyncSite::Find,
+                   SyncSite::Update,
                    SyncSite::Create
         end
       end

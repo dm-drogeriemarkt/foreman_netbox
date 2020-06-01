@@ -38,14 +38,16 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.interfaces.first.netbox_name,
-              mac_address: new_mac
+              mac_address: new_mac,
+              tags: []
             }
           ]
         }.to_json
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json").with(
         body: {
-          mac_address: host.interfaces.first.mac
+          mac_address: host.interfaces.first.mac,
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -70,7 +72,8 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.interfaces.first.netbox_name,
-              mac_address: old_mac
+              mac_address: old_mac,
+              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
             }
           ]
         }.to_json

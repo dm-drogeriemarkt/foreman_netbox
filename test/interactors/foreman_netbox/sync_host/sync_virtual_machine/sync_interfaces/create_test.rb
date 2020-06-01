@@ -32,7 +32,8 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
       body: {
         virtual_machine: virtual_machine.id,
         name: host.interfaces.first.netbox_name,
-        mac_address: host.interfaces.first.mac
+        mac_address: host.interfaces.first.mac,
+        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

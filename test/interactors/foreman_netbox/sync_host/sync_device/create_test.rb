@@ -40,7 +40,8 @@ class CreateDeviceTest < ActiveSupport::TestCase
           site: site.id,
           name: host.name,
           tenant: tenant.id,
-          serial: host.facts['serialnumber']
+          serial: host.facts['serialnumber'],
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

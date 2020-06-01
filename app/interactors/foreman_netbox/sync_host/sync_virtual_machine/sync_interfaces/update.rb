@@ -26,7 +26,8 @@ module ForemanNetbox
 
           def old_params(netbox_interface)
             {
-              mac_address: netbox_interface.mac_address
+              mac_address: netbox_interface.mac_address,
+              tags: netbox_interface.tags
             }
           end
 
@@ -34,7 +35,8 @@ module ForemanNetbox
             host_interface = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
 
             {
-              mac_address: host_interface.mac
+              mac_address: host_interface.mac,
+              tags: netbox_interface.tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
             }
           end
         end

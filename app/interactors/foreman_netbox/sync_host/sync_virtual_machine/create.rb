@@ -6,9 +6,11 @@ module ForemanNetbox
       class Create
         include ::Interactor
 
-        def call
-          return if context.virtual_machine
+        around do |interactor|
+          interactor.call unless context.virtual_machine
+        end
 
+        def call
           context.virtual_machine = ForemanNetbox::API.client::Virtualization::VirtualMachine.new(params).save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           Foreman::Logging.exception("#{self.class} error:", e)
@@ -17,14 +19,19 @@ module ForemanNetbox
 
         private
 
+        delegate :host, :cluster, to: :context
+        delegate :tenant, to: :context, allow_nil: true
+        delegate :compute_object, to: :host, allow_nil: true
+
         def params
           {
-            name: context.host.name,
-            cluster: context.cluster.id,
-            tenant: context.tenant&.id,
-            vcpus: context.host.compute_object&.cpus,
-            memory: context.host.compute_object&.memory_mb,
-            disk: context.host.compute_object&.volumes&.map(&:size_gb)&.reduce(&:+)
+            name: host.name,
+            cluster: cluster.id,
+            tenant: tenant&.id,
+            vcpus: compute_object&.cpus,
+            memory: compute_object&.memory_mb,
+            disk: compute_object&.volumes&.map(&:size_gb)&.reduce(&:+),
+            tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
           }
         end
       end

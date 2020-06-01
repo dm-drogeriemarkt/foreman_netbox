@@ -35,12 +35,14 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             'id' => 2,
             'family' => 6,
             'address' => '1600:0:2d0:202::18/64'
-          }
+          },
+          'tags' => device_tags
         }
       )
     end
   end
 
+  let(:device_tags) { ['tag'] }
   let(:device_data) { device.instance_variable_get(:@data).deep_symbolize_keys }
 
   let(:device_role) { OpenStruct.new(id: device_data.dig(:device_role, :id)) }
@@ -93,6 +95,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
+    let(:device_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+
     it 'does not update device' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
 
@@ -133,7 +137,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           primary_ip6: primary_ip6.id,
           site: site.id,
           tenant: tenant.id,
-          serial: serialnumber
+          serial: serialnumber,
+          tags: device_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -155,7 +160,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             primary_ip4: primary_ip4.id,
             primary_ip6: primary_ip6.id,
             site: site.id,
-            tenant: tenant.id
+            tenant: tenant.id,
+            tags: device_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
           }.to_json
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },

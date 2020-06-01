@@ -43,7 +43,8 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
           tenant: tenant.id,
           vcpus: host.compute_object.cpus,
           memory: host.compute_object.memory_mb,
-          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+)
+          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+),
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

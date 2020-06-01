@@ -9,6 +9,7 @@ module ForemanNetbox
 
           organize SyncDeviceType::SyncManufacturer::Organizer,
                    SyncDeviceType::Find,
+                   SyncDeviceType::Update,
                    SyncDeviceType::Create
         end
       end

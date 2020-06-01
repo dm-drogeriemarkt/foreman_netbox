@@ -76,5 +76,16 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
         assert subject.ip_addresses.find { |nx_ip| nx_ip.interface.id == nx_interface.id && nx_ip.address == IPAddress.parse(h_ip) }.present?
       end
     end
+
+    expected_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+    assert_equal expected_tags, subject.virtual_machine.tags
+    assert_equal expected_tags, subject.tenant.tags
+    assert_equal expected_tags, subject.cluster.tags
+    subject.interfaces.reload.each do |interface|
+      assert_equal expected_tags, interface.tags
+    end
+    subject.ip_addresses.reload.each do |interface|
+      assert_equal expected_tags, interface.tags
+    end
   end
 end

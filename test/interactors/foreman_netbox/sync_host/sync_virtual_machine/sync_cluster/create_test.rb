@@ -30,7 +30,8 @@ class CreateClusterTest < ActiveSupport::TestCase
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/clusters/").with(
         body: {
           type: cluster_type.id,
-          name: host.compute_object.cluster
+          name: host.compute_object.cluster,
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

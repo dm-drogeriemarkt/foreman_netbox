@@ -3,6 +3,8 @@
 module ForemanNetbox
   module SyncHost
     class Organizer
+      DEFAULT_TAGS = ['foreman'].freeze
+
       include ::Interactor::Organizer
 
       before :validate
