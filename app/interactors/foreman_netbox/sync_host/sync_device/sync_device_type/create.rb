@@ -27,7 +27,8 @@ module ForemanNetbox
             {
               model: productname,
               slug: slug,
-              manufacturer: manufacturer.id
+              manufacturer: manufacturer.id,
+              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
             }
           end
         end

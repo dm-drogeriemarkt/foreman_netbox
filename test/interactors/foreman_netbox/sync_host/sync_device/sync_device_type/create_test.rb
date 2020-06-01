@@ -33,7 +33,8 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
         body: {
           model: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
           slug: host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize,
-          manufacturer: manufacturer.id
+          manufacturer: manufacturer.id,
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

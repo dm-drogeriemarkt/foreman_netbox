@@ -32,7 +32,8 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
       ),
       vcpus: 2,
       memory: 512,
-      disk: 128
+      disk: 128,
+      tags: ['foreman']
     )
   end
   let(:cluster) { virtual_machine.cluster }
@@ -118,7 +119,8 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           primary_ip6: primary_ip6.id,
           vcpus: host.compute_object.cpus,
           memory: host.compute_object.memory_mb,
-          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+)
+          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+),
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

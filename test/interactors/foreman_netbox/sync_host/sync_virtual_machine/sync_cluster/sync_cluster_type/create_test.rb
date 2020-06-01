@@ -10,7 +10,9 @@ class CreateClusterTypeTest < ActiveSupport::TestCase
   end
 
   let(:cluster_type_id) { 1 }
-  let(:cluster_type_params) { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Organizer::CLUSTER_TYPES[:'Foreman::Model::Vmware'] }
+  let(:cluster_type_params) do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Organizer::CLUSTER_TYPES[:'Foreman::Model::Vmware']
+  end
   let(:host) do
     OpenStruct.new(
       compute_resource: OpenStruct.new(

@@ -7,6 +7,7 @@ module ForemanNetbox
         include ::Interactor::Organizer
 
         organize SyncTenant::Find,
+                 SyncTenant::Update,
                  SyncTenant::Create
       end
     end

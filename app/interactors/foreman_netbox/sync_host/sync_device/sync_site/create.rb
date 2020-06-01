@@ -26,7 +26,8 @@ module ForemanNetbox
           def params
             {
               name: netbox_site_name,
-              slug: netbox_site_slug
+              slug: netbox_site_slug,
+              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
             }
           end
         end

@@ -6,9 +6,11 @@ module ForemanNetbox
       class Create
         include ::Interactor
 
-        def call
-          return if context.tenant
+        around do |interactor|
+          interactor.call unless context.tenant
+        end
 
+        def call
           context.tenant = ForemanNetbox::API.client::Tenancy::Tenant.new(params).save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           Foreman::Logging.exception("#{self.class} error:", e)
@@ -22,7 +24,8 @@ module ForemanNetbox
         def params
           {
             name: netbox_tenant_name,
-            slug: netbox_tenant_slug
+            slug: netbox_tenant_slug,
+            tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
           }
         end
       end

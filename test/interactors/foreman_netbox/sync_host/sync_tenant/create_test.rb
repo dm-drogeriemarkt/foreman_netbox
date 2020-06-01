@@ -23,7 +23,8 @@ class CreateTenantTest < ActiveSupport::TestCase
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/tenancy/tenants/").with(
         body: {
           name: host.owner.name,
-          slug: host.owner.name.parameterize
+          slug: host.owner.name.parameterize,
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

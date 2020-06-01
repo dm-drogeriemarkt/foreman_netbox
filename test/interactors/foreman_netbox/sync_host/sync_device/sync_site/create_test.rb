@@ -23,7 +23,8 @@ class CreateSiteTest < ActiveSupport::TestCase
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/sites/").with(
         body: {
           name: host.location.netbox_site_name,
-          slug: host.location.netbox_site_slug
+          slug: host.location.netbox_site_slug,
+          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

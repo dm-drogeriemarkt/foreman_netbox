@@ -17,7 +17,11 @@ module ForemanNetbox
                                                 .filter(interface_id: netbox_interface.id, address: ip)
                                                 .total.zero?
 
-                  ForemanNetbox::API.client::IPAM::IpAddress.new(interface: netbox_interface.id, address: ip).save
+                  ForemanNetbox::API.client::IPAM::IpAddress.new(
+                    interface: netbox_interface.id,
+                    address: ip,
+                    tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+                  ).save
                 end
               end
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

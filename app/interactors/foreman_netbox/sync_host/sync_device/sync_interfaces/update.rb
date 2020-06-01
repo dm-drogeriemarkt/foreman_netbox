@@ -25,6 +25,12 @@ module ForemanNetbox
               changed = true
             end
 
+            default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+            if (default_tags - netbox_interface.tags).any?
+              netbox_interface.tags = netbox_interface.tags | default_tags
+              changed = true
+            end
+
             netbox_interface.save if changed
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             Foreman::Logging.exception("#{self.class} error:", e)

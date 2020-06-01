@@ -53,7 +53,8 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.netbox_ip
+        address: host.interfaces.first.netbox_ip,
+        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -63,7 +64,8 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
     stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
         interface: interfaces.first.id,
-        address: host.interfaces.first.netbox_ip6
+        address: host.interfaces.first.netbox_ip6,
+        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

@@ -23,7 +23,8 @@ module ForemanNetbox
                        device: context.device.id,
                        name: host_interface.netbox_name,
                        mac_address: host_interface.mac,
-                       type: TYPE
+                       type: TYPE,
+                       tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
                      ).save
                    end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

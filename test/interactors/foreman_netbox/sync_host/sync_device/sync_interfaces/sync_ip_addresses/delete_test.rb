@@ -9,8 +9,8 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
-  let(:ip_addresses) { ForemanNetbox::API.client::IPAM::IpAddresses.new }
+  let(:interfaces) { ForemanNetbox::API.client.dcim.interfaces.filter(device_id: 1) }
+  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: 1) }
 
   let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
   let(:host) do
@@ -30,7 +30,7 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
   setup do
     setup_default_netbox_settings
     stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces.json").with(
-      query: { limit: 50 }
+      query: { limit: 50, device_id: 1 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -41,7 +41,7 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50 }
+      query: { limit: 50, device_id: 1 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {

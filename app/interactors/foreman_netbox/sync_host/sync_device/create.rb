@@ -30,7 +30,8 @@ module ForemanNetbox
             site: site.id,
             name: host.name,
             tenant: tenant&.id,
-            serial: facts&.symbolize_keys&.fetch(:serialnumber, nil)
+            serial: facts&.symbolize_keys&.fetch(:serialnumber, nil),
+            tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
           }.compact
         end
       end

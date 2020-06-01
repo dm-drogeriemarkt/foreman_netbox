@@ -7,7 +7,7 @@ module ForemanNetbox
         include ::Interactor
         include ForemanNetbox::Concerns::PrimaryIps
 
-        ATTRIBUTES = %i[device_role device_type primary_ip4 primary_ip6 site tenant serial].freeze
+        ATTRIBUTES = %i[device_role device_type primary_ip4 primary_ip6 site tenant serial tags].freeze
 
         around do |interactor|
           interactor.call if context.device
@@ -37,39 +37,27 @@ module ForemanNetbox
         end
 
         def assign_device_role
-          return if device.device_role&.id == device_role&.id
-
-          device.device_role = device_role&.id
+          device.device_role = device_role&.id if device.device_role&.id != device_role&.id
         end
 
         def assign_device_type
-          return if device.device_type&.id == device_type&.id
-
-          device.device_type = device_type&.id
+          device.device_type = device_type&.id if device.device_type&.id != device_type&.id
         end
 
         def assign_primary_ip4
-          return if device.primary_ip4&.id == primary_ip4
-
-          device.primary_ip4 = primary_ip4
+          device.primary_ip4 = primary_ip4 if device.primary_ip4&.id != primary_ip4
         end
 
         def assign_primary_ip6
-          return if device.primary_ip6&.id == primary_ip6
-
-          device.primary_ip6 = primary_ip6
+          device.primary_ip6 = primary_ip6 if device.primary_ip6&.id != primary_ip6
         end
 
         def assign_site
-          return if device.site&.id == site&.id
-
-          device.site = site&.id
+          device.site = site&.id if device.site&.id != site&.id
         end
 
         def assign_tenant
-          return if device.tenant&.id == tenant&.id
-
-          device.tenant = tenant&.id
+          device.tenant = tenant&.id if device.tenant&.id != tenant&.id
         end
 
         def assign_serial
@@ -77,6 +65,13 @@ module ForemanNetbox
           return if !new_serial || device.serial == new_serial
 
           device.serial = new_serial
+        end
+
+        def assign_tags
+          default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          return unless (default_tags - device.tags).any?
+
+          device.tags = device.tags | default_tags
         end
       end
     end
