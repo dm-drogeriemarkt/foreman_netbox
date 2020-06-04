@@ -3,6 +3,7 @@
 FactoryBot.define do
   factory :netbox_facet, class: 'ForemanNetbox::NetboxFacet' do
     host
+    synchronized_at { Time.zone.now }
     sequence(:url) { |n| "https://netbox.example.com/#{n}" }
   end
 end

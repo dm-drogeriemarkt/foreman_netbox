@@ -17,7 +17,7 @@ class SaveNetboxUrlDeviceTest < ActiveSupport::TestCase
     let(:host) { FactoryBot.create(:host, :with_netbox_facet, hostname: 'host.dev.example.com') }
 
     it 'updates Netbox facet' do
-      assert_not_nil host.netbox_facet
+      assert_not host.netbox_facet.new_record?
       assert_difference('ForemanNetbox::NetboxFacet.count', 0) do
         subject
       end
@@ -29,7 +29,7 @@ class SaveNetboxUrlDeviceTest < ActiveSupport::TestCase
     let(:host) { FactoryBot.create(:host, hostname: 'host.dev.example.com') }
 
     it 'creates Netbox facet' do
-      assert_nil host.netbox_facet
+      assert host.netbox_facet.new_record?
       assert_difference('ForemanNetbox::NetboxFacet.count', 1) do
         subject
       end
