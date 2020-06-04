@@ -17,16 +17,13 @@ module ForemanNetbox
         private
 
         delegate :host, to: :context
+        delegate :netbox_facet, to: :host
         delegate :url, to: :netbox_facet, prefix: true, allow_nil: true
 
         def netbox_device_url
           return unless context.device&.id
 
           "#{Setting::Netbox[:netbox_url]}/dcim/devices/#{context.device&.id}"
-        end
-
-        def netbox_facet
-          @netbox_facet ||= ForemanNetbox::NetboxFacet.find_or_initialize_by(host_id: host.id)
         end
       end
     end

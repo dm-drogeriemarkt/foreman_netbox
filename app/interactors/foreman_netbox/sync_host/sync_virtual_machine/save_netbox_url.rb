@@ -17,16 +17,13 @@ module ForemanNetbox
         private
 
         delegate :host, to: :context
+        delegate :netbox_facet, to: :host
         delegate :url, to: :netbox_facet, prefix: true, allow_nil: true
 
         def netbox_virtual_machine_url
           return unless context.virtual_machine&.id
 
           "#{Setting::Netbox[:netbox_url]}/virtualization/virtual-machines/#{context.virtual_machine&.id}"
-        end
-
-        def netbox_facet
-          @netbox_facet ||= ForemanNetbox::NetboxFacet.find_or_initialize_by(host_id: host.id)
         end
       end
     end

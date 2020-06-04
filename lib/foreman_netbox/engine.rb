@@ -38,7 +38,7 @@ module ForemanNetbox
           context.add_pagelet :main_tabs,
                               name: N_('Netbox'),
                               partial: 'hosts/netbox_tab',
-                              onlyif: proc { |host| host.netbox_facet }
+                              onlyif: proc { |host| host.netbox_facet.synchronized_at }
         end
       end
     end
