@@ -29,7 +29,9 @@ module ForemanNetbox
         requires_foreman '>= 1.24'
 
         # Netbox Facet
-        register_facet(ForemanNetbox::NetboxFacet, :netbox_facet)
+        register_facet(ForemanNetbox::NetboxFacet, :netbox_facet) do
+          set_dependent_action :destroy
+        end
 
         # extend host show page
         extend_page('hosts/show') do |context|
