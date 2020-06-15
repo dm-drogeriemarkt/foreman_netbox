@@ -14,45 +14,72 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:virtual_machine) do
-    ForemanNetbox::API.client::Virtualization::VirtualMachine.new(
-      id: 1,
-      cluster: OpenStruct.new(id: 1),
-      tenant: OpenStruct.new(id: 1),
-      primary_ip4: OpenStruct.new(
-        id: 1,
-        address: OpenStruct.new(
-          address: '10.0.0.1'
-        )
-      ),
-      primary_ip6: OpenStruct.new(
-        id: 2,
-        address: OpenStruct.new(
-          address: '1500:0:2d0:201::1'
-        )
-      ),
-      vcpus: 2,
-      memory: 512,
-      disk: 128,
-      tags: ['foreman']
-    )
+    ForemanNetbox::API.client::Virtualization::VirtualMachine.new(id: 1).tap do |virtual_machine|
+      virtual_machine.instance_variable_set(
+        :@data,
+        {
+          'id' => 1,
+          'name' => virtual_machine_name,
+          'cluster' => { 'id' => 1 },
+          'tenant' => { 'id' => 1 },
+          'vcpus' => 2,
+          'memory' => 128,
+          'disk' => 512,
+          'primary_ip4' => {
+            'id' => 1,
+            'family' => 4,
+            'address' => '10.0.0.1/24'
+          },
+          'primary_ip6' => {
+            'id' => 2,
+            'family' => 6,
+            'address' => '1600:0:2d0:201::18/64'
+          },
+          'tags' => virtual_machine_tags
+        }
+      )
+    end
   end
-  let(:cluster) { virtual_machine.cluster }
-  let(:tenant) { virtual_machine.tenant }
-  let(:primary_ip4) { virtual_machine.primary_ip4 }
-  let(:primary_ip6) { virtual_machine.primary_ip6 }
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: virtual_machine.id) }
-  let(:host) do
+
+  let(:virtual_machine_name) { 'name.example.com' }
+  let(:virtual_machine_tags) { ['tag'] }
+  let(:virtual_machine_data) { virtual_machine.instance_variable_get(:@data).deep_symbolize_keys }
+  let(:cluster) { OpenStruct.new(id: virtual_machine_data.dig(:cluster, :id)) }
+  let(:tenant) { OpenStruct.new(id: virtual_machine_data.dig(:tenant, :id)) }
+  let(:primary_ip4) do
     OpenStruct.new(
-      ip: primary_ip4.address.address,
-      ip6: primary_ip6.address.address,
-      compute_object: OpenStruct.new(
-        cpus: virtual_machine.vcpus,
-        memory_mb: virtual_machine.memory,
-        volumes: [
-          OpenStruct.new(size_gb: virtual_machine.disk)
-        ]
+      id: virtual_machine_data.dig(:primary_ip4, :id),
+      address: OpenStruct.new(
+        address: virtual_machine_data.dig(:primary_ip4, :address).split('/')[0]
       )
     )
+  end
+  let(:primary_ip6) do
+    OpenStruct.new(
+      id: virtual_machine_data.dig(:primary_ip6, :id),
+      address: OpenStruct.new(
+        address: virtual_machine_data.dig(:primary_ip6, :address).split('/')[0]
+      )
+    )
+  end
+  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: virtual_machine.id) }
+  let(:host) do
+    FactoryBot.build_stubbed(
+      :host,
+      hostname: virtual_machine_name,
+      ip: primary_ip4.address.address,
+      ip6: primary_ip6.address.address
+    ).tap do |host|
+      host.stubs(:compute_object).returns(
+        OpenStruct.new(
+          cpus: virtual_machine_data[:vcpus],
+          memory_mb: virtual_machine_data[:memory],
+          volumes: [
+            OpenStruct.new(size_gb: virtual_machine_data[:disk])
+          ]
+        )
+      )
+    end
   end
 
   setup do
@@ -72,6 +99,8 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
+    let(:virtual_machine_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+
     it 'does not update virtual_machine' do
       assert_equal virtual_machine, subject.virtual_machine
     end
@@ -97,30 +126,35 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
       )
     end
     let(:host) do
-      OpenStruct.new(
+      FactoryBot.build_stubbed(
+        :host,
         ip: primary_ip4.address.address,
-        ip6: primary_ip6.address.address,
-        compute_object: OpenStruct.new(
-          cpus: virtual_machine.vcpus * 2,
-          memory_mb: virtual_machine.memory * 2,
-          volumes: [
-            OpenStruct.new(size_gb: virtual_machine.disk * 2)
-          ]
+        ip6: primary_ip6.address.address
+      ).tap do |host|
+        host.stubs(:compute_object).returns(
+          OpenStruct.new(
+            cpus: 4,
+            memory_mb: 256,
+            volumes: [
+              OpenStruct.new(size_gb: 1024)
+            ]
+          )
         )
-      )
+      end
     end
 
     it 'updates virtual_machine' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/#{virtual_machine.id}.json").with(
         body: {
+          name: host.name,
           cluster: cluster.id,
-          tenant: tenant.id,
+          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+),
+          memory: host.compute_object.memory_mb,
           primary_ip4: primary_ip4.id,
           primary_ip6: primary_ip6.id,
+          tenant: tenant.id,
           vcpus: host.compute_object.cpus,
-          memory: host.compute_object.memory_mb,
-          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+),
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: virtual_machine_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

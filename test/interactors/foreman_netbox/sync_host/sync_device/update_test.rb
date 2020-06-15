@@ -21,6 +21,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         :@data,
         {
           'id' => 1,
+          'name' => device_name,
           'device_role' => { 'id' => 1 },
           'device_type' => { 'id' => 1 },
           'site' => { 'id' => 1 },
@@ -41,10 +42,9 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       )
     end
   end
-
+  let(:device_name) { 'name.example.com' }
   let(:device_tags) { ['tag'] }
   let(:device_data) { device.instance_variable_get(:@data).deep_symbolize_keys }
-
   let(:device_role) { OpenStruct.new(id: device_data.dig(:device_role, :id)) }
   let(:device_type) { OpenStruct.new(id: device_data.dig(:device_type, :id)) }
   let(:site) { OpenStruct.new(id: device_data.dig(:site, :id)) }
@@ -67,10 +67,10 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
   let(:serialnumber) { device_data.dig(:serial) }
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: device.id) }
-
   let(:host) do
     FactoryBot.build_stubbed(
       :host,
+      hostname: device_name,
       ip: primary_ip4.address.address,
       ip6: primary_ip6.address.address
     ).tap do |host|
@@ -127,10 +127,20 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         )
       )
     end
+    let(:host) do
+      FactoryBot.build_stubbed(
+        :host,
+        ip: primary_ip4.address.address,
+        ip6: primary_ip6.address.address
+      ).tap do |host|
+        host.stubs(:facts).returns({ 'serialnumber' => serialnumber })
+      end
+    end
 
     it 'updates device' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
         body: {
+          name: host.name,
           device_role: device_role.id,
           device_type: device_type.id,
           primary_ip4: primary_ip4.id,
@@ -155,6 +165,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       it 'updates device' do
         stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
           body: {
+            name: host.name,
             device_role: device_role.id,
             device_type: device_type.id,
             primary_ip4: primary_ip4.id,
