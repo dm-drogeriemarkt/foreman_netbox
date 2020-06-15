@@ -7,7 +7,7 @@ module ForemanNetbox
         include ::Interactor
         include ForemanNetbox::Concerns::PrimaryIps
 
-        ATTRIBUTES = %i[device_role device_type primary_ip4 primary_ip6 site tenant serial tags].freeze
+        ATTRIBUTES = %i[name device_role device_type primary_ip4 primary_ip6 site tenant serial tags].freeze
 
         around do |interactor|
           interactor.call if context.device
@@ -20,7 +20,7 @@ module ForemanNetbox
         def call
           assign_new_attributes
 
-          context.device.save
+          device.save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           Foreman::Logging.exception("#{self.class} error:", e)
           context.fail!(error: "#{self.class}: #{e}")
@@ -34,6 +34,10 @@ module ForemanNetbox
 
         def assign_new_attributes
           ATTRIBUTES.map { |attribute| send("assign_#{attribute}") }
+        end
+
+        def assign_name
+          device.name = host.name if device.name != host.name
         end
 
         def assign_device_role
