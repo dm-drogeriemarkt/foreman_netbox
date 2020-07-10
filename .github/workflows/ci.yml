@@ -7,6 +7,7 @@ env:
 jobs:
   rubocop:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
       - name: Setup Ruby
@@ -22,6 +23,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: rubocop
+    timeout-minutes: 20
     services:
       postgres:
         image: postgres:12.1
@@ -31,15 +33,8 @@ jobs:
       fail-fast: false
       matrix:
         foreman-core-branch: [1.24-stable, 2.0-stable, 2.1-stable, develop]
-        ruby-version: [2.3, 2.5, 2.6]
+        ruby-version: [2.5, 2.6]
         node-version: [10]
-        exclude:
-          - foreman-core-branch: 2.0-stable
-            ruby-version: 2.3
-          - foreman-core-branch: 2.1-stable
-            ruby-version: 2.3
-          - foreman-core-branch: develop
-            ruby-version: 2.3
     steps:
       - name: Install dependencies
         run: |
@@ -78,11 +73,29 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version:  ${{ matrix.node-version }}
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Setup Bundler
+        run: |
+          gem install bundler
+          bundle config path vendor/bundle
+          bundle config set without journald development console mysql2 sqlite
+          echo "gem 'foreman_netbox', path: './foreman_netbox'" > bundler.d/foreman_netbox.local.rb
+          bundle lock --update
+      - name: Cache gems
+        uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
       - name: Setup Plugin
         run: |
-          echo "gem 'foreman_netbox', path: './foreman_netbox'" > bundler.d/foreman_netbox.local.rb
-          gem install bundler
-          bundle config set without journald development console mysql2 sqlite
           bundle install --jobs=3 --retry=3
           bundle exec rake db:create
           bundle exec rake db:migrate
