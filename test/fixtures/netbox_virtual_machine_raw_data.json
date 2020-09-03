@@ -1,0 +1,241 @@
+{
+  "tenant": {
+    "id": 89,
+    "name": "Owner",
+    "slug": "owner",
+    "group": null,
+    "description": "",
+    "comments": "",
+    "tags": [
+      "foreman"
+    ],
+    "custom_fields": {},
+    "created": "2020-07-13",
+    "last_updated": "2020-07-13T14:11:51.206250Z",
+    "circuit_count": null,
+    "device_count": 1,
+    "ipaddress_count": null,
+    "prefix_count": null,
+    "rack_count": null,
+    "site_count": null,
+    "virtualmachine_count": 1,
+    "vlan_count": null,
+    "vrf_count": null
+  },
+  "cluster_type": {
+    "id": 2,
+    "name": "VMware ESXi",
+    "slug": "vmware-esxi",
+    "description": "",
+    "cluster_count": 1
+  },
+  "cluster": {
+    "id": 2,
+    "name": "CLUSTER",
+    "type": {
+      "id": 2,
+      "url": "http://0.0.0.0:8000/api/virtualization/cluster-types/2.json",
+      "name": "VMware ESXi",
+      "slug": "vmware-esxi"
+    },
+    "group": null,
+    "tenant": null,
+    "site": null,
+    "comments": "",
+    "tags": [
+      "foreman"
+    ],
+    "custom_fields": {},
+    "created": "2020-07-13",
+    "last_updated": "2020-07-13T14:11:55.974856Z",
+    "device_count": null,
+    "virtualmachine_count": 1
+  },
+  "ip_addresses": {
+    "count": 2,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 17,
+        "family": {
+          "value": 4,
+          "label": "IPv4"
+        },
+        "address": "10.0.0.9/24",
+        "vrf": null,
+        "tenant": null,
+        "status": {
+          "value": "active",
+          "label": "Active",
+          "id": 1
+        },
+        "role": null,
+        "interface": {
+          "id": 17,
+          "url": "http://0.0.0.0:8000/api/virtualization/interfaces/17/",
+          "device": null,
+          "virtual_machine": {
+            "id": 3,
+            "url": "http://0.0.0.0:8000/api/virtualization/virtual-machines/3.json",
+            "name": "rhel_virtual_host.tier.example.com"
+          },
+          "name": "eth0"
+        },
+        "nat_inside": null,
+        "nat_outside": null,
+        "dns_name": "",
+        "description": "",
+        "tags": [
+          "foreman"
+        ],
+        "custom_fields": {},
+        "created": "2020-07-13",
+        "last_updated": "2020-07-13T14:58:09.007393Z"
+      },
+      {
+        "id": 18,
+        "family": {
+          "value": 6,
+          "label": "IPv6"
+        },
+        "address": "1600:0:2d0:202::19/64",
+        "vrf": null,
+        "tenant": null,
+        "status": {
+          "value": "active",
+          "label": "Active",
+          "id": 1
+        },
+        "role": null,
+        "interface": {
+          "id": 18,
+          "url": "http://0.0.0.0:8000/api/virtualization/interfaces/18/",
+          "device": null,
+          "virtual_machine": {
+            "id": 3,
+            "url": "http://0.0.0.0:8000/api/virtualization/virtual-machines/3.json",
+            "name": "rhel_virtual_host.tier.example.com"
+          },
+          "name": "eth1"
+        },
+        "nat_inside": null,
+        "nat_outside": null,
+        "dns_name": "",
+        "description": "",
+        "tags": [
+          "foreman"
+        ],
+        "custom_fields": {},
+        "created": "2020-07-13",
+        "last_updated": "2020-07-13T14:58:09.116896Z"
+      }
+    ]
+  },
+  "interfaces": {
+    "count": 2,
+    "next": null,
+    "previous": null,
+    "results": [
+      {
+        "id": 17,
+        "virtual_machine": {
+          "id": 3,
+          "url": "http://0.0.0.0:8000/api/virtualization/virtual-machines/3.json",
+          "name": "rhel_virtual_host.tier.example.com"
+        },
+        "name": "eth0",
+        "type": {
+          "value": "virtual",
+          "label": "Virtual"
+        },
+        "enabled": true,
+        "mtu": null,
+        "mac_address": "C3:CD:63:54:21:62",
+        "description": "",
+        "mode": null,
+        "untagged_vlan": null,
+        "tagged_vlans": [],
+        "tags": [
+          "foreman"
+        ]
+      },
+      {
+        "id": 18,
+        "virtual_machine": {
+          "id": 3,
+          "url": "http://0.0.0.0:8000/api/virtualization/virtual-machines/3.json",
+          "name": "rhel_virtual_host.tier.example.com"
+        },
+        "name": "eth1",
+        "type": {
+          "value": "virtual",
+          "label": "Virtual"
+        },
+        "enabled": true,
+        "mtu": null,
+        "mac_address": "45:E9:6A:83:02:22",
+        "description": "",
+        "mode": null,
+        "untagged_vlan": null,
+        "tagged_vlans": [],
+        "tags": [
+          "foreman"
+        ]
+      }
+    ]
+  },
+  "virtual_machine": {
+    "id": 3,
+    "name": "rhel_virtual_host.tier.example.com",
+    "status": {
+      "value": "active",
+      "label": "Active",
+      "id": 1
+    },
+    "site": null,
+    "cluster": {
+      "id": 2,
+      "url": "http://0.0.0.0:8000/api/virtualization/clusters/2.json",
+      "name": "CLUSTER"
+    },
+    "role": null,
+    "tenant": {
+      "id": 89,
+      "url": "http://0.0.0.0:8000/api/tenancy/tenants/89.json",
+      "name": "Owner",
+      "slug": "owner"
+    },
+    "platform": null,
+    "primary_ip": {
+      "id": 18,
+      "url": "http://0.0.0.0:8000/api/ipam/ip-addresses/18.json",
+      "family": 6,
+      "address": "1600:0:2d0:202::19/64"
+    },
+    "primary_ip4": {
+      "id": 17,
+      "url": "http://0.0.0.0:8000/api/ipam/ip-addresses/17.json",
+      "family": 4,
+      "address": "10.0.0.9/24"
+    },
+    "primary_ip6": {
+      "id": 18,
+      "url": "http://0.0.0.0:8000/api/ipam/ip-addresses/18.json",
+      "family": 6,
+      "address": "1600:0:2d0:202::19/64"
+    },
+    "vcpus": 1,
+    "memory": 1024,
+    "disk": 120,
+    "comments": "",
+    "local_context_data": null,
+    "tags": [
+      "foreman"
+    ],
+    "custom_fields": {},
+    "config_context": {},
+    "created": "2020-07-13",
+    "last_updated": "2020-07-13T14:58:09.546781Z"
+  }
+}

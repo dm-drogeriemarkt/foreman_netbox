@@ -5,18 +5,19 @@ require 'test_plugin_helper'
 class CreateClusterTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Create.call(
-      host: host, cluster_type: cluster_type, cluster: cluster
+      host: host, cluster_type: cluster_type, cluster: cluster, netbox_params: host.netbox_facet.netbox_params
     )
   end
 
   let(:cluster_id) { 1 }
   let(:cluster_type) { OpenStruct.new(id: 1) }
   let(:host) do
-    OpenStruct.new(
-      compute_object: OpenStruct.new(
-        cluster: 'CLUSTER'
+    FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:compute?).returns(true)
+      host.stubs(:compute_object).returns(
+        OpenStruct.new(cluster: 'CLUSTER')
       )
-    )
+    end
   end
 
   setup do
@@ -29,9 +30,9 @@ class CreateClusterTest < ActiveSupport::TestCase
     it 'creates a cluster' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/clusters/").with(
         body: {
-          type: cluster_type.id,
-          name: host.compute_object.cluster,
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          name: host.netbox_facet.netbox_params.dig(:cluster, :name),
+          tags: host.netbox_facet.netbox_params.dig(:cluster, :tags),
+          type: cluster_type.id
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

@@ -11,17 +11,18 @@ module ForemanNetbox
           context.device = find_by_serial || find_by_mac || find_by_name
           # rubocop:enable Rails/DynamicFindBy
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-          Foreman::Logging.exception("#{self.class} error:", e)
+          ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")
         end
 
         private
 
-        delegate :host, to: :context
-        delegate :name, :mac, :facts, to: :host
+        delegate :host, :netbox_params, to: :context
+        delegate :mac, to: :host, allow_nil: true
 
         def find_by_serial
-          serial = facts&.symbolize_keys&.fetch(:serialnumber, nil)
+          serial = netbox_params.dig(:device, :serial)
+
           ForemanNetbox::API.client.dcim.devices.filter(serial: serial).first if serial
         end
 
@@ -30,6 +31,8 @@ module ForemanNetbox
         end
 
         def find_by_name
+          name = netbox_params.dig(:device, :name)
+
           ForemanNetbox::API.client.dcim.devices.find_by(name: name)
         end
       end

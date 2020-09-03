@@ -12,6 +12,7 @@ FactoryBot.reload
 def setup_default_netbox_settings(netbox_url: 'https://netbox.example.com', netbox_api_token: 'api_key')
   FactoryBot.create(:setting, name: 'netbox_url', value: netbox_url, category: 'Setting::Netbox')
   FactoryBot.create(:setting, name: 'netbox_api_token', value: netbox_api_token, category: 'Setting::Netbox')
+  FactoryBot.create(:setting, name: 'netbox_orchestration_enabled', value: true, category: 'Setting::Netbox')
 end
 
 def setup_netbox_integration_test

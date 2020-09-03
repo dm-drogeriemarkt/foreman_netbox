@@ -7,6 +7,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
     ForemanNetbox::SyncHost::SyncDevice::Update.call(
       device: device,
       host: host,
+      netbox_params: host.netbox_facet.netbox_params,
       device_role: device_role,
       device_type: device_type,
       site: site,
@@ -95,7 +96,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
-    let(:device_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+    let(:device_tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
 
     it 'does not update device' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
@@ -148,7 +149,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           site: site.id,
           tenant: tenant.id,
           serial: serialnumber,
-          tags: device_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: device_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -172,7 +173,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             primary_ip6: primary_ip6.id,
             site: site.id,
             tenant: tenant.id,
-            tags: device_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+            tags: device_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
           }.to_json
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },

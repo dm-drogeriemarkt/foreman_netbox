@@ -7,6 +7,10 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          after do
+            context.raw_data[:device_role] = context.device_role.raw_data!
+          end
+
           organize SyncDeviceRole::Find,
                    SyncDeviceRole::Create
         end

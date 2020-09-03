@@ -10,7 +10,13 @@ module ForemanNetbox
           interactor.call unless context.host.compute?
         end
 
-        organize SyncDevice::SyncSite::Organizer,
+        after do
+          context.raw_data[:device] = context.device.raw_data!
+        end
+
+        organize SyncDevice::Validate,
+                 SyncHost::SyncTenant::Organizer,
+                 SyncDevice::SyncSite::Organizer,
                  SyncDevice::SyncDeviceRole::Organizer,
                  SyncDevice::SyncDeviceType::Organizer,
                  SyncDevice::Find,

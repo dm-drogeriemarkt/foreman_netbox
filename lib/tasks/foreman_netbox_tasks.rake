@@ -8,8 +8,14 @@ namespace :foreman_netbox do
     task full: :environment do
       User.as_anonymous_admin do
         Host::Managed.where(managed: true).each do |host|
+          unless host.netbox_facet.netbox_params_diff.empty?
+            puts "Nothing to push for #{host.name}"
+            next
+          end
+
           puts "Pushing #{host.name} to Netbox"
           result = host.push_to_netbox
+
           if result.success?
             puts "#{host.name} pushed"
           else

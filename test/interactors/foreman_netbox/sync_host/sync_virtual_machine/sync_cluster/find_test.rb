@@ -3,14 +3,19 @@
 require 'test_plugin_helper'
 
 class FindClusterTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Find.call(host: host) }
-  let(:host) do
-    OpenStruct.new(
-      name: 'host.development.example.com',
-      compute_object: OpenStruct.new(
-        cluster: 'CLUSTER'
-      )
+  subject do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Find.call(
+      host: host, netbox_params: host.netbox_facet.netbox_params
     )
+  end
+
+  let(:host) do
+    FactoryBot.build_stubbed(:host, hostname: 'host.dev.example.com').tap do |host|
+      host.stubs(:compute?).returns(true)
+      host.stubs(:compute_object).returns(
+        OpenStruct.new(cluster: 'CLUSTER')
+      )
+    end
   end
 
   setup do

@@ -13,11 +13,21 @@ module ForemanNetbox
 
           def call
             context.interfaces
-                   .reject { |netbox_interface| context.host.interfaces.map(&:netbox_name).include?(netbox_interface.name) }
+                   .reject { |netbox_interface| interfaces_names.include?(netbox_interface.name) }
                    .each(&:delete)
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
+          end
+
+          private
+
+          delegate :netbox_params, to: :context
+
+          def interfaces_names
+            netbox_params.fetch(:interfaces, [])
+                         .map { |i| i[:name] }
+                         .compact
           end
         end
       end

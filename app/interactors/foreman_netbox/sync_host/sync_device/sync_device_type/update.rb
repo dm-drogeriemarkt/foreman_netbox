@@ -12,16 +12,20 @@ module ForemanNetbox
           end
 
           def call
-            default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-            device_type.tags = (device_type.tags | default_tags) if (default_tags - device_type.tags).any?
+            new_tags = new_device_type_params.fetch(:tags, []) - device_type.tags
+            device_type.tags = (device_type.tags | new_tags) if new_tags.any?
 
             device_type.save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
-          delegate :device_type, to: :context
+          delegate :netbox_params, :device_type, to: :context
+
+          def new_device_type_params
+            netbox_params.fetch(:device_type, {})
+          end
         end
       end
     end

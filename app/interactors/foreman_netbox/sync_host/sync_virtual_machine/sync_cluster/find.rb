@@ -10,16 +10,16 @@ module ForemanNetbox
           def call
             context.cluster = ForemanNetbox::API.client.virtualization.clusters.find_by(params)
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
           private
 
+          delegate :netbox_params, to: :context
+
           def params
-            {
-              name: context.host.compute_object&.cluster
-            }
+            netbox_params.fetch(:cluster).slice(:name)
           end
         end
       end

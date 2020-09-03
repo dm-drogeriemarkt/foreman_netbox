@@ -3,11 +3,19 @@
 require 'test_plugin_helper'
 
 class DeleteDeviceInterfacesTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Delete.call(host: host, interfaces: interfaces) }
+  subject do
+    ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Delete.call(
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params,
+      interfaces: interfaces
+    )
+  end
 
   let(:interface_id) { 1 }
   let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
-  let(:host) { OpenStruct.new(interfaces: []) }
+  let(:host) do
+    FactoryBot.build_stubbed(:host, interfaces: [])
+  end
 
   setup do
     setup_default_netbox_settings

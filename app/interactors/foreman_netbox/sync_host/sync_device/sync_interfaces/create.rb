@@ -7,30 +7,29 @@ module ForemanNetbox
         class Create
           include ::Interactor
 
-          TYPE = 'virtual'
-
           after do
             context.interfaces.reload
           end
 
           def call
-            context.host
-                   .interfaces
-                   .reject { |host_interface| host_interface.netbox_name.blank? }
-                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.netbox_name) }
-                   .map do |host_interface|
-                     ForemanNetbox::API.client::DCIM::Interface.new(
-                       device: context.device.id,
-                       name: host_interface.netbox_name,
-                       mac_address: host_interface.mac,
-                       type: TYPE,
-                       tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-                     ).save
-                   end
+            netbox_params.fetch(:interfaces, [])
+                         .select { |i| i[:name] }
+                         .reject { |i| interfaces.map(&:name).include?(i[:name]) }
+                         .map do |new_interface|
+                           ForemanNetbox::API.client::DCIM::Interface.new(
+                             new_interface.except(:type)
+                                          .merge(
+                                            type: new_interface.dig(:type, :value),
+                                            device: device.id
+                                          )
+                           ).save
+                         end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
+
+          delegate :device, :interfaces, :netbox_params, to: :context
         end
       end
     end

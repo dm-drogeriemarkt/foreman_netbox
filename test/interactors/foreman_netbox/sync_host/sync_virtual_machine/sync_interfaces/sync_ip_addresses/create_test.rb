@@ -5,7 +5,7 @@ require 'test_plugin_helper'
 class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::SyncIpAddresses::Create.call(
-      host: host, interfaces: interfaces
+      host: host, interfaces: interfaces, netbox_params: host.netbox_facet.netbox_params
     )
   end
 
@@ -13,7 +13,8 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
   let(:subnet6) { FactoryBot.build_stubbed(:subnet_ipv6) }
   let(:host) do
-    OpenStruct.new(
+    FactoryBot.build_stubbed(
+      :host,
       interfaces: [
         FactoryBot.build_stubbed(
           :nic_base,
@@ -52,9 +53,9 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   it 'creates missing IP addresses in Netbox' do
     stub_post_ip_address_v4 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
-        interface: interfaces.first.id,
         address: host.interfaces.first.netbox_ip,
-        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
+        interface: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -63,9 +64,9 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
     stub_post_ip_address_v6 = stub_request(:post, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       body: {
-        interface: interfaces.first.id,
         address: host.interfaces.first.netbox_ip6,
-        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
+        interface: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

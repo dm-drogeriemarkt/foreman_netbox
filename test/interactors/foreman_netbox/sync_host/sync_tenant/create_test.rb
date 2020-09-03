@@ -3,7 +3,11 @@
 require 'test_plugin_helper'
 
 class CreateTenantTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncTenant::Create.call(host: host, tenant: tenant) }
+  subject do
+    ForemanNetbox::SyncHost::SyncTenant::Create.call(
+      host: host, tenant: tenant, netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:host) do
     FactoryBot.build_stubbed(
@@ -24,7 +28,7 @@ class CreateTenantTest < ActiveSupport::TestCase
         body: {
           name: host.owner.name,
           slug: host.owner.name.parameterize,
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

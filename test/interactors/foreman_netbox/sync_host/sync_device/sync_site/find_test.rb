@@ -3,10 +3,16 @@
 require 'test_plugin_helper'
 
 class FindSiteTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncSite::Find.call(host: host) }
+  subject do
+    ForemanNetbox::SyncHost::SyncDevice::SyncSite::Find.call(
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:host) do
-    OpenStruct.new(
+    FactoryBot.build_stubbed(
+      :host,
       location: FactoryBot.build_stubbed(:location)
     )
   end

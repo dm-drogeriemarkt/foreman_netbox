@@ -3,7 +3,11 @@
 require 'test_plugin_helper'
 
 class FindTenantTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncTenant::Find.call(host: host) }
+  subject do
+    ForemanNetbox::SyncHost::SyncTenant::Find.call(
+      host: host, netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:host) do
     FactoryBot.build_stubbed(

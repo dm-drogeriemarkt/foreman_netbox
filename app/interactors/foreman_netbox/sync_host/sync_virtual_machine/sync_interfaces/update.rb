@@ -13,31 +13,23 @@ module ForemanNetbox
 
           private
 
+          delegate :netbox_params, to: :context
+
           def update(netbox_interface)
-            old_params = old_params(netbox_interface)
-            new_params = new_params(netbox_interface)
-            return if old_params == new_params
+            new_params = netbox_params.fetch(:interfaces, [])
+                                      .find { |i| i[:name] == netbox_interface.name }
 
-            netbox_interface.update(new_params)
+            return unless new_params
+
+            netbox_interface.mac_address = new_params[:mac_address] if netbox_interface.mac_address != new_params[:mac_address]
+
+            new_tags = new_params.fetch(:tags, []) - netbox_interface.tags
+            netbox_interface.tags = (netbox_interface.tags | new_tags) if new_tags.any?
+
+            netbox_interface.save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
-          end
-
-          def old_params(netbox_interface)
-            {
-              mac_address: netbox_interface.mac_address,
-              tags: netbox_interface.tags
-            }
-          end
-
-          def new_params(netbox_interface)
-            host_interface = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }
-
-            {
-              mac_address: host_interface.mac,
-              tags: netbox_interface.tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-            }
           end
         end
       end

@@ -3,7 +3,11 @@
 require 'test_plugin_helper'
 
 class UpdateTenantTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncTenant::Update.call(tenant: tenant) }
+  subject do
+    ForemanNetbox::SyncHost::SyncTenant::Update.call(
+      host: host, tenant: tenant, netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:tenant) do
     ForemanNetbox::API.client::Tenancy::Tenant.new(id: 1).tap do |tenant|
@@ -12,6 +16,12 @@ class UpdateTenantTest < ActiveSupport::TestCase
         { 'id' => 1, 'tags' => tenant_tags }
       )
     end
+  end
+  let(:host) do
+    FactoryBot.build_stubbed(
+      :host,
+      owner: FactoryBot.build_stubbed(:usergroup, name: 'Owner')
+    )
   end
 
   setup do
@@ -24,7 +34,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
     it 'updates tenant' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1.json").with(
         body: {
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -37,7 +47,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:tenant_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+    let(:tenant_tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
 
     it 'does not update tenant' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1.json")

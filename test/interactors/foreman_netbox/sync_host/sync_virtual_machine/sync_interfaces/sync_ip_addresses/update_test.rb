@@ -3,14 +3,34 @@
 require 'test_plugin_helper'
 
 class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::SyncIpAddresses::Update.call(ip_addresses: ip_addresses) }
+  subject do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::SyncIpAddresses::Update.call(
+      ip_addresses: ip_addresses,
+      netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
   let(:ip_addresses_data) do
     [
-      { id: 1, tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS },
-      { id: 2, tags: [] }
+      { id: 1, address: host.netbox_facet.netbox_params[:ip_addresses].first[:address], tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS },
+      { id: 2, address: host.netbox_facet.netbox_params[:ip_addresses].second[:address], tags: [] }
     ]
+  end
+  let(:host) do
+    FactoryBot.build_stubbed(
+      :host,
+      interfaces: [
+        FactoryBot.build_stubbed(
+          :nic_base,
+          identifier: 'eth0',
+          ip: '10.0.0.7',
+          ip6: '1600:0:2d0:202::17',
+          subnet: FactoryBot.build_stubbed(:subnet_ipv4, organizations: [], locations: []),
+          subnet6: FactoryBot.build_stubbed(:subnet_ipv6, organizations: [], locations: [])
+        )
+      ]
+    )
   end
 
   setup do
@@ -30,7 +50,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     stub_unexpected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.first[:id]}.json")
     stub_expected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.second[:id]}.json").with(
       body: {
-        tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
       }.to_json
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },

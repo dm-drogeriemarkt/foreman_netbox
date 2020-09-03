@@ -9,24 +9,34 @@ module ForemanNetbox
             include ::Interactor
 
             def call
-              context.interfaces.each do |netbox_interface|
-                host_interface_ips = context.host.interfaces.find { |i| i.netbox_name == netbox_interface.name }&.netbox_ips || []
+              netbox_params.fetch(:ip_addresses, []).map do |ip_address|
+                interface_id = interfaces_map.fetch(ip_address.dig(:interface, :name), nil)
 
-                host_interface_ips.each do |ip|
-                  next unless ForemanNetbox::API.client.ipam.ip_addresses
-                                                .filter(interface_id: netbox_interface.id, address: ip)
-                                                .total.zero?
+                next unless interface_id
+                next unless ForemanNetbox::API.client
+                                              .ipam
+                                              .ip_addresses
+                                              .filter(interface_id: interface_id, address: ip_address.dig(:address))
+                                              .total
+                                              .zero?
 
-                  ForemanNetbox::API.client::IPAM::IpAddress.new(
-                    interface: netbox_interface.id,
-                    address: ip,
-                    tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-                  ).save
-                end
+                ForemanNetbox::API.client::IPAM::IpAddress.new(
+                  ip_address.slice(:address, :tags).merge(interface: interface_id)
+                ).save
               end
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-              Foreman::Logging.exception("#{self.class} error:", e)
+              ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
               context.fail!(error: "#{self.class}: #{e}")
+            end
+
+            private
+
+            delegate :interfaces, :netbox_params, to: :context
+
+            def interfaces_map
+              interfaces.each_with_object({}) do |int, memo|
+                memo[int.name] = int.id
+              end
             end
           end
         end

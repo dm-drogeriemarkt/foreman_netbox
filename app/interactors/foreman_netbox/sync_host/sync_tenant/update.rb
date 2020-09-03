@@ -6,23 +6,27 @@ module ForemanNetbox
       class Update
         include ::Interactor
 
-        ATTRIBUTES = %i[tags].freeze
-
         around do |interactor|
           interactor.call if context.tenant
         end
 
         def call
-          default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-          tenant.tags = (tenant.tags | default_tags) if (default_tags - tenant.tags).any?
+          new_tags = new_tenant_params.fetch(:tags, []) - tenant.tags
+          tenant.tags = (tenant.tags | new_tags) if new_tags.any?
 
           tenant.save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-          Foreman::Logging.exception("#{self.class} error:", e)
+          ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")
         end
 
-        delegate :tenant, to: :context
+        private
+
+        delegate :netbox_params, :tenant, to: :context
+
+        def new_tenant_params
+          netbox_params.fetch(:tenant, {})
+        end
       end
     end
   end

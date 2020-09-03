@@ -66,7 +66,7 @@ class SyncRhelPhysicalHostTest < ActiveSupport::TestCase
       end
     end
 
-    expected_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+    expected_tags = ForemanNetbox::NetboxParameters::DEFAULT_TAGS
     assert_equal expected_tags, subject.device.tags
     assert_equal expected_tags, subject.device_type.tags
     assert_equal expected_tags, subject.site.tags

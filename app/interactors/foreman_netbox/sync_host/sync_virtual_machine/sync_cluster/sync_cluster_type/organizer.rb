@@ -8,12 +8,9 @@ module ForemanNetbox
           class Organizer
             include ::Interactor::Organizer
 
-            CLUSTER_TYPES = {
-              :'Foreman::Model::Vmware' => {
-                name: 'VMware ESXi',
-                slug: 'vmware-esxi'
-              }
-            }.freeze
+            after do
+              context.raw_data[:cluster_type] = context.cluster_type.raw_data!
+            end
 
             organize SyncClusterType::Find,
                      SyncClusterType::Create

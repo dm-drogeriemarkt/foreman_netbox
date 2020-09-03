@@ -6,14 +6,16 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::Update.call(
       interfaces: interfaces,
-      host: host
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params
     )
   end
 
   let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
-  let(:old_mac) { 'fe:13:c6:44:29:22' }
+  let(:old_mac) { 'FE:13:C6:44:29:22' }
   let(:host) do
-    OpenStruct.new(
+    FactoryBot.build_stubbed(
+      :host,
       interfaces: [
         FactoryBot.build_stubbed(:nic_base, mac: old_mac)
       ]
@@ -25,7 +27,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
   end
 
   context 'if the interface has been updated since the last synchronization' do
-    let(:new_mac) { 'fe:13:c6:44:29:24' }
+    let(:new_mac) { 'FE:13:C6:44:29:24' }
 
     it 'updates interface in Netbox' do
       get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/interfaces.json").with(
@@ -47,7 +49,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json").with(
         body: {
           mac_address: host.interfaces.first.mac,
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -73,7 +75,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: old_mac,
-              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+              tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
             }
           ]
         }.to_json

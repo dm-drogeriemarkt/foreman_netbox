@@ -7,6 +7,10 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          after do
+            context.raw_data[:cluster] = context.cluster.raw_data!
+          end
+
           organize SyncCluster::SyncClusterType::Organizer,
                    SyncCluster::Find,
                    SyncCluster::Update,

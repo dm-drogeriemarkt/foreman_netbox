@@ -5,8 +5,13 @@ require 'test_plugin_helper'
 class SyncHostOrganizerTest < ActiveSupport::TestCase
   subject { ForemanNetbox::SyncHost::Organizer.call(host: host) }
 
-  let(:host) { FactoryBot.create(:host) }
-  let(:tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+  let(:host) do
+    FactoryBot.create(:host).tap do |host|
+      host.stubs(:interfaces).returns([])
+      host.stubs(:facts).returns({ serialnumber: 'abc123' })
+    end
+  end
+  let(:tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
 
   setup do
     setup_default_netbox_settings
@@ -26,8 +31,8 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
     stub_get_netbox_request('dcim/device-types.json?limit=50&slug=unknown', results: [
       { id: 1, name: 'Unknown', slug: 'unknown', tags: tags }
     ])
-    stub_get_netbox_request("dcim/devices.json?limit=50&name=#{host.name}", results: [
-      { id: 1, name: host.name, tags: tags }
+    stub_get_netbox_request("dcim/devices.json?limit=50&serial=#{host.facts[:serialnumber]}", results: [
+      { id: 1, name: host.name, serial: host.facts[:serialnumber], tags: tags }
     ])
     stub_get_netbox_request('dcim/interfaces.json?device_id=1&limit=50', results: [])
     stub_get_netbox_request('ipam/ip-addresses.json?device_id=1&limit=50', results: [])

@@ -24,9 +24,15 @@ Metrics/LineLength:
 Metrics/AbcSize:
   Max: 30
 
+Metrics/PerceivedComplexity:
+  Max: 9
+
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+
+Metrics/CyclomaticComplexity:
+  Max: 9
 
 Style/Next:
   Enabled: false
@@ -37,3 +43,6 @@ Style/HashSyntax:
 
 Style/FormatStringToken:
   EnforcedStyle: template
+
+Gemspec/RequiredRubyVersion:
+  Enabled: false

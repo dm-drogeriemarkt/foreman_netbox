@@ -5,6 +5,7 @@ require 'test_plugin_helper'
 class CreateDeviceTypeTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Create.call(
+      netbox_params: host.netbox_facet.netbox_params,
       device_type: device_type,
       manufacturer: manufacturer,
       host: host
@@ -14,11 +15,9 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
   let(:device_type_id) { 1 }
   let(:manufacturer) { OpenStruct.new(id: 1) }
   let(:host) do
-    OpenStruct.new(
-      facts: {
-        'dmi::product::name': 'Device Type Model'
-      }
-    )
+    FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:facts).returns({ 'dmi::product::name': 'Device Type Model' })
+    end
   end
 
   setup do
@@ -31,10 +30,10 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
     it 'assigns device_type to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/device-types/").with(
         body: {
-          model: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
-          slug: host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize,
-          manufacturer: manufacturer.id,
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          model: host.netbox_facet.netbox_params.dig(:device_type, :model),
+          slug: host.netbox_facet.netbox_params.dig(:device_type, :slug),
+          tags: host.netbox_facet.netbox_params.dig(:device_type, :tags),
+          manufacturer: manufacturer.id
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

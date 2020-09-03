@@ -3,10 +3,16 @@
 require 'test_plugin_helper'
 
 class FindVirtualMachineTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::Find.call(host: host) }
+  subject do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::Find.call(
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
   let(:host) do
     FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:compute?).returns(true)
       host.stubs(:mac).returns('C3:CD:63:54:21:62')
     end
   end

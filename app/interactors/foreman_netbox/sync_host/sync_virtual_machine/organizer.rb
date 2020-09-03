@@ -10,7 +10,13 @@ module ForemanNetbox
           interactor.call if context.host.compute?
         end
 
-        organize SyncVirtualMachine::SyncCluster::Organizer,
+        after do
+          context.raw_data[:virtual_machine] = context.virtual_machine.raw_data!
+        end
+
+        organize SyncVirtualMachine::Validate,
+                 SyncHost::SyncTenant::Organizer,
+                 SyncVirtualMachine::SyncCluster::Organizer,
                  SyncVirtualMachine::Find,
                  SyncVirtualMachine::Create,
                  SyncVirtualMachine::SyncInterfaces::Organizer,

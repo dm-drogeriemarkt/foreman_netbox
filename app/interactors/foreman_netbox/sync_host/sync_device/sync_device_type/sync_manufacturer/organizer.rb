@@ -8,6 +8,10 @@ module ForemanNetbox
           class Organizer
             include ::Interactor::Organizer
 
+            after do
+              context.raw_data[:manufacturer] = context.manufacturer.raw_data!
+            end
+
             organize SyncManufacturer::Find,
                      SyncManufacturer::Create
           end

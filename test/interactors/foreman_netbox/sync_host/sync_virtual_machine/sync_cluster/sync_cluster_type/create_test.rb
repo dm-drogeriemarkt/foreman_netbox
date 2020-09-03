@@ -5,20 +5,19 @@ require 'test_plugin_helper'
 class CreateClusterTypeTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Create.call(
-      host: host, cluster_type: cluster_type
+      host: host, cluster_type: cluster_type, netbox_params: host.netbox_facet.netbox_params
     )
   end
 
   let(:cluster_type_id) { 1 }
-  let(:cluster_type_params) do
-    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::SyncClusterType::Organizer::CLUSTER_TYPES[:'Foreman::Model::Vmware']
-  end
+  let(:cluster_type_params) { host.netbox_facet.netbox_params.fetch(:cluster_type) }
   let(:host) do
-    OpenStruct.new(
-      compute_resource: OpenStruct.new(
-        type: 'Foreman::Model::Vmware'
+    FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:compute?).returns(true)
+      host.stubs(:compute_resource).returns(
+        OpenStruct.new(type: 'Foreman::Model::Vmware')
       )
-    )
+    end
   end
 
   setup do
