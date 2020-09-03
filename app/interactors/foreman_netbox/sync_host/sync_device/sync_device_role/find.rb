@@ -6,21 +6,20 @@ module ForemanNetbox
       module SyncDeviceRole
         class Find
           include ::Interactor
-          include SyncDeviceRole::Concerns::Params
 
           def call
             context.device_role = ForemanNetbox::API.client.dcim.device_roles.find_by(params)
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
           private
 
+          delegate :netbox_params, to: :context
+
           def params
-            {
-              slug: slug
-            }
+            netbox_params.fetch(:device_role).slice(:slug)
           end
         end
       end

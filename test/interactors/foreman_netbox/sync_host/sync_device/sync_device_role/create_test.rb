@@ -3,10 +3,13 @@
 require 'test_plugin_helper'
 
 class CreateDeviceRoleTest < ActiveSupport::TestCase
-  let(:klass) { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Create }
-  let(:device_role_params) { klass.new }
-
-  subject { klass.call(device_role: device_role) }
+  subject do
+    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceRole::Create.call(
+      host: host, netbox_params: host.netbox_facet.netbox_params, device_role: device_role
+    )
+  end
+  let(:device_role_params) { host.netbox_facet.netbox_params.fetch(:device_role) }
+  let(:host) { FactoryBot.build_stubbed(:host) }
 
   setup do
     setup_default_netbox_settings
@@ -18,9 +21,9 @@ class CreateDeviceRoleTest < ActiveSupport::TestCase
     it 'assigns device_role to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/device-roles/").with(
         body: {
-          name: device_role_params.name,
-          slug: device_role_params.slug,
-          color: device_role_params.color
+          name: device_role_params[:name],
+          color: device_role_params[:color],
+          slug: device_role_params[:slug]
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

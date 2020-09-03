@@ -14,18 +14,19 @@ module ForemanNetbox
           def call
             context.cluster = ForemanNetbox::API.client::Virtualization::Cluster.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
           private
 
+          delegate :netbox_params, to: :context
+          delegate :cluster_type, to: :context, allow_nil: true
+
           def params
-            {
-              type: context.cluster_type&.id,
-              name: context.host.compute_object&.cluster,
-              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-            }
+            netbox_params.fetch(:cluster).merge(
+              type: cluster_type&.id
+            ).compact
           end
         end
       end

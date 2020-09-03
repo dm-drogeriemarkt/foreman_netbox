@@ -6,6 +6,7 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::Create.call(
       host: host,
+      netbox_params: host.netbox_facet.netbox_params,
       virtual_machine: virtual_machine,
       cluster: cluster,
       tenant: tenant
@@ -13,20 +14,27 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:host) do
-    OpenStruct.new(
-      name: 'host.dev.example.com',
-      compute_object: OpenStruct.new(
-        cpus: 2,
-        memory_mb: 512,
-        volumes: [
-          OpenStruct.new(size_gb: 128)
-        ]
-      ),
+    FactoryBot.build_stubbed(
+      :host,
+      hostname: 'host.dev.example.com',
       location: FactoryBot.build_stubbed(:location)
-    )
+    ).tap do |host|
+      host.stubs(:compute?).returns(true)
+      host.stubs(:compute_object).returns(
+        OpenStruct.new(
+          cpus: 2,
+          memory_mb: 512,
+          volumes: [
+            OpenStruct.new(size_gb: 128)
+          ]
+        )
+      )
+    end
   end
+
   let(:cluster) { OpenStruct.new(id: 1) }
   let(:tenant) { OpenStruct.new(id: 1) }
+  let(:netbox_virtual_machine_params) { host.netbox_facet.netbox_params.fetch(:virtual_machine) }
 
   setup do
     setup_default_netbox_settings
@@ -38,13 +46,13 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
     it 'creates a virtual_machine' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         body: {
-          name: host.name,
+          name: netbox_virtual_machine_params[:name],
+          vcpus: netbox_virtual_machine_params[:vcpus],
+          memory: netbox_virtual_machine_params[:memory],
+          disk: netbox_virtual_machine_params[:disk],
+          tags: netbox_virtual_machine_params[:tags],
           cluster: cluster.id,
-          tenant: tenant.id,
-          vcpus: host.compute_object.cpus,
-          memory: host.compute_object.memory_mb,
-          disk: host.compute_object.volumes.map(&:size_gb).reduce(&:+),
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tenant: tenant.id
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

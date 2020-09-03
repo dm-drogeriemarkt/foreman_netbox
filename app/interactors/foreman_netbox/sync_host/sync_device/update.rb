@@ -22,22 +22,25 @@ module ForemanNetbox
 
           device.save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-          Foreman::Logging.exception("#{self.class} error:", e)
+          ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")
         end
 
         private
 
-        delegate :device, :device_type, :device_role, :site, :host, to: :context
+        delegate :netbox_params, :device, :device_type, :device_role, :site, :host, to: :context
         delegate :tenant, to: :context, allow_nil: true
-        delegate :facts, to: :host
+
+        def new_device_params
+          netbox_params.fetch(:device, {})
+        end
 
         def assign_new_attributes
           ATTRIBUTES.map { |attribute| send("assign_#{attribute}") }
         end
 
         def assign_name
-          device.name = host.name if device.name != host.name
+          device.name = new_device_params[:name] if device.name != new_device_params[:name]
         end
 
         def assign_device_role
@@ -65,17 +68,16 @@ module ForemanNetbox
         end
 
         def assign_serial
-          new_serial = facts&.symbolize_keys&.fetch(:serialnumber, nil)
+          new_serial = new_device_params[:serial]
           return if !new_serial || device.serial == new_serial
 
           device.serial = new_serial
         end
 
         def assign_tags
-          default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-          return unless (default_tags - device.tags).any?
+          new_tags = new_device_params.fetch(:tags, []) - device.tags
 
-          device.tags = device.tags | default_tags
+          device.tags = (device.tags | new_tags) if new_tags.any?
         end
       end
     end

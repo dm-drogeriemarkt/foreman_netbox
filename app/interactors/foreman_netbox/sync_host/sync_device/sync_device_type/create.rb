@@ -6,7 +6,6 @@ module ForemanNetbox
       module SyncDeviceType
         class Create
           include ::Interactor
-          include SyncDeviceType::Concerns::Params
 
           around do |interactor|
             interactor.call unless context.device_type
@@ -15,21 +14,18 @@ module ForemanNetbox
           def call
             context.device_type = ForemanNetbox::API.client::DCIM::DeviceType.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
           private
 
-          delegate :manufacturer, to: :context
+          delegate :netbox_params, :manufacturer, to: :context
 
           def params
-            {
-              model: productname,
-              slug: slug,
-              manufacturer: manufacturer.id,
-              tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-            }
+            netbox_params.fetch(:device_type)
+                         .merge(manufacturer: manufacturer.id)
+                         .compact
           end
         end
       end

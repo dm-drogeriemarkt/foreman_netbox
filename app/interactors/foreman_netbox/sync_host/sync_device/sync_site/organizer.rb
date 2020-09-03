@@ -11,6 +11,10 @@ module ForemanNetbox
             interactor.call if context.host.location
           end
 
+          after do
+            context.raw_data[:site] = context.site.raw_data!
+          end
+
           organize SyncSite::Find,
                    SyncSite::Update,
                    SyncSite::Create

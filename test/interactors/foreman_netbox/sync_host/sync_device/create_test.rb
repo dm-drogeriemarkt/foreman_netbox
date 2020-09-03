@@ -6,6 +6,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::Create.call(
       host: host,
+      netbox_params: host.netbox_facet.netbox_params,
       device_type: device_type,
       device_role: device_role,
       site: site,
@@ -24,6 +25,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
   let(:device_role) { OpenStruct.new(id: 1) }
   let(:site) { OpenStruct.new(id: 1) }
   let(:tenant) { OpenStruct.new(id: 1) }
+  let(:netbox_device_params) { host.netbox_facet.netbox_params.fetch(:device) }
 
   setup do
     setup_default_netbox_settings
@@ -35,13 +37,13 @@ class CreateDeviceTest < ActiveSupport::TestCase
     it 'creates a device' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         body: {
+          name: netbox_device_params[:name],
+          serial: netbox_device_params[:serial],
+          tags: netbox_device_params[:tags],
           device_type: device_type.id,
           device_role: device_role.id,
           site: site.id,
-          name: host.name,
-          tenant: tenant.id,
-          serial: host.facts['serialnumber'],
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tenant: tenant.id
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

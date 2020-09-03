@@ -12,22 +12,20 @@ module ForemanNetbox
           end
 
           def call
-            context.host
-                   .interfaces
-                   .reject { |host_interface| host_interface.netbox_name.blank? }
-                   .reject { |host_interface| context.interfaces.map(&:name).include?(host_interface.netbox_name) }
-                   .map do |host_interface|
-                     ForemanNetbox::API.client::Virtualization::Interface.new(
-                       virtual_machine: context.virtual_machine.id,
-                       name: host_interface.netbox_name,
-                       mac_address: host_interface.mac,
-                       tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-                     ).save
-                   end
+            netbox_params.fetch(:interfaces, [])
+                         .select { |i| i[:name] }
+                         .reject { |i| interfaces.map(&:name).include?(i[:name]) }
+                         .map do |new_interface|
+                           ForemanNetbox::API.client::Virtualization::Interface.new(
+                             new_interface.except(:type).merge(virtual_machine: virtual_machine.id)
+                           ).save
+                         end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
+
+          delegate :virtual_machine, :interfaces, :netbox_params, to: :context
         end
       end
     end

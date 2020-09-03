@@ -79,7 +79,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
       end
     end
 
-    expected_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+    expected_tags = ForemanNetbox::NetboxParameters::DEFAULT_TAGS
     assert_equal expected_tags, subject.virtual_machine.tags
     assert_equal expected_tags, subject.tenant.tags
     assert_equal expected_tags, subject.cluster.tags

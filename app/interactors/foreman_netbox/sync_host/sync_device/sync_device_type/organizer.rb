@@ -7,6 +7,10 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          after do
+            context.raw_data[:device_type] = context.device_type.raw_data!
+          end
+
           organize SyncDeviceType::SyncManufacturer::Organizer,
                    SyncDeviceType::Find,
                    SyncDeviceType::Update,

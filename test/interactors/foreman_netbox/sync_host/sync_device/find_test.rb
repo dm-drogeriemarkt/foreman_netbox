@@ -3,12 +3,12 @@
 require 'test_plugin_helper'
 
 class FindDeviceTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::Find.call(host: host) }
+  subject { ForemanNetbox::SyncHost::SyncDevice::Find.call(host: host, netbox_params: host.netbox_facet.netbox_params) }
 
   let(:host) do
     FactoryBot.build_stubbed(:host).tap do |host|
       host.stubs(:mac).returns('C3:CD:63:54:21:62')
-      host.stubs(:facts).returns({ serialnumber: 'abc123' })
+      host.stubs(:facts).returns({ 'serialnumber' => 'abc123' })
     end
   end
 
@@ -19,7 +19,7 @@ class FindDeviceTest < ActiveSupport::TestCase
   context 'when device already exists in Netbox' do
     test 'find device by host name' do
       stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
-        query: { limit: 50, serial: host.facts[:serialnumber] }
+        query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
@@ -45,7 +45,7 @@ class FindDeviceTest < ActiveSupport::TestCase
 
     test 'find device by mac address' do
       stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
-        query: { limit: 50, serial: host.facts[:serialnumber] }
+        query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
@@ -54,7 +54,7 @@ class FindDeviceTest < ActiveSupport::TestCase
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
-        body: { count: 1, results: [{ id: 1, name: host.name }] }.to_json
+        body: { count: 1, results: [{ id: 1, name: host.netbox_facet.netbox_params.dig(:device, :name) }] }.to_json
       )
 
       assert_equal 1, subject.device.id
@@ -64,7 +64,7 @@ class FindDeviceTest < ActiveSupport::TestCase
 
     test 'find device by serial number' do
       stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
-        query: { limit: 50, serial: host.facts[:serialnumber] }
+        query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 1, results: [{ id: 1, name: host.name }] }.to_json
@@ -78,7 +78,7 @@ class FindDeviceTest < ActiveSupport::TestCase
   context 'when device does not exist in NetBox' do
     it 'does not assign device to context' do
       stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
-        query: { limit: 50, serial: host.facts[:serialnumber] }
+        query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
@@ -90,7 +90,7 @@ class FindDeviceTest < ActiveSupport::TestCase
         body: { count: 0, results: [] }.to_json
       )
       stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
-        query: { limit: 50, name: host.name }
+        query: { limit: 50, name: host.netbox_facet.netbox_params.dig(:device, :name) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json

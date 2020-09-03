@@ -7,6 +7,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
     ForemanNetbox::SyncHost::SyncVirtualMachine::Update.call(
       virtual_machine: virtual_machine,
       host: host,
+      netbox_params: host.netbox_facet.netbox_params,
       cluster: cluster,
       tenant: tenant,
       ip_addresses: ip_addresses
@@ -70,6 +71,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
       ip: primary_ip4.address.address,
       ip6: primary_ip6.address.address
     ).tap do |host|
+      host.stubs(:compute?).returns(true)
       host.stubs(:compute_object).returns(
         OpenStruct.new(
           cpus: virtual_machine_data[:vcpus],
@@ -99,7 +101,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
-    let(:virtual_machine_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+    let(:virtual_machine_tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
 
     it 'does not update virtual_machine' do
       assert_equal virtual_machine, subject.virtual_machine
@@ -131,6 +133,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
         ip: primary_ip4.address.address,
         ip6: primary_ip6.address.address
       ).tap do |host|
+        host.stubs(:compute?).returns(true)
         host.stubs(:compute_object).returns(
           OpenStruct.new(
             cpus: 4,
@@ -154,7 +157,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           primary_ip6: primary_ip6.id,
           tenant: tenant.id,
           vcpus: host.compute_object.cpus,
-          tags: virtual_machine_tags | ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: virtual_machine_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

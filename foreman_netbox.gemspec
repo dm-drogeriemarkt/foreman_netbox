@@ -14,6 +14,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
+  s.add_dependency 'dry-validation', '~> 1.5.2'
   s.add_dependency 'interactor', '~> 3.1.1'
   s.add_dependency 'netbox-client-ruby', '~> 0.5.1'
 

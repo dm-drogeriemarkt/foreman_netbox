@@ -5,18 +5,21 @@ require 'test_plugin_helper'
 class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::SyncIpAddresses::Delete.call(
-      host: host, interfaces: interfaces, ip_addresses: ip_addresses
+      host: host, interfaces: interfaces, ip_addresses: ip_addresses, netbox_params: host.netbox_facet.netbox_params
     )
   end
 
   let(:interfaces) { ForemanNetbox::API.client.dcim.interfaces.filter(device_id: 1) }
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: 1) }
-
-  let(:subnet) { FactoryBot.build_stubbed(:subnet_ipv4) }
   let(:host) do
-    OpenStruct.new(
+    FactoryBot.build_stubbed(
+      :host,
       interfaces: [
-        FactoryBot.build_stubbed(:nic_base, ip: '10.0.0.1', subnet: subnet)
+        FactoryBot.build_stubbed(
+          :nic_base,
+          ip: '10.0.0.1',
+          subnet: FactoryBot.build_stubbed(:subnet_ipv4)
+        )
       ]
     )
   end

@@ -3,8 +3,13 @@
 require 'test_plugin_helper'
 
 class UpdateClusterTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Update.call(cluster: cluster) }
+  subject do
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Update.call(
+      host: host, cluster: cluster, netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
+  let(:host) { FactoryBot.build_stubbed(:host).tap { |h| h.stubs(:compute?).returns(true) } }
   let(:cluster) do
     ForemanNetbox::API.client::Virtualization::Cluster.new(id: 1).tap do |cluster|
       cluster.instance_variable_set(
@@ -24,7 +29,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
     it 'updates cluster' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json").with(
         body: {
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: host.netbox_facet.netbox_params.dig(:cluster, :tags)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -37,7 +42,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:cluster_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+    let(:cluster_tags) { host.netbox_facet.netbox_params.dig(:cluster, :tags) }
 
     it 'does not update cluster' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json")

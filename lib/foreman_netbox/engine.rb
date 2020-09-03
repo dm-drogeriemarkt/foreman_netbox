@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'dry-validation'
 require 'netbox-client-ruby'
 require 'interactor'
 
@@ -40,6 +41,8 @@ module ForemanNetbox
                               partial: 'hosts/netbox_tab',
                               onlyif: proc { |host| host.netbox_facet.synchronized_at }
         end
+
+        logger :import, enabled: true
       end
     end
 

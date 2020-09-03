@@ -3,16 +3,19 @@
 require 'test_plugin_helper'
 
 class FindDeviceTypeTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Find.call(host: host) }
-
-  let(:host) do
-    OpenStruct.new(
-      facts: {
-        'dmi::product::name': 'Device type'
-      }
+  subject do
+    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Find.call(
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params
     )
   end
-  let(:slug) { host.facts.symbolize_keys.fetch(:'dmi::product::name').parameterize }
+
+  let(:host) do
+    FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:facts).returns({ 'dmi::product::name': 'Device type' })
+    end
+  end
+  let(:slug) { host.netbox_facet.netbox_params.dig(:device_type, :slug) }
 
   setup do
     setup_default_netbox_settings

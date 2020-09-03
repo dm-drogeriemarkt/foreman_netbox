@@ -7,6 +7,10 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          after do
+            context.raw_data[:interfaces] = context.interfaces.reload.raw_data!
+          end
+
           organize SyncInterfaces::Find,
                    SyncInterfaces::Delete,
                    SyncInterfaces::Create,

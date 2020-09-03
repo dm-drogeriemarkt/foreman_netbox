@@ -12,16 +12,22 @@ module ForemanNetbox
           end
 
           def call
-            default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-            cluster.tags = (cluster.tags | default_tags) if (default_tags - cluster.tags).any?
+            new_tags = new_cluster_params.fetch(:tags, []) - cluster.tags
+            cluster.tags = (cluster.tags | new_tags) if new_tags.any?
 
             cluster.save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-            Foreman::Logging.exception("#{self.class} error:", e)
+            ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")
           end
 
-          delegate :cluster, to: :context
+          private
+
+          delegate :netbox_params, :cluster, to: :context
+
+          def new_cluster_params
+            netbox_params.fetch(:cluster, {})
+          end
         end
       end
     end

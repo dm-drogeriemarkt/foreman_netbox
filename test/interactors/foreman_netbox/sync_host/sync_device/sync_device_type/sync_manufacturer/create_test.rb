@@ -4,15 +4,15 @@ require 'test_plugin_helper'
 
 class CreateManufacturerTest < ActiveSupport::TestCase
   subject do
-    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::SyncManufacturer::Create.call(manufacturer: manufacturer, host: host)
+    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::SyncManufacturer::Create.call(
+      manufacturer: manufacturer, host: host, netbox_params: host.netbox_facet.netbox_params
+    )
   end
 
   let(:host) do
-    OpenStruct.new(
-      facts: {
-        'dmi::manufacturer': 'Manufacturer'
-      }
-    )
+    FactoryBot.build_stubbed(:host).tap do |host|
+      host.stubs(:facts).returns({ 'dmi::manufacturer': 'Manufacturer' })
+    end
   end
 
   setup do
@@ -25,8 +25,8 @@ class CreateManufacturerTest < ActiveSupport::TestCase
     it 'assigns manufacturer to context' do
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
         body: {
-          name: host.facts.symbolize_keys.fetch(:'dmi::manufacturer'),
-          slug: host.facts.symbolize_keys.fetch(:'dmi::manufacturer').parameterize
+          name: host.netbox_facet.netbox_params.dig(:manufacturer, :name),
+          slug: host.netbox_facet.netbox_params.dig(:manufacturer, :slug)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

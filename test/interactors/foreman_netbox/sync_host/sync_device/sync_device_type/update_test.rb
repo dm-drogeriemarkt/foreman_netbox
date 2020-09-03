@@ -3,8 +3,13 @@
 require 'test_plugin_helper'
 
 class UpdateDeviceTypeTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Update.call(device_type: device_type) }
+  subject do
+    ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Update.call(
+      host: host, device_type: device_type, netbox_params: host.netbox_facet.netbox_params
+    )
+  end
 
+  let(:host) { FactoryBot.build_stubbed(:host) }
   let(:device_type) do
     ForemanNetbox::API.client::DCIM::DeviceType.new(id: 1).tap do |device|
       device.instance_variable_set(
@@ -24,7 +29,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
     it 'updates device type' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json").with(
         body: {
-          tags: ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
+          tags: host.netbox_facet.netbox_params.dig(:device_type, :tags)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -37,7 +42,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:device_type_tags) { ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS }
+    let(:device_type_tags) { host.netbox_facet.netbox_params.dig(:device_type, :tags) }
 
     it 'does not update device type' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json")

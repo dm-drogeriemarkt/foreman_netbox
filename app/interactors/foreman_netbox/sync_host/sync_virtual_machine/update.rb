@@ -22,22 +22,22 @@ module ForemanNetbox
 
           virtual_machine.save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
-          Foreman::Logging.exception("#{self.class} error:", e)
+          ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")
         end
 
         private
 
-        delegate :virtual_machine, :cluster, :host, to: :context
+        delegate :netbox_params, :virtual_machine, :cluster, to: :context
         delegate :tenant, to: :context, allow_nil: true
-        delegate :compute_object, to: :host, allow_nil: true
 
         def assign_new_attributes
           ATTRIBUTES.map { |attribute| send("assign_#{attribute}") }
         end
 
         def assign_name
-          virtual_machine.name = host.name if virtual_machine.name != host.name
+          name = netbox_params.dig(:virtual_machine, :name)
+          virtual_machine.name = name if virtual_machine.name != name
         end
 
         def assign_cluster
@@ -45,12 +45,13 @@ module ForemanNetbox
         end
 
         def assign_disk
-          new_disk_value = compute_object&.volumes&.map(&:size_gb)&.reduce(&:+)
-          virtual_machine.disk = new_disk_value if virtual_machine.disk != new_disk_value
+          disk = netbox_params.dig(:virtual_machine, :disk)
+          virtual_machine.disk = disk if virtual_machine.disk != disk
         end
 
         def assign_memory
-          virtual_machine.memory = compute_object&.memory_mb if virtual_machine.memory != compute_object&.memory_mb
+          memory = netbox_params.dig(:virtual_machine, :memory)
+          virtual_machine.memory = memory if virtual_machine.memory != memory
         end
 
         def assign_primary_ip4
@@ -66,14 +67,14 @@ module ForemanNetbox
         end
 
         def assign_vcpus
-          virtual_machine.vcpus = compute_object&.cpus if virtual_machine.vcpus != compute_object&.cpus
+          vcpus = netbox_params.dig(:virtual_machine, :vcpus)
+          virtual_machine.vcpus = vcpus if virtual_machine.vcpus != vcpus
         end
 
         def assign_tags
-          default_tags = ForemanNetbox::SyncHost::Organizer::DEFAULT_TAGS
-          return unless (default_tags - virtual_machine.tags).any?
+          new_tags = (netbox_params.dig(:virtual_machine, :tags) || []) - virtual_machine.tags
 
-          virtual_machine.tags = virtual_machine.tags | default_tags
+          virtual_machine.tags = (virtual_machine.tags | new_tags) if new_tags.any?
         end
       end
     end
