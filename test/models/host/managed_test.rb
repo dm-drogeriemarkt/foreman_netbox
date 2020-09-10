@@ -12,9 +12,9 @@ module Host
         setup_default_netbox_settings
       end
 
-      test 'should queue Netbox sync' do
+      test 'should post_queue Netbox sync' do
         host.save
-        tasks = host.queue.all.map(&:name)
+        tasks = host.post_queue.all.map(&:name)
         assert_includes tasks, "Push host #{host} to Netbox"
         assert_equal 1, tasks.size
       end
