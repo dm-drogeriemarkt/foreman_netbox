@@ -40,6 +40,17 @@ module ForemanNetbox
     delegate :netbox_facet, to: :host
     delegate :cached_netbox_params, to: :netbox_facet
 
+    def netbox_compute_attributes
+      @netbox_compute_attributes ||= host.compute_object.yield_self do |compute_object|
+        {
+          vcpus: compute_object&.cpus,
+          memory: compute_object&.memory_mb,
+          disk: compute_object&.volumes&.map(&:size_gb)&.reduce(&:+),
+          cluster: compute_object&.cluster
+        }.compact
+      end
+    end
+
     def tenant
       {
         tenant: {
@@ -143,22 +154,21 @@ module ForemanNetbox
 
     def virtual_machine
       {
-        virtual_machine: {
+        virtual_machine: netbox_compute_attributes.slice(
+          :vcpus, :memory, :disk
+        ).merge(
           name: host.name,
-          vcpus: host.compute_object&.cpus,
-          memory: host.compute_object&.memory_mb,
-          disk: host.compute_object&.volumes&.map(&:size_gb)&.reduce(&:+),
           tags: DEFAULT_TAGS
-        }
+        )
       }
     end
 
     def cluster
       {
         cluster: {
-          name: host.compute_object&.cluster,
+          name: netbox_compute_attributes.dig(:cluster),
           tags: DEFAULT_TAGS
-        }
+        }.compact
       }
     end
 
