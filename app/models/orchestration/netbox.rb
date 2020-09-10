@@ -5,7 +5,7 @@ module Orchestration
     extend ActiveSupport::Concern
 
     included do
-      after_save :queue_netbox_push, if: :netbox_orchestration_allowed?
+      after_validation :queue_netbox_push, if: :netbox_orchestration_allowed?
       before_destroy :queue_netbox_destroy
     end
 
@@ -23,8 +23,8 @@ module Orchestration
       ::Foreman::Logging.logger('foreman_netbox/import')
                         .info("Queued import of #{name} to Netbox. Changes that will be sent: #{netbox_params_diff}")
 
-      queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
-                   action: [self, :set_netbox])
+      post_queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
+                        action: [self, :set_netbox])
     end
 
     def queue_netbox_destroy
