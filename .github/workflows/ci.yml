@@ -30,7 +30,8 @@ jobs:
         ports: ['5432:5432']
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
-      fail-fast: false
+      fail-fast: true
+      max-parallel: 2
       matrix:
         foreman-core-branch: [1.24-stable, 2.0-stable, 2.1-stable, develop]
         ruby-version: [2.5, 2.6]
