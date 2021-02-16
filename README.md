@@ -4,8 +4,12 @@ This is a plugin for Foreman that introduces integration with [NetBox](https://n
 
 ## Installation
 
-See [How_to_Install_a_Plugin](http://projects.theforeman.org/projects/foreman/wiki/How_to_Install_a_Plugin)
-for how to install Foreman plugins
+See [How_to_Install_a_Plugin](https://theforeman.org/manuals/2.3/index.html#6.1InstallaPlugin)
+for how to install Foreman plugins.
+
+The gem name is "foreman_netbox".
+
+
 
 ## Integration tests
 
@@ -14,6 +18,12 @@ The easiest way to start Netbox is to use [netbox-docker](https://github.com/net
 ```
 $ FOREMAN_NETBOX_URL=http://0.0.0.0:8000 FOREMAN_NETBOX_TOKEN=0123456789abcdef0123456789abcdef01234567 bundle exec rake test:foreman_netbox
 ```
+
+After installation of the plugin you can find these settings as well under Administer/Settings/Netbox tab.
+
+You will find there as well a Netbox Orchestration Switch.
+
+If the switch is enabled every change of a Foreman Hostobject will be synced with your netbox instance.
 
 ## Contributing
 
