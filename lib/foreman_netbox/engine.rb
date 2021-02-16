@@ -12,10 +12,10 @@ module ForemanNetbox
 
     initializer 'foreman_netbox.load_default_settings', before: :load_config_initializers do
       require_dependency File.expand_path('../../app/models/setting/netbox.rb', __dir__) if begin
-                                                                                              Setting.table_exists?
-                                                                                            rescue StandardError
-                                                                                              (false)
-                                                                                            end
+        Setting.table_exists?
+      rescue StandardError
+        (false)
+      end
     end
 
     # Add any db migrations
@@ -47,20 +47,18 @@ module ForemanNetbox
     end
 
     config.to_prepare do
-      begin
-        ::Host::Managed.include(ForemanNetbox::HostExtensions)
-        ::Location.include(ForemanNetbox::LocationExtensions)
-        ::Nic::Base.include(ForemanNetbox::Nic::BaseExtensions)
-        ::User.include(ForemanNetbox::UserUsergroupCommonExtensions)
-        ::Usergroup.include(ForemanNetbox::UserUsergroupCommonExtensions)
+      ::Host::Managed.include(ForemanNetbox::HostExtensions)
+      ::Location.include(ForemanNetbox::LocationExtensions)
+      ::Nic::Base.include(ForemanNetbox::Nic::BaseExtensions)
+      ::User.include(ForemanNetbox::UserUsergroupCommonExtensions)
+      ::Usergroup.include(ForemanNetbox::UserUsergroupCommonExtensions)
 
-        NetboxClientRuby.configure do |config|
-          config.netbox.api_base_url = Setting::Netbox['netbox_url']
-          config.netbox.auth.token = Setting::Netbox['netbox_api_token']
-        end
-      rescue StandardError => e
-        Rails.logger.warn "ForemanNetbox: skipping engine hook (#{e})\n#{e.backtrace.join("\n")}"
+      NetboxClientRuby.configure do |config|
+        config.netbox.api_base_url = Setting::Netbox['netbox_url']
+        config.netbox.auth.token = Setting::Netbox['netbox_api_token']
       end
+    rescue StandardError => e
+      Rails.logger.warn "ForemanNetbox: skipping engine hook (#{e})\n#{e.backtrace.join("\n")}"
     end
   end
 end

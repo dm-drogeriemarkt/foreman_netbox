@@ -16,7 +16,7 @@ module ForemanNetbox
                 next unless ForemanNetbox::API.client
                                               .ipam
                                               .ip_addresses
-                                              .filter(interface_id: interface_id, address: ip_address.dig(:address))
+                                              .filter(interface_id: interface_id, address: ip_address[:address])
                                               .total
                                               .zero?
 

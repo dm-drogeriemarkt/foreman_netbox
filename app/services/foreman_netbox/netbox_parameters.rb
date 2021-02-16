@@ -37,6 +37,7 @@ module ForemanNetbox
     private
 
     attr_accessor :host
+
     delegate :netbox_facet, to: :host
     delegate :cached_netbox_params, to: :netbox_facet
 
@@ -166,7 +167,7 @@ module ForemanNetbox
     def cluster
       {
         cluster: {
-          name: netbox_compute_attributes.dig(:cluster),
+          name: netbox_compute_attributes[:cluster],
           tags: DEFAULT_TAGS
         }.compact
       }
