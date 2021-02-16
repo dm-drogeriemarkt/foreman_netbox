@@ -66,7 +66,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       )
     )
   end
-  let(:serialnumber) { device_data.dig(:serial) }
+  let(:serialnumber) { device_data[:serial] }
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: device.id) }
   let(:host) do
     FactoryBot.build_stubbed(
