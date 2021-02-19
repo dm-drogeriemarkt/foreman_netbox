@@ -6,7 +6,7 @@ env:
   DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: true
 jobs:
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
