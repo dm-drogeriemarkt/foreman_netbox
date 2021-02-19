@@ -1,12 +1,12 @@
 name: CI
-on: push
+on: [push, pull_request]
 env:
   RAILS_ENV: test
   DATABASE_URL: postgresql://postgres:@localhost/test
   DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: true
 jobs:
   rubocop:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v2
