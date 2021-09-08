@@ -16,12 +16,13 @@ module ForemanNetbox
                 next unless ForemanNetbox::API.client
                                               .ipam
                                               .ip_addresses
-                                              .filter(interface_id: interface_id, address: ip_address[:address])
+                                              .filter(vminterface_id: interface_id, address: ip_address[:address])
                                               .total
                                               .zero?
 
                 ForemanNetbox::API.client::IPAM::IpAddress.new(
-                  ip_address.slice(:address, :tags).merge(interface: interface_id)
+                  ip_address.slice(:address, :tags)
+                            .merge(assigned_object_type: 'virtualization.vminterface', assigned_object_id: interface_id)
                 ).save
               end
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

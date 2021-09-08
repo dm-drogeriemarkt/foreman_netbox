@@ -21,7 +21,8 @@ module ForemanNetbox
                                               .zero?
 
                 ForemanNetbox::API.client::IPAM::IpAddress.new(
-                  ip_address.slice(:address, :tags).merge(interface: interface_id)
+                  ip_address.slice(:address, :tags)
+                            .merge(assigned_object_type: 'dcim.interface', assigned_object_id: interface_id)
                 ).save
               end
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

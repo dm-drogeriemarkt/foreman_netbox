@@ -5,7 +5,10 @@ require 'test_plugin_helper'
 class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::SyncIpAddresses::Create.call(
-      host: host, interfaces: interfaces, netbox_params: host.netbox_facet.netbox_params
+      host: host,
+      interfaces: interfaces,
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: default_tags
     )
   end
 
@@ -55,7 +58,8 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
       body: {
         address: host.interfaces.first.netbox_ip,
         tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
-        interface: interfaces.first.id
+        assigned_object_type: 'dcim.interface',
+        assigned_object_id: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -66,7 +70,8 @@ class CreateDeviceIpAddressesTest < ActiveSupport::TestCase
       body: {
         address: host.interfaces.first.netbox_ip6,
         tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
-        interface: interfaces.first.id
+        assigned_object_type: 'dcim.interface',
+        assigned_object_id: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

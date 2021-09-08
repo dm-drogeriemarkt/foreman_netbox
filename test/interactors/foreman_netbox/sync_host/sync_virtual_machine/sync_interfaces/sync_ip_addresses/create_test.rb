@@ -31,7 +31,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   setup do
     setup_default_netbox_settings
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip }
+      query: { limit: 50, vminterface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -40,7 +40,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
-      query: { limit: 50, interface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip6 }
+      query: { limit: 50, vminterface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip6 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
@@ -55,7 +55,8 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       body: {
         address: host.interfaces.first.netbox_ip,
         tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
-        interface: interfaces.first.id
+        assigned_object_type: 'virtualization.vminterface',
+        assigned_object_id: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -66,7 +67,8 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       body: {
         address: host.interfaces.first.netbox_ip6,
         tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
-        interface: interfaces.first.id
+        assigned_object_type: 'virtualization.vminterface',
+        assigned_object_id: interfaces.first.id
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

@@ -61,7 +61,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
 
     assert_equal host.name,                                 subject.virtual_machine.name
     assert_equal host.owner.netbox_tenant_name,             subject.virtual_machine.tenant.name
-    assert_equal host.compute_object.cpus,                  subject.virtual_machine.vcpus
+    assert_equal '%.2f' % host.compute_object.cpus,         subject.virtual_machine.vcpus
     assert_equal host.compute_object.memory_mb,             subject.virtual_machine.memory
     assert_equal host.compute_object.volumes.first.size_gb, subject.virtual_machine.disk
     assert_equal host.compute_object.cluster,               subject.virtual_machine.cluster.name
@@ -75,7 +75,11 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
       assert nx_interface.present?
 
       h_interface.netbox_ips.each do |h_ip|
-        assert subject.ip_addresses.find { |nx_ip| nx_ip.interface.id == nx_interface.id && nx_ip.address == IPAddress.parse(h_ip) }.present?
+        assert subject.ip_addresses.find do |nx_ip|
+          nx_ip.interface.assigned_object_type == 'virtualization.vminterface' &&
+            nx_ip.interface.assigned_object_id == nx_interface.id &&
+            nx_ip.address == IPAddress.parse(h_ip)
+        end.present?
       end
     end
 
