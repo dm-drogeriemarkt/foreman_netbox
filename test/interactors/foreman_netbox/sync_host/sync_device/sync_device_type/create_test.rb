@@ -8,7 +8,8 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
       netbox_params: host.netbox_facet.netbox_params,
       device_type: device_type,
       manufacturer: manufacturer,
-      host: host
+      host: host,
+      tags: default_tags
     )
   end
 
@@ -32,8 +33,8 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
         body: {
           model: host.netbox_facet.netbox_params.dig(:device_type, :model),
           slug: host.netbox_facet.netbox_params.dig(:device_type, :slug),
-          tags: host.netbox_facet.netbox_params.dig(:device_type, :tags),
-          manufacturer: manufacturer.id
+          manufacturer: manufacturer.id,
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

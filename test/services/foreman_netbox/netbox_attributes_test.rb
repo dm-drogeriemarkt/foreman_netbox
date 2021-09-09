@@ -16,8 +16,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'Tenant Name',
-          slug: 'tenant-name',
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          slug: 'tenant-name'
         }
       end
 
@@ -34,8 +33,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'device_name',
-          serial: 'abc123',
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          serial: 'abc123'
         }
       end
 
@@ -64,8 +62,7 @@ module ForemanNetbox
       let(:expected) do
         {
           model: 'Product Name',
-          slug: 'product-name',
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          slug: 'product-name'
         }
       end
 
@@ -77,8 +74,7 @@ module ForemanNetbox
         let(:expected) do
           {
             model: 'Unknown',
-            slug: 'unknown',
-            tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+            slug: 'unknown'
           }
         end
 
@@ -124,8 +120,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'Site Name',
-          slug: 'site-name',
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          slug: 'site-name'
         }
       end
 
@@ -153,8 +148,7 @@ module ForemanNetbox
           mac_address: 'FE:13:C6:44:29:24',
           type: {
             value: 'virtual'
-          },
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          }
         ]
       end
 
@@ -195,15 +189,13 @@ module ForemanNetbox
             address: '10.0.0.1/24',
             interface: {
               name: 'eth1'
-            },
-            tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+            }
           },
           {
             address: '1500:0:2d0:201::1/64',
             interface: {
               name: 'eth2'
-            },
-            tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+            }
           }
         ]
       end
@@ -233,8 +225,7 @@ module ForemanNetbox
           name: 'virtual_machine_name',
           vcpus: 2,
           memory: 128,
-          disk: 20,
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          disk: 20
         }
       end
 
@@ -252,7 +243,7 @@ module ForemanNetbox
       end
 
       let(:expected) do
-        { name: 'Cluster Name', tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
+        { name: 'Cluster Name' }
       end
 
       it { assert_equal expected, host.netbox_facet.netbox_params.fetch(:cluster) }

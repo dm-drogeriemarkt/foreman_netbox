@@ -29,3 +29,10 @@ def setup_netbox_integration_test
     netbox_api_token: ENV['FOREMAN_NETBOX_TOKEN']
   )
 end
+
+
+def default_tags
+  ForemanNetbox::SyncHost::SyncTags::Organizer::DEFAULT_TAGS.map.with_index(1) do |tag, id|
+    ForemanNetbox::API.client::Extras::Tag.new(id: id, name: tag[:name], slug: tag[:slug])
+  end
+end

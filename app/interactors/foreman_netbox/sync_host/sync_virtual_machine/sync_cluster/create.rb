@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncCluster
         class Create
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           around do |interactor|
             interactor.call unless context.cluster
@@ -25,7 +26,8 @@ module ForemanNetbox
 
           def params
             netbox_params.fetch(:cluster).merge(
-              type: cluster_type&.id
+              type: cluster_type&.id,
+              tags: default_tag_ids
             ).compact
           end
         end

@@ -7,7 +7,8 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::Update.call(
       interfaces: interfaces,
       host: host,
-      netbox_params: host.netbox_facet.netbox_params
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: default_tags
     )
   end
 
@@ -48,8 +49,8 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json").with(
         body: {
-          mac_address: host.interfaces.first.mac,
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          mac_address: host.interfaces.first.mac.upcase,
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -74,15 +75,19 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.interfaces.first.netbox_name,
-              mac_address: old_mac,
-              tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+              mac_address: old_mac, 
+              tags: default_tags.map do |tag|
+                { id: tag.id }
+              end
             }
           ]
         }.to_json
       )
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json")
 
       subject
       assert_requested(get_stub)
+      assert_not_requested(stub_patch)
     end
   end
 end

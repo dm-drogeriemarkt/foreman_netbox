@@ -6,8 +6,9 @@ module ForemanNetbox
       class Update
         include ::Interactor
         include ForemanNetbox::Concerns::PrimaryIps
+        include ForemanNetbox::Concerns::AssignTags
 
-        ATTRIBUTES = %i[name cluster disk memory primary_ip4 primary_ip6 tenant vcpus tags].freeze
+        ATTRIBUTES = %i[name cluster disk memory primary_ip4 primary_ip6 tenant vcpus].freeze
 
         around do |interactor|
           interactor.call if context.virtual_machine
@@ -19,6 +20,7 @@ module ForemanNetbox
 
         def call
           assign_new_attributes
+          assign_tags_to(virtual_machine)
 
           virtual_machine.save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
@@ -69,12 +71,6 @@ module ForemanNetbox
         def assign_vcpus
           vcpus = netbox_params.dig(:virtual_machine, :vcpus)
           virtual_machine.vcpus = vcpus if virtual_machine.vcpus != vcpus
-        end
-
-        def assign_tags
-          new_tags = (netbox_params.dig(:virtual_machine, :tags) || []) - virtual_machine.tags
-
-          virtual_machine.tags = (virtual_machine.tags | new_tags) if new_tags.any?
         end
       end
     end

@@ -3,7 +3,7 @@
 require 'test_plugin_helper'
 
 class SyncHostOrganizerTest < ActiveSupport::TestCase
-  subject { ForemanNetbox::SyncHost::Organizer.call(host: host) }
+  subject { ForemanNetbox::SyncHost::Organizer.call(host: host, tags: default_tags) }
 
   let(:host) do
     FactoryBot.create(:host).tap do |host|
@@ -11,11 +11,27 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
       host.stubs(:facts).returns({ serialnumber: 'abc123' })
     end
   end
-  let(:tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
+  let(:tags) do
+    default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+  end
 
   setup do
     setup_default_netbox_settings
     # rubocop:disable Layout/FirstArrayElementIndentation
+    default_tags.each do |tag|
+      stub_get_netbox_request("extras/tags.json?limit=50&slug=#{tag.slug}", results: [
+        { id: tag.id, name: tag.name, slug: tag.slug }
+      ])
+      stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{tag.id}.json")
+        .to_return(
+          status: 200, headers: { 'Content-Type': 'application/json' },
+          body: {
+            id: tag.id,
+            name: tag.name,
+            slug: tag.slug
+          }.to_json
+        )
+    end
     stub_get_netbox_request('tenancy/tenants.json?limit=50&slug=admin-user', results: [
       { id: 1, name: host.owner.name, slug: host.owner.name.parameterize, tags: tags }
     ])

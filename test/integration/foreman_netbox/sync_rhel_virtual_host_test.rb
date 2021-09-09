@@ -83,15 +83,15 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
       end
     end
 
-    expected_tags = ForemanNetbox::NetboxParameters::DEFAULT_TAGS
-    assert_equal expected_tags, subject.virtual_machine.tags
-    assert_equal expected_tags, subject.tenant.tags
-    assert_equal expected_tags, subject.cluster.tags
+    expected_tag_ids = subject.tags.pluck('id')
+    assert (expected_tag_ids - subject.virtual_machine.tags.pluck('id')).empty?
+    assert (expected_tag_ids - subject.tenant.tags.pluck('id')).empty?
+    assert (expected_tag_ids - subject.cluster.tags.pluck('id')).empty?
     subject.interfaces.reload.each do |interface|
-      assert_equal expected_tags, interface.tags
+      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
     end
     subject.ip_addresses.reload.each do |interface|
-      assert_equal expected_tags, interface.tags
+      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
     end
   end
 end

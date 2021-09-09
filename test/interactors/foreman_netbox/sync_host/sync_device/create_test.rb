@@ -11,7 +11,8 @@ class CreateDeviceTest < ActiveSupport::TestCase
       device_role: device_role,
       site: site,
       tenant: tenant,
-      device: device
+      device: device,
+      tags: tags
     )
   end
 
@@ -26,6 +27,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
   let(:site) { OpenStruct.new(id: 1) }
   let(:tenant) { OpenStruct.new(id: 1) }
   let(:netbox_device_params) { host.netbox_facet.netbox_params.fetch(:device) }
+  let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
 
   setup do
     setup_default_netbox_settings
@@ -39,11 +41,11 @@ class CreateDeviceTest < ActiveSupport::TestCase
         body: {
           name: netbox_device_params[:name],
           serial: netbox_device_params[:serial],
-          tags: netbox_device_params[:tags],
           device_type: device_type.id,
           device_role: device_role.id,
           site: site.id,
-          tenant: tenant.id
+          tenant: tenant.id,
+          tags: tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

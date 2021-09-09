@@ -28,7 +28,7 @@ module ForemanNetbox
       return unless data.keys.include?(:interfaces)
 
       result[:interfaces] = data.fetch(:interfaces, {}).fetch(:results, []).map do |interface|
-        interface.slice(:name, :mac_address, :tags)
+        interface.slice(:name, :mac_address)
                  .merge(type: interface.fetch(:type, {}).slice(:value))
                  .compact
       end
@@ -38,7 +38,7 @@ module ForemanNetbox
       return unless data.keys.include?(:ip_addresses)
 
       result[:ip_addresses] = data.fetch(:ip_addresses, {}).fetch(:results, []).map do |ip_address|
-        ip_address.slice(:address, :tags)
+        ip_address.slice(:address)
                   .merge(interface: ip_address.fetch(:interface, {}).slice(:name))
       end
     end
@@ -46,19 +46,19 @@ module ForemanNetbox
     def read_virtual_machine
       return unless data.keys.include?(:virtual_machine)
 
-      result[:virtual_machine] = data.fetch(:virtual_machine, {}).slice(:name, :vcpus, :memory, :disk, :tags)
+      result[:virtual_machine] = data.fetch(:virtual_machine, {}).slice(:name, :vcpus, :memory, :disk)
     end
 
     def read_tenant
       return unless data.keys.include?(:tenant)
 
-      result[:tenant] = data.fetch(:tenant, {}).slice(:name, :slug, :tags)
+      result[:tenant] = data.fetch(:tenant, {}).slice(:name, :slug)
     end
 
     def read_cluster
       return unless data.keys.include?(:cluster)
 
-      result[:cluster] = data.fetch(:cluster, {}).slice(:name, :tags)
+      result[:cluster] = data.fetch(:cluster, {}).slice(:name)
     end
 
     def read_cluster_type
@@ -71,7 +71,7 @@ module ForemanNetbox
       return unless data.keys.include?(:device)
 
       result[:device] = data.fetch(:device, {})
-                            .slice(:name, :serial, :tags)
+                            .slice(:name, :serial)
                             .compact
                             .reject { |k, v| k == :serial && v.blank? }
     end
@@ -85,7 +85,7 @@ module ForemanNetbox
     def read_device_type
       return unless data.keys.include?(:device_type)
 
-      result[:device_type] = data.fetch(:device_type, {}).slice(:model, :slug, :tags)
+      result[:device_type] = data.fetch(:device_type, {}).slice(:model, :slug)
     end
 
     def read_manufacturer
@@ -97,7 +97,7 @@ module ForemanNetbox
     def read_site
       return unless data.keys.include?(:site)
 
-      result[:site] = data.fetch(:site, {}).slice(:name, :slug, :tags)
+      result[:site] = data.fetch(:site, {}).slice(:name, :slug)
     end
   end
 end

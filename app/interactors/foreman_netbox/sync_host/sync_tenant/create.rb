@@ -5,6 +5,7 @@ module ForemanNetbox
     module SyncTenant
       class Create
         include ::Interactor
+        include ForemanNetbox::Concerns::AssignTags
 
         around do |interactor|
           interactor.call unless context.tenant
@@ -22,7 +23,9 @@ module ForemanNetbox
         delegate :netbox_params, to: :context
 
         def params
-          netbox_params.fetch(:tenant).compact
+          netbox_params.fetch(:tenant)
+                       .merge(tags: default_tag_ids)
+                       .compact
         end
       end
     end

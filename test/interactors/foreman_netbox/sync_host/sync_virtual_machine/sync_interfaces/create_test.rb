@@ -8,7 +8,8 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
       host: host,
       netbox_params: host.netbox_facet.netbox_params,
       virtual_machine: virtual_machine,
-      interfaces: interfaces
+      interfaces: interfaces,
+      tags: default_tags
     )
   end
 
@@ -35,9 +36,9 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/interfaces/").with(
       body: {
         name: host.interfaces.first.netbox_name,
-        mac_address: host.interfaces.first.mac,
-        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
-        virtual_machine: virtual_machine.id
+        mac_address: host.interfaces.first.mac.upcase,
+        virtual_machine: virtual_machine.id,
+        tags: default_tags.map(&:id)
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

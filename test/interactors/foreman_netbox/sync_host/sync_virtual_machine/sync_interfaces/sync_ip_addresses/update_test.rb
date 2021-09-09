@@ -6,15 +6,24 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncInterfaces::SyncIpAddresses::Update.call(
       ip_addresses: ip_addresses,
-      netbox_params: host.netbox_facet.netbox_params
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: default_tags
     )
   end
 
   let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
   let(:ip_addresses_data) do
     [
-      { id: 1, address: host.netbox_facet.netbox_params[:ip_addresses].first[:address], tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS },
-      { id: 2, address: host.netbox_facet.netbox_params[:ip_addresses].second[:address], tags: [] }
+      {
+        id: 1,
+        address: host.netbox_facet.netbox_params[:ip_addresses].first[:address],
+        tags: default_tags.map { |t| { id: t.id, name: t.name, slug: t.slug } }
+      },
+      {
+        id: 2,
+        address: host.netbox_facet.netbox_params[:ip_addresses].second[:address],
+        tags: []
+      }
     ]
   end
   let(:host) do
@@ -50,7 +59,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     stub_unexpected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.first[:id]}.json")
     stub_expected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.second[:id]}.json").with(
       body: {
-        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+        tags: default_tags.map(&:id)
       }.to_json
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },

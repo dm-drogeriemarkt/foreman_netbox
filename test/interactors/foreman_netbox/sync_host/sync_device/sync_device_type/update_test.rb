@@ -5,7 +5,10 @@ require 'test_plugin_helper'
 class UpdateDeviceTypeTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncDeviceType::Update.call(
-      host: host, device_type: device_type, netbox_params: host.netbox_facet.netbox_params
+      host: host,
+      device_type: device_type,
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: default_tags
     )
   end
 
@@ -29,7 +32,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
     it 'updates device type' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json").with(
         body: {
-          tags: host.netbox_facet.netbox_params.dig(:device_type, :tags)
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -42,7 +45,9 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:device_type_tags) { host.netbox_facet.netbox_params.dig(:device_type, :tags) }
+    let(:device_type_tags) do
+      default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+    end
 
     it 'does not update device type' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json")

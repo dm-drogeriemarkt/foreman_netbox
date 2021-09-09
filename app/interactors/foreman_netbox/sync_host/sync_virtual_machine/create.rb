@@ -5,6 +5,7 @@ module ForemanNetbox
     module SyncVirtualMachine
       class Create
         include ::Interactor
+        include ForemanNetbox::Concerns::AssignTags
 
         around do |interactor|
           interactor.call unless context.virtual_machine
@@ -25,7 +26,8 @@ module ForemanNetbox
         def params
           netbox_params.fetch(:virtual_machine).merge(
             cluster: cluster.id,
-            tenant: tenant&.id
+            tenant: tenant&.id,
+            tags: default_tag_ids
           ).compact
         end
       end

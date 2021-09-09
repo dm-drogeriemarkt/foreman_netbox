@@ -5,7 +5,7 @@ require 'test_plugin_helper'
 class CreateSiteTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncSite::Create.call(
-      host: host, site: site, netbox_params: host.netbox_facet.netbox_params
+      host: host, site: site, netbox_params: host.netbox_facet.netbox_params, tags: default_tags
     )
   end
 
@@ -29,7 +29,7 @@ class CreateSiteTest < ActiveSupport::TestCase
         body: {
           name: host.location.netbox_site_name,
           slug: host.location.netbox_site_slug,
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },
