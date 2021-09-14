@@ -48,7 +48,7 @@ module ForemanNetbox
 
           memo[key] = diff
         elsif old_value.is_a?(Array)
-          next unless !new_hash[key]
+          next if new_hash[key]
 
           memo[key] = { added: [], removed: old_value }
         else

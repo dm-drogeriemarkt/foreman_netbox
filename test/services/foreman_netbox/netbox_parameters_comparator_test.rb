@@ -98,7 +98,7 @@ module ForemanNetbox
               mac_address: '00:50:56:84:6D:84',
               type: {
                 value: 'virtual'
-              },
+              }
             }
           ]
         }

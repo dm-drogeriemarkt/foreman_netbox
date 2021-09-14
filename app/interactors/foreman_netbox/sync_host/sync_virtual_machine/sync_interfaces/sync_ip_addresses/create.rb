@@ -24,8 +24,7 @@ module ForemanNetbox
                 ForemanNetbox::API.client::IPAM::IpAddress.new(
                   ip_address.slice(:address)
                             .merge(
-                              assigned_object_type: 'virtualization.vminterface',
-                              assigned_object_id: interface_id,
+                              assigned_object_type: 'virtualization.vminterface', assigned_object_id: interface_id,
                               tags: default_tag_ids
                             )
                 ).save

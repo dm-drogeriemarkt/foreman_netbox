@@ -61,7 +61,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
 
     assert_equal host.name,                                 subject.virtual_machine.name
     assert_equal host.owner.netbox_tenant_name,             subject.virtual_machine.tenant.name
-    assert_equal '%.2f' % host.compute_object.cpus,         subject.virtual_machine.vcpus
+    assert_equal format('%.2f', host.compute_object.cpus),  subject.virtual_machine.vcpus
     assert_equal host.compute_object.memory_mb,             subject.virtual_machine.memory
     assert_equal host.compute_object.volumes.first.size_gb, subject.virtual_machine.disk
     assert_equal host.compute_object.cluster,               subject.virtual_machine.cluster.name

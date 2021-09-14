@@ -81,7 +81,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: old_mac,
-              tags: tags.map { |t| { id: t.id, name: t.name, slug: t.slug} }
+              tags: tags.map { |t| { id: t.id, name: t.name, slug: t.slug } }
             }
           ]
         }.to_json

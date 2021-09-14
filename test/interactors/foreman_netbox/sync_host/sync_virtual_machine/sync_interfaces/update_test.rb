@@ -75,7 +75,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.interfaces.first.netbox_name,
-              mac_address: old_mac, 
+              mac_address: old_mac,
               tags: default_tags.map do |tag|
                 { id: tag.id }
               end

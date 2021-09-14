@@ -44,7 +44,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:virtual_machine_name) { 'name.example.com' }
-  let(:virtual_machine_tags) { [{ 'id' => 987654321, 'name' => 'tag', 'slug' => 'tag' }] }
+  let(:virtual_machine_tags) { [{ 'id' => 987_654_321, 'name' => 'tag', 'slug' => 'tag' }] }
   let(:virtual_machine_data) { virtual_machine.instance_variable_get(:@data).deep_symbolize_keys }
   let(:cluster) { OpenStruct.new(id: virtual_machine_data.dig(:cluster, :id)) }
   let(:tenant) { OpenStruct.new(id: virtual_machine_data.dig(:tenant, :id)) }

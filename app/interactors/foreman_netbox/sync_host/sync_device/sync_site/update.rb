@@ -21,8 +21,6 @@ module ForemanNetbox
             context.fail!(error: "#{self.class}: #{e}")
           end
 
-          private
-
           delegate :site, to: :context
         end
       end
