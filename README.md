@@ -4,6 +4,13 @@
 
 This is a plugin for Foreman that introduces integration with [NetBox](https://netbox.readthedocs.io)
 
+## Compatibility
+
+| Netbox Version | Plugin Version |
+| -------------- | -------------- |
+| 2.8            | 1.0            |
+| 2.11           | 1.1            |
+
 ## Installation
 
 See [How_to_Install_a_Plugin](https://theforeman.org/manuals/2.3/index.html#6.1InstallaPlugin)
