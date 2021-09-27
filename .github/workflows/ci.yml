@@ -81,6 +81,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - name: Build foreman_netbox gem
+        run: gem build foreman_netbox.gemspec
+        working-directory: foreman_netbox
       - name: Setup Bundler
         run: |
           gem install bundler
