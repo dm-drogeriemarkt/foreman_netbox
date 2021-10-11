@@ -48,7 +48,7 @@ module ForemanNetbox
 
           memo[key] = diff
         elsif old_value.is_a?(Array)
-          next unless !new_hash[key] && key != :tags
+          next if new_hash[key]
 
           memo[key] = { added: [], removed: old_value }
         else
@@ -77,7 +77,7 @@ module ForemanNetbox
         elsif new_value.is_a?(Array)
           old_value = old_hash.fetch(key, [])
           added = new_value.reject { |item| old_value.find { |x| x == item } }
-          removed = key == :tags ? [] : old_value.reject { |item| new_value.find { |x| x == item } }
+          removed = old_value.reject { |item| new_value.find { |x| x == item } }
 
           next unless added.any? || removed.any?
 

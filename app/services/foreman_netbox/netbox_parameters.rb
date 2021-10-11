@@ -4,7 +4,6 @@ module ForemanNetbox
   # rubocop:disable Metrics/ClassLength
   class NetboxParameters
     UNKNOWN = 'Unknown'
-    DEFAULT_TAGS = ['foreman'].freeze
     DEFAULT_INTERFACE_TYPE = 'virtual'
     CLUSTER_TYPES = {
       :'Foreman::Model::Vmware' => {
@@ -56,8 +55,7 @@ module ForemanNetbox
       {
         tenant: {
           name: host.owner&.netbox_tenant_name,
-          slug: host.owner&.netbox_tenant_slug,
-          tags: DEFAULT_TAGS
+          slug: host.owner&.netbox_tenant_slug
         }
       }
     end
@@ -66,8 +64,7 @@ module ForemanNetbox
       {
         device: {
           name: host.name,
-          serial: host.facts.deep_symbolize_keys[:serialnumber],
-          tags: DEFAULT_TAGS
+          serial: host.facts.deep_symbolize_keys[:serialnumber]
         }
       }
     end
@@ -84,8 +81,7 @@ module ForemanNetbox
       {
         device_type: {
           model: model,
-          slug: model.parameterize,
-          tags: DEFAULT_TAGS
+          slug: model.parameterize
         }
       }
     end
@@ -105,8 +101,7 @@ module ForemanNetbox
       {
         site: {
           name: host.location&.netbox_site_name,
-          slug: host.location&.netbox_site_slug,
-          tags: DEFAULT_TAGS
+          slug: host.location&.netbox_site_slug
         }
       }
     end
@@ -122,8 +117,7 @@ module ForemanNetbox
             mac_address: mac_address,
             type: {
               value: DEFAULT_INTERFACE_TYPE
-            },
-            tags: DEFAULT_TAGS
+            }
           }
         end
       }
@@ -144,8 +138,7 @@ module ForemanNetbox
               address: ip_address,
               interface: {
                 name: identifier || (mac_address && "Interface #{mac_address}")
-              },
-              tags: DEFAULT_TAGS
+              }
             }
           end
         end.flatten
@@ -158,8 +151,7 @@ module ForemanNetbox
         virtual_machine: netbox_compute_attributes.slice(
           :vcpus, :memory, :disk
         ).merge(
-          name: host.name,
-          tags: DEFAULT_TAGS
+          name: host.name
         )
       }
     end
@@ -167,8 +159,7 @@ module ForemanNetbox
     def cluster
       {
         cluster: {
-          name: netbox_compute_attributes[:cluster],
-          tags: DEFAULT_TAGS
+          name: netbox_compute_attributes[:cluster]
         }.compact
       }
     end

@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncInterfaces
         class Create
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           after do
             context.interfaces.reload
@@ -20,7 +21,8 @@ module ForemanNetbox
                              new_interface.except(:type)
                                           .merge(
                                             type: new_interface.dig(:type, :value),
-                                            device: device.id
+                                            device: device.id,
+                                            tags: default_tag_ids
                                           )
                            ).save
                          end

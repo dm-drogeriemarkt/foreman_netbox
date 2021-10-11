@@ -2,25 +2,24 @@
 
 module ForemanNetbox
   module SyncHost
-    module SyncTenant
-      class Update
+    module SyncTags
+      class Find
         include ::Interactor
-        include ForemanNetbox::Concerns::AssignTags
-
-        around do |interactor|
-          interactor.call if context.tenant
-        end
 
         def call
-          assign_tags_to(tenant)
-
-          tenant.save
+          context.tags = slugs.map do |slug|
+            ForemanNetbox::API.client.extras.tags.find_by(slug: slug)
+          end.compact
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")
         end
 
-        delegate :tenant, to: :context
+        private
+
+        def slugs
+          SyncTags::Organizer::DEFAULT_TAGS.pluck(:slug)
+        end
       end
     end
   end

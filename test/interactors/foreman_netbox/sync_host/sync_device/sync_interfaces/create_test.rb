@@ -5,7 +5,11 @@ require 'test_plugin_helper'
 class CreateDeviceInterfacesTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Create.call(
-      host: host, netbox_params: host.netbox_facet.netbox_params, device: device, interfaces: interfaces
+      host: host,
+      netbox_params: host.netbox_facet.netbox_params,
+      device: device,
+      interfaces: interfaces,
+      tags: default_tags
     )
   end
 
@@ -32,10 +36,10 @@ class CreateDeviceInterfacesTest < ActiveSupport::TestCase
     stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
       body: {
         name: host.interfaces.first.netbox_name,
-        mac_address: host.interfaces.first.mac,
-        tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS,
+        mac_address: host.interfaces.first.mac.upcase,
         type: ForemanNetbox::NetboxParameters::DEFAULT_INTERFACE_TYPE,
-        device: device.id
+        device: device.id,
+        tags: default_tags.map(&:id)
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

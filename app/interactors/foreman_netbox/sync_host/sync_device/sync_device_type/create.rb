@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncDeviceType
         class Create
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           around do |interactor|
             interactor.call unless context.device_type
@@ -24,7 +25,7 @@ module ForemanNetbox
 
           def params
             netbox_params.fetch(:device_type)
-                         .merge(manufacturer: manufacturer.id)
+                         .merge(manufacturer: manufacturer.id, tags: default_tag_ids)
                          .compact
           end
         end

@@ -25,17 +25,17 @@ Metrics/LineLength:
   Max: 200
 
 Metrics/AbcSize:
-  Max: 30
+  Max: 31
 
 Metrics/PerceivedComplexity:
-  Max: 9
+  Max: 10
 
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
 
 Metrics/CyclomaticComplexity:
-  Max: 9
+  Max: 10
 
 Style/Next:
   Enabled: false

@@ -12,7 +12,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       device_type: device_type,
       site: site,
       tenant: tenant,
-      ip_addresses: ip_addresses
+      ip_addresses: ip_addresses,
+      tags: default_tags
     )
   end
 
@@ -44,7 +45,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
     end
   end
   let(:device_name) { 'name.example.com' }
-  let(:device_tags) { ['tag'] }
+  let(:device_tags) { [] }
   let(:device_data) { device.instance_variable_get(:@data).deep_symbolize_keys }
   let(:device_role) { OpenStruct.new(id: device_data.dig(:device_role, :id)) }
   let(:device_type) { OpenStruct.new(id: device_data.dig(:device_type, :id)) }
@@ -96,9 +97,22 @@ class UpdateDeviceTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
-    let(:device_tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
+    let(:device_tags) do
+      default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+    end
 
     it 'does not update device' do
+      device_tags.each do |t|
+        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}.json")
+          .to_return(
+            status: 200, headers: { 'Content-Type': 'application/json' },
+            body: {
+              id: t['id'],
+              name: t['name'],
+              slug: t['slug']
+            }.to_json
+          )
+      end
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
 
       assert_equal device, subject.device
@@ -149,7 +163,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           site: site.id,
           tenant: tenant.id,
           serial: serialnumber,
-          tags: device_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -173,7 +187,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             primary_ip6: primary_ip6.id,
             site: site.id,
             tenant: tenant.id,
-            tags: device_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+            tags: default_tags.map(&:id)
           }.to_json
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },

@@ -10,7 +10,8 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
       netbox_params: host.netbox_facet.netbox_params,
       cluster: cluster,
       tenant: tenant,
-      ip_addresses: ip_addresses
+      ip_addresses: ip_addresses,
+      tags: default_tags
     )
   end
 
@@ -43,7 +44,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:virtual_machine_name) { 'name.example.com' }
-  let(:virtual_machine_tags) { ['tag'] }
+  let(:virtual_machine_tags) { [{ 'id' => 987_654_321, 'name' => 'tag', 'slug' => 'tag' }] }
   let(:virtual_machine_data) { virtual_machine.instance_variable_get(:@data).deep_symbolize_keys }
   let(:cluster) { OpenStruct.new(id: virtual_machine_data.dig(:cluster, :id)) }
   let(:tenant) { OpenStruct.new(id: virtual_machine_data.dig(:tenant, :id)) }
@@ -101,7 +102,9 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   context 'if the host has not been updated since the last synchronization' do
-    let(:virtual_machine_tags) { ForemanNetbox::NetboxParameters::DEFAULT_TAGS }
+    let(:virtual_machine_tags) do
+      default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+    end
 
     it 'does not update virtual_machine' do
       assert_equal virtual_machine, subject.virtual_machine
@@ -157,7 +160,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           primary_ip6: primary_ip6.id,
           tenant: tenant.id,
           vcpus: host.compute_object.cpus,
-          tags: virtual_machine_tags | ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          tags: virtual_machine_tags.map { |t| t['id'] } | default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

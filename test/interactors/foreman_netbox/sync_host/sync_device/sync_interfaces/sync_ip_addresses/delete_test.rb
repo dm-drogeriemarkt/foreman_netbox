@@ -50,8 +50,8 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
       body: {
         count: 2,
         results: [
-          { id: ip_addresses_v4_id, address: ip_addresses_v4, interface: { id: interface_id } },
-          { id: ip_addresses_v6_id, address: ip_addresses_v6, interface: { id: interface_id } }
+          { id: ip_addresses_v4_id, address: ip_addresses_v4, assigned_object_type: 'dcim.interface', assigned_object_id: interface_id },
+          { id: ip_addresses_v6_id, address: ip_addresses_v6, assigned_object_type: 'dcim.interface', assigned_object_id: interface_id }
         ]
       }.to_json
     )

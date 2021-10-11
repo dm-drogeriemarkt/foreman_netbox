@@ -15,6 +15,7 @@ module ForemanNetbox
         end
 
         organize SyncDevice::Validate,
+                 SyncHost::SyncTags::Organizer,
                  SyncHost::SyncTenant::Organizer,
                  SyncDevice::SyncSite::Organizer,
                  SyncDevice::SyncDeviceRole::Organizer,

@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncSite
         class Create
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           around do |interactor|
             interactor.call unless context.site
@@ -23,7 +24,9 @@ module ForemanNetbox
           delegate :netbox_params, to: :context
 
           def params
-            netbox_params.fetch(:site).compact
+            netbox_params.fetch(:site)
+                         .merge(tags: default_tag_ids)
+                         .compact
           end
         end
       end

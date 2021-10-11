@@ -10,8 +10,7 @@ module ForemanNetbox
       let(:my_hash) do
         {
           device: {
-            name: 'My device',
-            tags: ['foreman']
+            name: 'My device'
           }
         }
       end
@@ -26,15 +25,13 @@ module ForemanNetbox
       let(:old_hash) do
         {
           device: {
-            name: 'Old name',
-            tags: ['custom']
+            name: 'Old name'
           },
           device_role: {
             name: 'SERVER'
           },
           manufacturer: {
-            name: 'Manufacturer',
-            tags: %w[Synced foreman]
+            name: 'Manufacturer'
           },
           interfaces: [
             {
@@ -58,7 +55,6 @@ module ForemanNetbox
             {
               name: 'eth4',
               mac_address: '00:50:56:84:6D:84',
-              tags: ['foreman'],
               type: {
                 value: 'virtual'
               }
@@ -70,15 +66,13 @@ module ForemanNetbox
       let(:new_hash) do
         {
           device: {
-            name: 'New name',
-            tags: ['foreman']
+            name: 'New name'
           },
           device_type: {
             model: 'Model name'
           },
           manufacturer: {
-            name: 'Manufacturer',
-            tags: %w[foreman]
+            name: 'Manufacturer'
           },
           interfaces: [
             {
@@ -104,8 +98,7 @@ module ForemanNetbox
               mac_address: '00:50:56:84:6D:84',
               type: {
                 value: 'virtual'
-              },
-              tags: ['foreman']
+              }
             }
           ]
         }
@@ -118,9 +111,6 @@ module ForemanNetbox
           device: {
             name: {
               old: old_hash.dig(:device, :name), new: new_hash.dig(:device, :name)
-            },
-            tags: {
-              added: ['foreman'], removed: []
             }
           },
           interfaces: {

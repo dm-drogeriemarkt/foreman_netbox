@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncInterfaces
         class Update
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           def call
             context.interfaces.each { |netbox_interface| update(netbox_interface) }
@@ -22,9 +23,7 @@ module ForemanNetbox
             return unless new_params
 
             netbox_interface.mac_address = new_params[:mac_address] if netbox_interface.mac_address != new_params[:mac_address]
-
-            new_tags = new_params.fetch(:tags, []) - netbox_interface.tags
-            netbox_interface.tags = (netbox_interface.tags | new_tags) if new_tags.any?
+            assign_tags_to(netbox_interface)
 
             netbox_interface.save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

@@ -7,11 +7,13 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
     ForemanNetbox::SyncHost::SyncDevice::SyncInterfaces::Update.call(
       interfaces: interfaces,
       host: host,
-      netbox_params: host.netbox_facet.netbox_params
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: tags
     )
   end
 
   let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
+  let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
   let(:old_mac) { 'FE:13:C6:44:29:22' }
   let(:host) do
     FactoryBot.build_stubbed(
@@ -44,7 +46,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.interfaces.first.netbox_name,
-              mac_address: new_mac,
+              mac_address: new_mac.upcase,
               tags: []
             }
           ]
@@ -52,8 +54,8 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/interfaces/1.json").with(
         body: {
-          mac_address: host.interfaces.first.mac,
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          mac_address: host.interfaces.first.mac.upcase,
+          tags: tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -79,7 +81,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: old_mac,
-              tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+              tags: tags.map { |t| { id: t.id, name: t.name, slug: t.slug } }
             }
           ]
         }.to_json

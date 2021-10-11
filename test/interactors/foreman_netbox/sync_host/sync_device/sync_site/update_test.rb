@@ -5,11 +5,12 @@ require 'test_plugin_helper'
 class UpdateSiteTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncDevice::SyncSite::Update.call(
-      host: host, site: site, netbox_params: host.netbox_facet.netbox_params
+      host: host, site: site, netbox_params: host.netbox_facet.netbox_params, tags: default_tags
     )
   end
 
   let(:host) { FactoryBot.build_stubbed(:host) }
+  # let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
   let(:site) do
     ForemanNetbox::API.client::DCIM::Site.new(id: 1).tap do |site|
       site.instance_variable_set(
@@ -29,7 +30,7 @@ class UpdateSiteTest < ActiveSupport::TestCase
     it 'updates site' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json").with(
         body: {
-          tags: host.netbox_facet.netbox_params.dig(:site, :tags)
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -42,7 +43,7 @@ class UpdateSiteTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:site_tags) { host.netbox_facet.netbox_params.dig(:site, :tags) }
+    let(:site_tags) { default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } } }
 
     it 'does not update site' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json")

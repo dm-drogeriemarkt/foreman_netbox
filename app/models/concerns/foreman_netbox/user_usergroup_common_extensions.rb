@@ -2,7 +2,7 @@
 
 module ForemanNetbox
   module UserUsergroupCommonExtensions
-    NETBOX_TENANT_MAX_LENGTH = 30
+    NETBOX_TENANT_MAX_LENGTH = 100
 
     def netbox_tenant_name
       return name unless name.length > NETBOX_TENANT_MAX_LENGTH

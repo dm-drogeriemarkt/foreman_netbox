@@ -5,7 +5,7 @@ require 'test_plugin_helper'
 class CreateTenantTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncTenant::Create.call(
-      host: host, tenant: tenant, netbox_params: host.netbox_facet.netbox_params
+      host: host, tenant: tenant, netbox_params: host.netbox_facet.netbox_params, tags: default_tags
     )
   end
 
@@ -28,7 +28,7 @@ class CreateTenantTest < ActiveSupport::TestCase
         body: {
           name: host.owner.name,
           slug: host.owner.name.parameterize,
-          tags: ForemanNetbox::NetboxParameters::DEFAULT_TAGS
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

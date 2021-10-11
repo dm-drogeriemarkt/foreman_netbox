@@ -6,14 +6,14 @@ module ForemanNetbox
       module SyncDeviceType
         class Update
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           around do |interactor|
             interactor.call if context.device_type
           end
 
           def call
-            new_tags = new_device_type_params.fetch(:tags, []) - device_type.tags
-            device_type.tags = (device_type.tags | new_tags) if new_tags.any?
+            assign_tags_to(device_type)
 
             device_type.save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

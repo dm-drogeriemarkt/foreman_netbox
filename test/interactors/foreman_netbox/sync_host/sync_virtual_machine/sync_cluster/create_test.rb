@@ -5,7 +5,11 @@ require 'test_plugin_helper'
 class CreateClusterTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Create.call(
-      host: host, cluster_type: cluster_type, cluster: cluster, netbox_params: host.netbox_facet.netbox_params
+      host: host,
+      cluster_type: cluster_type,
+      cluster: cluster,
+      netbox_params: host.netbox_facet.netbox_params,
+      tags: default_tags
     )
   end
 
@@ -31,8 +35,8 @@ class CreateClusterTest < ActiveSupport::TestCase
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/virtualization/clusters/").with(
         body: {
           name: host.netbox_facet.netbox_params.dig(:cluster, :name),
-          tags: host.netbox_facet.netbox_params.dig(:cluster, :tags),
-          type: cluster_type.id
+          type: cluster_type.id,
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

@@ -30,6 +30,9 @@ module Orchestration
     def queue_netbox_destroy
       return unless errors.empty? && managed?
 
+      ::Foreman::Logging.logger('foreman_netbox/import')
+                        .info("Queued delete of #{name} from Netbox.")
+
       queue.create(name: _('Delete host %s from Netbox') % self, priority: 60,
                    action: [self, :del_netbox])
     end

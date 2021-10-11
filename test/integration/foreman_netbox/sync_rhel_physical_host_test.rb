@@ -62,20 +62,24 @@ class SyncRhelPhysicalHostTest < ActiveSupport::TestCase
       assert nx_interface.present?
 
       h_interface.netbox_ips.each do |h_ip|
-        assert subject.ip_addresses.find { |nx_ip| nx_ip.interface.id == nx_interface.id && nx_ip.address == IPAddress.parse(h_ip) }.present?
+        assert subject.ip_addresses.find do |nx_ip|
+          nx_ip.interface.assigned_object_type == 'dcim.interface' &&
+            nx_ip.interface.assigned_object_id == nx_interface.id &&
+            nx_ip.address == IPAddress.parse(h_ip)
+        end.present?
       end
     end
 
-    expected_tags = ForemanNetbox::NetboxParameters::DEFAULT_TAGS
-    assert_equal expected_tags, subject.device.tags
-    assert_equal expected_tags, subject.device_type.tags
-    assert_equal expected_tags, subject.site.tags
-    assert_equal expected_tags, subject.tenant.tags
+    expected_tag_ids = subject.tags.pluck('id')
+    assert (expected_tag_ids - subject.device.tags.pluck('id')).empty?
+    assert (expected_tag_ids - subject.device_type.tags.pluck('id')).empty?
+    assert (expected_tag_ids - subject.site.tags.pluck('id')).empty?
+    assert (expected_tag_ids - subject.tenant.tags.pluck('id')).empty?
     subject.interfaces.reload.each do |interface|
-      assert_equal expected_tags, interface.tags
+      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
     end
     subject.ip_addresses.reload.each do |interface|
-      assert_equal expected_tags, interface.tags
+      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
     end
   end
 end

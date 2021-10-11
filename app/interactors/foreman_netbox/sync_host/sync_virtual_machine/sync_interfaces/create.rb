@@ -6,6 +6,7 @@ module ForemanNetbox
       module SyncInterfaces
         class Create
           include ::Interactor
+          include ForemanNetbox::Concerns::AssignTags
 
           after do
             context.interfaces.reload
@@ -17,7 +18,11 @@ module ForemanNetbox
                          .reject { |i| interfaces.map(&:name).include?(i[:name]) }
                          .map do |new_interface|
                            ForemanNetbox::API.client::Virtualization::Interface.new(
-                             new_interface.except(:type).merge(virtual_machine: virtual_machine.id)
+                             new_interface.except(:type)
+                                          .merge(
+                                            virtual_machine: virtual_machine.id,
+                                            tags: default_tag_ids
+                                          )
                            ).save
                          end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e

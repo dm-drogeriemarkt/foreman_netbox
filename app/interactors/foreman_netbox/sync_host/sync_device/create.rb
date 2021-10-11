@@ -5,6 +5,7 @@ module ForemanNetbox
     module SyncDevice
       class Create
         include ::Interactor
+        include ForemanNetbox::Concerns::AssignTags
 
         around do |interactor|
           interactor.call unless context.device
@@ -27,7 +28,8 @@ module ForemanNetbox
             device_type: device_type.id,
             device_role: device_role.id,
             site: site.id,
-            tenant: tenant&.id
+            tenant: tenant&.id,
+            tags: default_tag_ids
           ).compact
         end
       end

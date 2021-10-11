@@ -9,7 +9,8 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
       netbox_params: host.netbox_facet.netbox_params,
       virtual_machine: virtual_machine,
       cluster: cluster,
-      tenant: tenant
+      tenant: tenant,
+      tags: default_tags
     )
   end
 
@@ -50,9 +51,9 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
           memory: netbox_virtual_machine_params[:memory],
           disk: netbox_virtual_machine_params[:disk],
           name: netbox_virtual_machine_params[:name],
-          tags: netbox_virtual_machine_params[:tags],
           cluster: cluster.id,
-          tenant: tenant.id
+          tenant: tenant.id,
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

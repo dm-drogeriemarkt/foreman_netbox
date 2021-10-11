@@ -5,7 +5,7 @@ require 'test_plugin_helper'
 class UpdateClusterTest < ActiveSupport::TestCase
   subject do
     ForemanNetbox::SyncHost::SyncVirtualMachine::SyncCluster::Update.call(
-      host: host, cluster: cluster, netbox_params: host.netbox_facet.netbox_params
+      host: host, cluster: cluster, netbox_params: host.netbox_facet.netbox_params, tags: default_tags
     )
   end
 
@@ -29,7 +29,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
     it 'updates cluster' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json").with(
         body: {
-          tags: host.netbox_facet.netbox_params.dig(:cluster, :tags)
+          tags: default_tags.map(&:id)
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,9 @@ class UpdateClusterTest < ActiveSupport::TestCase
   end
 
   context 'when unchanged' do
-    let(:cluster_tags) { host.netbox_facet.netbox_params.dig(:cluster, :tags) }
+    let(:cluster_tags) do
+      default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+    end
 
     it 'does not update cluster' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json")

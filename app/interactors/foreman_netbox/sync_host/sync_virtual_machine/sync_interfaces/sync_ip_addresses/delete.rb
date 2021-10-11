@@ -25,7 +25,7 @@ module ForemanNetbox
                                                                .map { |ip| ip.fetch(:address) }
 
                 context.ip_addresses
-                       .select { |ip| ip['interface']['id'] == netbox_interface.id }
+                       .select { |ip| ip['assigned_object_type'] == 'virtualization.vminterface' && ip['assigned_object_id'] == netbox_interface.id }
                        .reject { |ip| host_interface_ips.include?(ip['address']) }
                        .each(&:delete)
               end

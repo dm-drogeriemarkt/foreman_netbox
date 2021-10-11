@@ -15,6 +15,7 @@ module ForemanNetbox
         end
 
         organize SyncVirtualMachine::Validate,
+                 SyncHost::SyncTags::Organizer,
                  SyncHost::SyncTenant::Organizer,
                  SyncVirtualMachine::SyncCluster::Organizer,
                  SyncVirtualMachine::Find,
