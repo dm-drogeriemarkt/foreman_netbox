@@ -27,7 +27,7 @@ module ForemanNetbox
 
     initializer 'foreman_netbox.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_netbox do
-        requires_foreman '>= 1.24'
+        requires_foreman '>= 2.2'
 
         # Netbox Facet
         register_facet(ForemanNetbox::NetboxFacet, :netbox_facet) do
