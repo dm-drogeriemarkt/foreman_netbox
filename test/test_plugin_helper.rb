@@ -14,10 +14,12 @@ def setup_default_netbox_settings(netbox_url: 'https://netbox.example.com', netb
     FactoryBot.create(:setting, name: 'netbox_url', value: netbox_url, category: 'Setting::Netbox')
     FactoryBot.create(:setting, name: 'netbox_api_token', value: netbox_api_token, category: 'Setting::Netbox')
     FactoryBot.create(:setting, name: 'netbox_orchestration_enabled', value: true, category: 'Setting::Netbox')
+    FactoryBot.create(:setting, name: 'netbox_skip_site_update', value: false, category: 'Setting::Netbox')
   else
     Setting[:netbox_url] = netbox_url
     Setting[:netbox_api_token] = netbox_api_token
     Setting[:netbox_orchestration_enabled] = true
+    Setting[:netbox_skip_site_update] = false
   end
 end
 

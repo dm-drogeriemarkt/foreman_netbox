@@ -199,4 +199,34 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       end
     end
   end
+
+  context 'when netbox_skip_site_update setting is enabled' do
+    setup do
+      Setting::Netbox[:netbox_skip_site_update] = true
+    end
+
+    let(:new_site_id) { device_data.dig(:site, :id) + 1 }
+    let(:site) { OpenStruct.new(id: new_site_id) }
+    let(:device_tags) do
+      default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } }
+    end
+
+    it 'does not update site of device' do
+      device_tags.each do |t|
+        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}.json")
+          .to_return(
+            status: 200, headers: { 'Content-Type': 'application/json' },
+            body: {
+              id: t['id'],
+              name: t['name'],
+              slug: t['slug']
+            }.to_json
+          )
+      end
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
+
+      assert_not_equal device.site.id, new_site_id
+      assert_not_requested(stub_patch)
+    end
+  end
 end

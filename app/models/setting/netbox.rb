@@ -10,7 +10,8 @@ class Setting
       [
         set('netbox_url', N_('URL where Netbox is reachable'), nil, N_('Netbox URL')),
         set('netbox_api_token', N_('API token to Netbox'), nil, N_('Netbox API token'), nil, encrypted: true),
-        set('netbox_orchestration_enabled', N_('Enable Netbox Orchestration'), false, N_('Netbox Orchestration'))
+        set('netbox_orchestration_enabled', N_('Enable Netbox Orchestration'), false, N_('Netbox Orchestration')),
+        set('netbox_skip_site_update', N_('Skip updating Site attribute for Devices'), false, N_('Skip Site Update'))
       ]
     end
 
