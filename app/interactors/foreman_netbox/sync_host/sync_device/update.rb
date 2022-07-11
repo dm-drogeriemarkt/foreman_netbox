@@ -62,6 +62,8 @@ module ForemanNetbox
         end
 
         def assign_site
+          return if device.site&.id && Setting::Netbox[:netbox_skip_site_update]
+
           device.site = site&.id if device.site&.id != site&.id
         end
 
