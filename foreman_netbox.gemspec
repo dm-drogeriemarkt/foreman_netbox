@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'dry-schema', '~> 1.6.0'
   s.add_dependency 'dry-validation', '~> 1.5.2'
   s.add_dependency 'interactor', '~> 3.1.1'
-  s.add_dependency 'netbox-client-ruby', '~> 0.5.5'
+  s.add_dependency 'netbox-client-ruby', '~> 0.7.0'
 
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rubocop', '~> 1.10.0'
