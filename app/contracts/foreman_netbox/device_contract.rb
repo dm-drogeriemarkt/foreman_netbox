@@ -4,9 +4,9 @@ module ForemanNetbox
   class DeviceContract < Dry::Validation::Contract
     # rubocop:disable Metrics/BlockLength
     params do
-      optional(:tenant).hash(ForemanNetbox::Params::TenantParams.new)
-      optional(:ip_addresses).array(ForemanNetbox::Params::IpAddressParams.new)
-      optional(:interfaces).array(ForemanNetbox::Params::InterfaceParams.new)
+      optional(:tenant).hash(ForemanNetbox::Params::TenantParams)
+      optional(:ip_addresses).array(ForemanNetbox::Params::IpAddressParams)
+      optional(:interfaces).array(ForemanNetbox::Params::InterfaceParams)
 
       required(:device).filled(:hash) do
         required(:name).filled(:string)
