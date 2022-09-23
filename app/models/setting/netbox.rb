@@ -20,7 +20,10 @@ class Setting
       return unless super
 
       transaction do
-        default_settings.each { |s| create! s.update(category: 'Setting::Netbox') }
+        default_settings
+          .map { |s| s.merge(category: 'Setting::Netbox') }
+          .map { |s| s.slice(*column_names.map(&:to_sym)) }
+          .map { |s| find_or_initialize_by(s.slice(:name)).update!(s) }
       end
 
       true
