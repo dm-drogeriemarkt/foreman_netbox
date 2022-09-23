@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'dry-configurable', '~> 0.13.0'
   s.add_dependency 'dry-container', '~> 0.7.0'
   s.add_dependency 'dry-core', '>= 0.6', '< 0.9'
-  s.add_dependency 'dry-inflector', '0.2.0'
+  s.add_dependency 'dry-inflector', '0.3.0'
   s.add_dependency 'dry-schema', '~> 1.6.0'
   s.add_dependency 'dry-validation', '~> 1.5.2'
   s.add_dependency 'interactor', '~> 3.1.1'
