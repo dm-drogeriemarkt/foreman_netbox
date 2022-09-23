@@ -3,9 +3,9 @@
 module ForemanNetbox
   class VirtualMachineContract < Dry::Validation::Contract
     params do
-      optional(:tenant).hash(ForemanNetbox::Params::TenantParams.new)
-      optional(:ip_addresses).array(ForemanNetbox::Params::IpAddressParams.new)
-      optional(:interfaces).array(ForemanNetbox::Params::InterfaceParams.new)
+      optional(:tenant).hash(ForemanNetbox::Params::TenantParams)
+      optional(:ip_addresses).array(ForemanNetbox::Params::IpAddressParams)
+      optional(:interfaces).array(ForemanNetbox::Params::InterfaceParams)
 
       required(:virtual_machine).filled(:hash) do
         required(:name).filled(:string)
