@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
-  s.add_dependency 'dry-configurable', '~> 0.13.0'
+  s.add_dependency 'dry-configurable', '>= 0.13', '< 0.16'
   s.add_dependency 'dry-container', '~> 0.7.0'
   s.add_dependency 'dry-core', '>= 0.6', '< 0.9'
   s.add_dependency 'dry-inflector', '0.3.0'
