@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'dry-core', '>= 0.6', '< 0.9'
   s.add_dependency 'dry-inflector', '0.3.0'
   s.add_dependency 'dry-schema', '~> 1.6.0'
-  s.add_dependency 'dry-validation', '~> 1.5.2'
+  s.add_dependency 'dry-validation', '>= 1.5.2', '< 1.9.0'
   s.add_dependency 'interactor', '~> 3.1.1'
   s.add_dependency 'netbox-client-ruby', '~> 0.5.5'
 
