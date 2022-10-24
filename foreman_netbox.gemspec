@@ -25,5 +25,5 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'rubocop', '~> 1.36.0'
-  s.add_development_dependency 'rubocop-rails', '~> 2.9.1'
+  s.add_development_dependency 'rubocop-rails', '~> 2.17.0'
 end
