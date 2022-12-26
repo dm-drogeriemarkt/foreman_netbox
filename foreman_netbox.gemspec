@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'netbox-client-ruby', '>= 0.5.5', '< 0.8.0'
 
   s.add_development_dependency 'rdoc'
-  s.add_development_dependency 'rubocop', '~> 1.36.0'
+  s.add_development_dependency 'rubocop', '~> 1.41.1'
   s.add_development_dependency 'rubocop-rails', '~> 2.9.1'
 end
