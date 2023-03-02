@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry-validation'
-require 'netbox-client-ruby'
+# require 'netbox-client-ruby'
 require 'interactor'
 
 module ForemanNetbox
@@ -37,25 +37,25 @@ module ForemanNetbox
         settings do
           category(:netbox, N_('Netbox')) do
             setting 'netbox_url',
-                    type: :string,
-                    default: '-',
-                    full_name: N_('Netbox URL'),
-                    description: N_('URL where Netbox is reachable')
+              type: :string,
+              default: '-',
+              full_name: N_('Netbox URL'),
+              description: N_('URL where Netbox is reachable')
             setting 'netbox_api_token',
-                    type: :string,
-                    default: '-',
-                    full_name: N_('Netbox API token'),
-                    description: N_('API token to Netbox')
+              type: :string,
+              default: '-',
+              full_name: N_('Netbox API token'),
+              description: N_('API token to Netbox')
             setting 'netbox_orchestration_enabled',
-                    type: :boolean,
-                    default: false,
-                    full_name: N_('Netbox Orchestration'),
-                    description: N_('Enable Netbox Orchestration')
+              type: :boolean,
+              default: false,
+              full_name: N_('Netbox Orchestration'),
+              description: N_('Enable Netbox Orchestration')
             setting 'netbox_skip_site_update',
-                    type: :boolean,
-                    default: false,
-                    full_name: N_('Skip Site Update'),
-                    description: N_('Skip updating Site attribute for Devices')
+              type: :boolean,
+              default: false,
+              full_name: N_('Skip Site Update'),
+              description: N_('Skip updating Site attribute for Devices')
           end
         end
 

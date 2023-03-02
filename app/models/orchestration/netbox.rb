@@ -23,8 +23,7 @@ module Orchestration
       ::Foreman::Logging.logger('foreman_netbox/import')
                         .info("Queued import of #{name} to Netbox. Changes that will be sent: #{netbox_params_diff}")
 
-      post_queue.create(name: _('Push host %s to Netbox') % self, priority: 100,
-                        action: [self, :set_netbox])
+      post_queue.create(name: _('Push host %s to Netbox') % self, priority: 100, action: [self, :set_netbox])
     end
 
     def queue_netbox_destroy
@@ -33,8 +32,7 @@ module Orchestration
       ::Foreman::Logging.logger('foreman_netbox/import')
                         .info("Queued delete of #{name} from Netbox.")
 
-      queue.create(name: _('Delete host %s from Netbox') % self, priority: 60,
-                   action: [self, :del_netbox])
+      queue.create(name: _('Delete host %s from Netbox') % self, priority: 60, action: [self, :del_netbox])
     end
 
     def set_netbox
