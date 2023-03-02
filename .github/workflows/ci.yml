@@ -40,7 +40,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential libcurl4-openssl-dev libvirt-dev ruby-libvirt zlib1g-dev libpq-dev
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: netbox-community/netbox-docker
           ref: 2.2.0
@@ -59,11 +59,11 @@ jobs:
           docker-compose pull
           docker-compose up -d
           sleep 180
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           repository: theforeman/foreman
           ref: ${{ matrix.foreman-core-branch }}
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           path: foreman_netbox
       - name: Setup Ruby
@@ -71,11 +71,11 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby-version }}
       - name: Setup Node
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version:  ${{ matrix.node-version }}
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
@@ -92,7 +92,7 @@ jobs:
           echo "gem 'foreman_netbox', path: './foreman_netbox'" > bundler.d/foreman_netbox.local.rb
           bundle lock --update
       - name: Cache gems
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: vendor/bundle
           key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
