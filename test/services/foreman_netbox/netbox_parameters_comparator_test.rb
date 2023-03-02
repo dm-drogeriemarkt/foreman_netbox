@@ -10,8 +10,8 @@ module ForemanNetbox
       let(:my_hash) do
         {
           device: {
-            name: 'My device'
-          }
+            name: 'My device',
+          },
         }
       end
       let(:old_hash) { my_hash }
@@ -25,82 +25,82 @@ module ForemanNetbox
       let(:old_hash) do
         {
           device: {
-            name: 'Old name'
+            name: 'Old name',
           },
           device_role: {
-            name: 'SERVER'
+            name: 'SERVER',
           },
           manufacturer: {
-            name: 'Manufacturer'
+            name: 'Manufacturer',
           },
           interfaces: [
             {
               name: 'eth0',
               type: {
-                value: 'virtual'
-              }
+                value: 'virtual',
+              },
             },
             {
               name: 'eth1',
               type: {
-                value: 'virtual'
-              }
+                value: 'virtual',
+              },
             },
             {
               name: 'eth2',
               type: {
-                value: 'virtual'
-              }
+                value: 'virtual',
+              },
             },
             {
               name: 'eth4',
               mac_address: '00:50:56:84:6D:84',
               type: {
-                value: 'virtual'
-              }
-            }
-          ]
+                value: 'virtual',
+              },
+            },
+          ],
         }
       end
 
       let(:new_hash) do
         {
           device: {
-            name: 'New name'
+            name: 'New name',
           },
           device_type: {
-            model: 'Model name'
+            model: 'Model name',
           },
           manufacturer: {
-            name: 'Manufacturer'
+            name: 'Manufacturer',
           },
           interfaces: [
             {
               name: 'eth0',
               type: {
-                value: 'virtual'
-              }
+                value: 'virtual',
+              },
             },
             {
               name: 'eth1',
               type: {
-                value: 'new_type'
-              }
+                value: 'new_type',
+              },
             },
             {
               name: 'eth3',
               type: {
-                value: 'virtual'
-              }
+                value: 'virtual',
+              },
             },
             {
               name: 'eth4',
               mac_address: '00:50:56:84:6D:84',
               type: {
-                value: 'virtual'
-              }
-            }
-          ]
+                value: 'virtual',
+              },
+            },
+          ],
         }
       end
 
@@ -111,12 +111,12 @@ module ForemanNetbox
           device: {
             name: {
               old: old_hash.dig(:device, :name), new: new_hash.dig(:device, :name)
-            }
+            },
           },
           interfaces: {
             added: new_hash[:interfaces].select { |i| %w[eth1 eth3].include?(i[:name]) },
-            removed: old_hash[:interfaces].select { |i| %w[eth1 eth2].include?(i[:name]) }
-          }
+            removed: old_hash[:interfaces].select { |i| %w[eth1 eth2].include?(i[:name]) },
+          },
         }
       end
 

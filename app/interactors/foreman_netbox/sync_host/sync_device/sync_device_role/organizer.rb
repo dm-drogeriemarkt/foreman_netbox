@@ -12,7 +12,7 @@ module ForemanNetbox
           end
 
           organize SyncDeviceRole::Find,
-                   SyncDeviceRole::Create
+            SyncDeviceRole::Create
         end
       end
     end

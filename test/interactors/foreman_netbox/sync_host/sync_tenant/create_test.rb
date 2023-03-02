@@ -28,7 +28,7 @@ class CreateTenantTest < ActiveSupport::TestCase
         body: {
           name: host.owner.name,
           slug: host.owner.name.parameterize,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

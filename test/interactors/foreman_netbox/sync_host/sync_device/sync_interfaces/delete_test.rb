@@ -25,7 +25,7 @@ class DeleteDeviceInterfacesTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: 1,
-        results: [{ id: interface_id, name: 'eth0' }]
+        results: [{ id: interface_id, name: 'eth0' }],
       }.to_json
     )
   end

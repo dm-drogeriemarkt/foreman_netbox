@@ -30,7 +30,7 @@ class UpdateSiteTest < ActiveSupport::TestCase
     it 'updates site' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json").with(
         body: {
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

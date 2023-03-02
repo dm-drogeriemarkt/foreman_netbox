@@ -35,9 +35,9 @@ class FindClusterTypeTest < ActiveSupport::TestCase
             {
               id: 1,
               name: cluster_type_params[:name],
-              slug: cluster_type_params[:slug]
-            }
-          ]
+              slug: cluster_type_params[:slug],
+            },
+          ],
         }.to_json
       )
 
@@ -54,7 +54,7 @@ class FindClusterTypeTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

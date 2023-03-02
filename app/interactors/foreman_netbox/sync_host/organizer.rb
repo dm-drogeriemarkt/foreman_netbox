@@ -11,7 +11,7 @@ module ForemanNetbox
       end
 
       organize SyncHost::SyncVirtualMachine::Organizer,
-               SyncHost::SyncDevice::Organizer
+        SyncHost::SyncDevice::Organizer
 
       def call
         super

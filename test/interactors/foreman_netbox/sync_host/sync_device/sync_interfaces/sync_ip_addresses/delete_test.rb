@@ -19,7 +19,7 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
           :nic_base,
           ip: '10.0.0.1',
           subnet: FactoryBot.build_stubbed(:subnet_ipv4)
-        )
+        ),
       ]
     )
   end
@@ -39,8 +39,8 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
       body: {
         count: 1,
         results: [
-          { id: interface_id, name: host.interfaces.first.netbox_name }
-        ]
+          { id: interface_id, name: host.interfaces.first.netbox_name },
+        ],
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
@@ -51,8 +51,8 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
         count: 2,
         results: [
           { id: ip_addresses_v4_id, address: ip_addresses_v4, assigned_object_type: 'dcim.interface', assigned_object_id: interface_id },
-          { id: ip_addresses_v6_id, address: ip_addresses_v6, assigned_object_type: 'dcim.interface', assigned_object_id: interface_id }
-        ]
+          { id: ip_addresses_v6_id, address: ip_addresses_v6, assigned_object_type: 'dcim.interface', assigned_object_id: interface_id },
+        ],
       }.to_json
     )
   end

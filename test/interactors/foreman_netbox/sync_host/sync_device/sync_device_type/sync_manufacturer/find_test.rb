@@ -14,7 +14,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
       host.stubs(:facts).returns(
         {
           'dmi::manufacturer' => 'Manufacturer',
-          'dmi::product::name' => 'device type 2'
+          'dmi::product::name' => 'device type 2',
         }
       )
     end
@@ -34,7 +34,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
           status: 200, headers: { 'Content-Type': 'application/json' },
           body: {
             count: 1,
-            results: [netbox_params.fetch(:manufacturer).merge(id: 1)]
+            results: [netbox_params.fetch(:manufacturer).merge(id: 1)],
           }.to_json
         )
         stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
@@ -55,7 +55,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
           status: 200, headers: { 'Content-Type': 'application/json' },
           body: {
             count: 0,
-            results: []
+            results: [],
           }.to_json
         )
         stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
@@ -64,7 +64,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
           status: 200, headers: { 'Content-Type': 'application/json' },
           body: {
             count: 1,
-            results: [netbox_params.fetch(:manufacturer).merge(id: 1)]
+            results: [netbox_params.fetch(:manufacturer).merge(id: 1)],
           }.to_json
         )
 
@@ -83,7 +83,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 
@@ -93,7 +93,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

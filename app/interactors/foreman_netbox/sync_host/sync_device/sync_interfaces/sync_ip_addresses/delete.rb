@@ -21,7 +21,9 @@ module ForemanNetbox
               ip_addresses_netbox_params = netbox_params.fetch(:ip_addresses, [])
 
               context.interfaces.each do |netbox_interface|
-                host_interface_ips = ip_addresses_netbox_params.select { |i| i.dig(:interface, :name) == netbox_interface.name }
+                host_interface_ips = ip_addresses_netbox_params.select do |i|
+                                       i.dig(:interface, :name) == netbox_interface.name
+                                     end
                                                                .map { |i| i.fetch(:address) }
 
                 context.ip_addresses

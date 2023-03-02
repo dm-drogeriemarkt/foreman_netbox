@@ -60,8 +60,6 @@ Rake::Task[:test].enhance ['test:foreman_netbox']
 
 load 'tasks/jenkins.rake'
 
-# rubocop:disable Style/IfUnlessModifier
 if Rake::Task.task_defined?(:'jenkins:unit')
   Rake::Task['jenkins:unit'].enhance ['test:foreman_netbox', 'foreman_netbox:rubocop']
 end
-# rubocop:enable Style/IfUnlessModifier

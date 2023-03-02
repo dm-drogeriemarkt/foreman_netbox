@@ -23,7 +23,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
           ip6: '1500:0:2d0:201::1',
           subnet: subnet,
           subnet6: subnet6
-        )
+        ),
       ]
     )
   end
@@ -36,7 +36,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: 0,
-        results: []
+        results: [],
       }.to_json
     )
     stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
@@ -45,7 +45,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: 1,
-        results: [{ id: 2 }]
+        results: [{ id: 2 }],
       }.to_json
     )
   end
@@ -56,7 +56,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         address: host.interfaces.first.netbox_ip,
         assigned_object_type: 'virtualization.vminterface',
         assigned_object_id: interfaces.first.id,
-        tags: default_tags.map(&:id)
+        tags: default_tags.map(&:id),
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
@@ -68,7 +68,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         address: host.interfaces.first.netbox_ip6,
         assigned_object_type: 'virtualization.vminterface',
         assigned_object_id: interfaces.first.id,
-        tags: default_tags.map(&:id)
+        tags: default_tags.map(&:id),
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },

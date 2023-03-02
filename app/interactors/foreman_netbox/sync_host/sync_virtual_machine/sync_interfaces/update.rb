@@ -22,7 +22,9 @@ module ForemanNetbox
 
             return unless new_params
 
-            netbox_interface.mac_address = new_params[:mac_address] if netbox_interface.mac_address != new_params[:mac_address]
+            if netbox_interface.mac_address != new_params[:mac_address]
+              netbox_interface.mac_address = new_params[:mac_address]
+            end
             assign_tags_to(netbox_interface)
 
             netbox_interface.save

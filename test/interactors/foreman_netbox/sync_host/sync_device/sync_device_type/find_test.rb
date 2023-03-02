@@ -33,9 +33,9 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
             {
               id: 1,
               name: host.facts.symbolize_keys.fetch(:'dmi::product::name'),
-              slug: slug
-            }
-          ]
+              slug: slug,
+            },
+          ],
         }.to_json
       )
 
@@ -52,7 +52,7 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

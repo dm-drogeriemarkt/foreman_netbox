@@ -73,7 +73,7 @@ module ForemanNetbox
         context 'without ip and ip6' do
           let(:nic) { FactoryBot.build_stubbed(:nic_base) }
 
-          it { assert_equal [], nic.netbox_ips }
+          it { assert_empty nic.netbox_ips }
         end
       end
     end

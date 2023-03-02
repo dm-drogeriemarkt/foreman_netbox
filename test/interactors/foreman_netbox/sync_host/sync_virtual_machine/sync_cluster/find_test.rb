@@ -30,7 +30,7 @@ class FindClusterTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 1,
-          results: [{ id: 1, name: host.compute_object.cluster }]
+          results: [{ id: 1, name: host.compute_object.cluster }],
         }.to_json
       )
 
@@ -47,7 +47,7 @@ class FindClusterTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

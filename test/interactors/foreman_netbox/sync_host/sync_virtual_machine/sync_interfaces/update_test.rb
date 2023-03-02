@@ -18,7 +18,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     FactoryBot.build_stubbed(
       :host,
       interfaces: [
-        FactoryBot.build_stubbed(:nic_base, mac: old_mac)
+        FactoryBot.build_stubbed(:nic_base, mac: old_mac),
       ]
     )
   end
@@ -42,15 +42,15 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: new_mac,
-              tags: []
-            }
-          ]
+              tags: [],
+            },
+          ],
         }.to_json
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json").with(
         body: {
           mac_address: host.interfaces.first.mac.upcase,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -78,9 +78,9 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
               mac_address: old_mac,
               tags: default_tags.map do |tag|
                 { id: tag.id }
-              end
-            }
-          ]
+              end,
+            },
+          ],
         }.to_json
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/interfaces/1.json")

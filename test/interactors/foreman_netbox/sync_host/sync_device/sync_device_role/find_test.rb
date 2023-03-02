@@ -28,9 +28,9 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
             {
               id: 1,
               name: device_role_params[:name],
-              slug: device_role_params[:slug]
-            }
-          ]
+              slug: device_role_params[:slug],
+            },
+          ],
         }.to_json
       )
 
@@ -47,7 +47,7 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

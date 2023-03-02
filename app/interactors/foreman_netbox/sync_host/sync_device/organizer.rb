@@ -15,16 +15,16 @@ module ForemanNetbox
         end
 
         organize SyncDevice::Validate,
-                 SyncHost::SyncTags::Organizer,
-                 SyncHost::SyncTenant::Organizer,
-                 SyncDevice::SyncSite::Organizer,
-                 SyncDevice::SyncDeviceRole::Organizer,
-                 SyncDevice::SyncDeviceType::Organizer,
-                 SyncDevice::Find,
-                 SyncDevice::Create,
-                 SyncDevice::SyncInterfaces::Organizer,
-                 SyncDevice::Update,
-                 SyncDevice::SaveNetboxUrl
+          SyncHost::SyncTags::Organizer,
+          SyncHost::SyncTenant::Organizer,
+          SyncDevice::SyncSite::Organizer,
+          SyncDevice::SyncDeviceRole::Organizer,
+          SyncDevice::SyncDeviceType::Organizer,
+          SyncDevice::Find,
+          SyncDevice::Create,
+          SyncDevice::SyncInterfaces::Organizer,
+          SyncDevice::Update,
+          SyncDevice::SaveNetboxUrl
       end
     end
   end

@@ -26,7 +26,7 @@ class CreateManufacturerTest < ActiveSupport::TestCase
       stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
         body: {
           name: host.netbox_facet.netbox_params.dig(:manufacturer, :name),
-          slug: host.netbox_facet.netbox_params.dig(:manufacturer, :slug)
+          slug: host.netbox_facet.netbox_params.dig(:manufacturer, :slug),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

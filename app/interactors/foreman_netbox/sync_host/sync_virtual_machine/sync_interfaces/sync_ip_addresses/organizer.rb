@@ -13,9 +13,9 @@ module ForemanNetbox
             end
 
             organize SyncIpAddresses::Find,
-                     SyncIpAddresses::Delete,
-                     SyncIpAddresses::Update,
-                     SyncIpAddresses::Create
+              SyncIpAddresses::Delete,
+              SyncIpAddresses::Update,
+              SyncIpAddresses::Create
           end
         end
       end

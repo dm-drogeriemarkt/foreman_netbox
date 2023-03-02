@@ -12,9 +12,9 @@ module ForemanNetbox
           end
 
           organize SyncCluster::SyncClusterType::Organizer,
-                   SyncCluster::Find,
-                   SyncCluster::Update,
-                   SyncCluster::Create
+            SyncCluster::Find,
+            SyncCluster::Update,
+            SyncCluster::Create
         end
       end
     end

@@ -34,7 +34,7 @@ class CreateDeviceTypeTest < ActiveSupport::TestCase
           model: host.netbox_facet.netbox_params.dig(:device_type, :model),
           slug: host.netbox_facet.netbox_params.dig(:device_type, :slug),
           manufacturer: manufacturer.id,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

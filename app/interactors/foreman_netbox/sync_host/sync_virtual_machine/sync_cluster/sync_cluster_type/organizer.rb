@@ -13,7 +13,7 @@ module ForemanNetbox
             end
 
             organize SyncClusterType::Find,
-                     SyncClusterType::Create
+              SyncClusterType::Create
           end
         end
       end

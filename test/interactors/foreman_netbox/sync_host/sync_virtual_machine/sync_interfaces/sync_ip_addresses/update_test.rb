@@ -17,13 +17,13 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       {
         id: 1,
         address: host.netbox_facet.netbox_params[:ip_addresses].first[:address],
-        tags: default_tags.map { |t| { id: t.id, name: t.name, slug: t.slug } }
+        tags: default_tags.map { |t| { id: t.id, name: t.name, slug: t.slug } },
       },
       {
         id: 2,
         address: host.netbox_facet.netbox_params[:ip_addresses].second[:address],
-        tags: []
-      }
+        tags: [],
+      },
     ]
   end
   let(:host) do
@@ -37,7 +37,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
           ip6: '1600:0:2d0:202::17',
           subnet: FactoryBot.build_stubbed(:subnet_ipv4, organizations: [], locations: []),
           subnet6: FactoryBot.build_stubbed(:subnet_ipv6, organizations: [], locations: [])
-        )
+        ),
       ]
     )
   end
@@ -50,7 +50,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: ip_addresses_data.count,
-        results: ip_addresses_data
+        results: ip_addresses_data,
       }.to_json
     )
   end
@@ -59,7 +59,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     stub_unexpected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.first[:id]}.json")
     stub_expected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.second[:id]}.json").with(
       body: {
-        tags: default_tags.map(&:id)
+        tags: default_tags.map(&:id),
       }.to_json
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },

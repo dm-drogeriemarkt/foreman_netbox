@@ -11,8 +11,8 @@ module ForemanNetbox
         end
 
         organize SyncTenant::Find,
-                 SyncTenant::Update,
-                 SyncTenant::Create
+          SyncTenant::Update,
+          SyncTenant::Create
       end
     end
   end

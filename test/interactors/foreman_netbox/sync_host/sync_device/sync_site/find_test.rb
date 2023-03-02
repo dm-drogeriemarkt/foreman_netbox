@@ -30,8 +30,8 @@ class FindSiteTest < ActiveSupport::TestCase
         body: {
           count: 1,
           results: [
-            { id: 1, name: host.location.netbox_site_name, slug: host.location.netbox_site_slug }
-          ]
+            { id: 1, name: host.location.netbox_site_name, slug: host.location.netbox_site_slug },
+          ],
         }.to_json
       )
 
@@ -48,7 +48,7 @@ class FindSiteTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

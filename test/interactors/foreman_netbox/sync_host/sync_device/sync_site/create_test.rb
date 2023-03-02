@@ -29,7 +29,7 @@ class CreateSiteTest < ActiveSupport::TestCase
         body: {
           name: host.location.netbox_site_name,
           slug: host.location.netbox_site_slug,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

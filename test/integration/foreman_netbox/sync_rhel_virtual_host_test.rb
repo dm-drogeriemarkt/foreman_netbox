@@ -31,7 +31,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
           mac: '45:E9:6A:83:02:22',
           ip6: '1600:0:2d0:202::19',
           subnet6: FactoryBot.build_stubbed(:subnet_ipv6, organizations: [], locations: [])
-        )
+        ),
       ]
     ).tap do |host|
       host.stubs(:ip).returns(host.interfaces.find(&:ip).ip)
@@ -46,7 +46,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
           cpus: 1,
           memory_mb: 1024,
           volumes: [
-            OpenStruct.new(size_gb: 120)
+            OpenStruct.new(size_gb: 120),
           ]
         )
       )
@@ -84,14 +84,14 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
     end
 
     expected_tag_ids = subject.tags.pluck('id')
-    assert (expected_tag_ids - subject.virtual_machine.tags.pluck('id')).empty?
-    assert (expected_tag_ids - subject.tenant.tags.pluck('id')).empty?
-    assert (expected_tag_ids - subject.cluster.tags.pluck('id')).empty?
+    assert_empty(expected_tag_ids - subject.virtual_machine.tags.pluck('id'))
+    assert_empty(expected_tag_ids - subject.tenant.tags.pluck('id'))
+    assert_empty(expected_tag_ids - subject.cluster.tags.pluck('id'))
     subject.interfaces.reload.each do |interface|
-      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
+      assert_empty(expected_tag_ids - interface.tags.pluck('id'))
     end
     subject.ip_addresses.reload.each do |interface|
-      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
+      assert_empty(expected_tag_ids - interface.tags.pluck('id'))
     end
   end
 end

@@ -24,8 +24,8 @@ class FindDeviceInterfacesTest < ActiveSupport::TestCase
         body: {
           count: 1,
           results: [
-            { id: 1 }
-          ]
+            { id: 1 },
+          ],
         }.to_json
       )
 
@@ -42,11 +42,11 @@ class FindDeviceInterfacesTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 
-      assert_equal [], subject.interfaces.map(&:id)
+      assert_empty subject.interfaces.map(&:id)
       assert_requested(stub_get)
     end
   end

@@ -29,8 +29,8 @@ class FindTenantTest < ActiveSupport::TestCase
         body: {
           count: 1,
           results: [
-            { id: 1, name: host.owner.name, slug: host.owner.name.parameterize }
-          ]
+            { id: 1, name: host.owner.name, slug: host.owner.name.parameterize },
+          ],
         }.to_json
       )
 
@@ -47,7 +47,7 @@ class FindTenantTest < ActiveSupport::TestCase
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: {
           count: 0,
-          results: []
+          results: [],
         }.to_json
       )
 

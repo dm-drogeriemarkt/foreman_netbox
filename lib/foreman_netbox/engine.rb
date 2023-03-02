@@ -17,7 +17,7 @@ module ForemanNetbox
       end
     end
 
-    initializer 'foreman_netbox.register_plugin', :before => :finisher_hook do |_app|
+    initializer 'foreman_netbox.register_plugin', before: :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_netbox do
         requires_foreman '>= 3.1'
 
@@ -29,9 +29,9 @@ module ForemanNetbox
         # extend host show page
         extend_page('hosts/show') do |context|
           context.add_pagelet :main_tabs,
-                              name: N_('Netbox'),
-                              partial: 'hosts/netbox_tab',
-                              onlyif: proc { |host| host.netbox_facet.synchronized_at }
+            name: N_('Netbox'),
+            partial: 'hosts/netbox_tab',
+            onlyif: proc { |host| host.netbox_facet.synchronized_at }
         end
 
         settings do
