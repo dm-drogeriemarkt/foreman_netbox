@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'dry-validation'
-# require 'netbox-client-ruby'
+require 'netbox-client-ruby'
 require 'interactor'
 
 module ForemanNetbox
