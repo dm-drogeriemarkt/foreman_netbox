@@ -23,7 +23,7 @@ module ForemanNetbox
         def netbox_virtual_machine_url
           return unless context.virtual_machine&.id
 
-          "#{Setting::Netbox[:netbox_url]}/virtualization/virtual-machines/#{context.virtual_machine&.id}"
+          "#{Setting[:netbox_url]}/virtualization/virtual-machines/#{context.virtual_machine&.id}"
         end
       end
     end

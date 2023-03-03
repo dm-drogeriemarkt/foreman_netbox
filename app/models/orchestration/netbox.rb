@@ -14,7 +14,7 @@ module Orchestration
     protected
 
     def netbox_orchestration_allowed?
-      Setting::Netbox[:netbox_orchestration_enabled] && netbox_will_change?
+      Setting[:netbox_orchestration_enabled] && netbox_will_change?
     end
 
     def queue_netbox_push

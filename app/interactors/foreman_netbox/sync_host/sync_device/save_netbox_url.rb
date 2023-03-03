@@ -21,7 +21,7 @@ module ForemanNetbox
         delegate :url, to: :netbox_facet, prefix: true, allow_nil: true
 
         def netbox_device_url
-          "#{Setting::Netbox[:netbox_url]}/dcim/devices/#{device&.id}" if device&.id
+          "#{Setting[:netbox_url]}/dcim/devices/#{device&.id}" if device&.id
         end
       end
     end

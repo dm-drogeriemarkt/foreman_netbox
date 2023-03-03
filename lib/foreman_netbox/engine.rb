@@ -10,14 +10,6 @@ module ForemanNetbox
 
     config.autoload_paths += Dir["#{config.root}/app/interactors"]
 
-    initializer 'foreman_netbox.load_default_settings', before: :load_config_initializers do
-      require_dependency File.expand_path('../../app/models/setting/netbox.rb', __dir__) if begin
-        Setting.table_exists?
-      rescue StandardError
-        (false)
-      end
-    end
-
     # Add any db migrations
     initializer 'foreman_netbox.load_app_instance_data' do |app|
       ForemanNetbox::Engine.paths['db/migrate'].existent.each do |path|
@@ -27,7 +19,7 @@ module ForemanNetbox
 
     initializer 'foreman_netbox.register_plugin', :before => :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_netbox do
-        requires_foreman '>= 2.2'
+        requires_foreman '>= 3.1'
 
         # Netbox Facet
         register_facet(ForemanNetbox::NetboxFacet, :netbox_facet) do
@@ -42,6 +34,31 @@ module ForemanNetbox
                               onlyif: proc { |host| host.netbox_facet.synchronized_at }
         end
 
+        settings do
+          category :netbox do
+            setting 'netbox_url',
+                    type: :string,
+                    default: '-',
+                    full_name: N_('Netbox URL'),
+                    description: N_('URL where Netbox is reachable')
+            setting 'netbox_api_token',
+                    type: :string,
+                    default: '-',
+                    full_name: N_('Netbox API token'),
+                    description: N_('API token to Netbox')
+            setting 'netbox_orchestration_enabled',
+                    type: :boolean,
+                    default: false,
+                    full_name: N_('Netbox Orchestration'),
+                    description: N_('Enable Netbox Orchestration')
+            setting 'netbox_skip_site_update',
+                    type: :boolean,
+                    default: false,
+                    full_name: N_('Skip Site Update'),
+                    description: N_('Skip updating Site attribute for Devices')
+          end
+        end
+
         logger :import, enabled: true
       end
     end
@@ -54,8 +71,8 @@ module ForemanNetbox
       ::Usergroup.include(ForemanNetbox::UserUsergroupCommonExtensions)
 
       NetboxClientRuby.configure do |config|
-        config.netbox.api_base_url = Setting::Netbox['netbox_url']
-        config.netbox.auth.token = Setting::Netbox['netbox_api_token']
+        config.netbox.api_base_url = Setting['netbox_url']
+        config.netbox.auth.token = Setting['netbox_api_token']
       end
     rescue StandardError => e
       Rails.logger.warn "ForemanNetbox: skipping engine hook (#{e})\n#{e.backtrace.join("\n")}"

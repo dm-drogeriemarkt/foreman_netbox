@@ -202,7 +202,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
   context 'when netbox_skip_site_update setting is enabled' do
     setup do
-      Setting::Netbox[:netbox_skip_site_update] = true
+      Setting[:netbox_skip_site_update] = true
     end
 
     let(:new_site_id) { device_data.dig(:site, :id) + 1 }

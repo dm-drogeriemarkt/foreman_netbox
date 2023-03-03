@@ -33,6 +33,7 @@ Metrics/PerceivedComplexity:
 Metrics/BlockLength:
   Exclude:
     - 'test/**/*'
+    - 'lib/foreman_netbox/engine.rb'
 
 Metrics/CyclomaticComplexity:
   Max: 10
