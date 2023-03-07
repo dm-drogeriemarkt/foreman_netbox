@@ -35,7 +35,7 @@ module ForemanNetbox
         end
 
         settings do
-          category :netbox do
+          category(:netbox, N_('Netbox')) do
             setting 'netbox_url',
                     type: :string,
                     default: '-',
