@@ -56,7 +56,7 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
   end
 
   test 'save synchronization status when it succeeds' do
-    stub_request(:patch, "#{Setting::Netbox[:netbox_url]}/api/dcim/devices/1.json").to_return(
+    stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/1.json").to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: { id: 1 }.to_json
     )
@@ -64,12 +64,12 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
     host.reload
 
     assert_not_nil host.netbox_facet.synchronized_at
-    assert_equal "#{Setting::Netbox[:netbox_url]}/dcim/devices/1", host.netbox_facet.url
+    assert_equal "#{Setting[:netbox_url]}/dcim/devices/1", host.netbox_facet.url
     assert_nil host.netbox_facet.synchronization_error
   end
 
   test 'save synchronization status when it fails' do
-    stub_request(:patch, "#{Setting::Netbox[:netbox_url]}/api/dcim/devices/1.json").to_return(
+    stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/1.json").to_return(
       status: 500, headers: { 'Content-Type': 'application/json' }
     )
     subject
@@ -83,7 +83,7 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
   private
 
   def stub_get_netbox_request(path, results:)
-    stub_request(:get, "#{Setting::Netbox[:netbox_url]}/api/#{path}").to_return(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/#{path}").to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: 1,
