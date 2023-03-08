@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: netbox-community/netbox-docker
-          ref: 1.2.0
+          ref: 2.2.0
           path: netbox-docker
       - name: Setup Netbox
         working-directory: netbox-docker
@@ -52,7 +52,7 @@ jobs:
           version: '3.4'
           services:
             netbox:
-              image: netboxcommunity/netbox:v2.11.12
+              image: netboxcommunity/netbox:v3.3.5-2.2.0
               ports:
               - 8000:8080
           EOF
