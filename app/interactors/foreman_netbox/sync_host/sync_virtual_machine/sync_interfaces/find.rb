@@ -20,7 +20,7 @@ module ForemanNetbox
 
           def params
             {
-              virtual_machine_id: virtual_machine.id
+              virtual_machine_id: virtual_machine.id,
             }
           end
         end

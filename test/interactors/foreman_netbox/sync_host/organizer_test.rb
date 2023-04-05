@@ -20,7 +20,7 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
     # rubocop:disable Layout/FirstArrayElementIndentation
     default_tags.each do |tag|
       stub_get_netbox_request("extras/tags.json?limit=50&slug=#{tag.slug}", results: [
-        { id: tag.id, name: tag.name, slug: tag.slug }
+        { id: tag.id, name: tag.name, slug: tag.slug },
       ])
       stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{tag.id}.json")
         .to_return(
@@ -28,27 +28,27 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
           body: {
             id: tag.id,
             name: tag.name,
-            slug: tag.slug
+            slug: tag.slug,
           }.to_json
         )
     end
     stub_get_netbox_request('tenancy/tenants.json?limit=50&slug=admin-user', results: [
-      { id: 1, name: host.owner.name, slug: host.owner.name.parameterize, tags: tags }
+      { id: 1, name: host.owner.name, slug: host.owner.name.parameterize, tags: tags },
     ])
     stub_get_netbox_request('dcim/sites.json?limit=50&slug=location-1', results: [
-      { id: 1, name: host.location.netbox_site_name, slug: host.location.netbox_site_slug, tags: tags }
+      { id: 1, name: host.location.netbox_site_name, slug: host.location.netbox_site_slug, tags: tags },
     ])
     stub_get_netbox_request('dcim/device-roles.json?limit=50&slug=server', results: [
-      { id: 1, name: 'Device Role', slug: 'server' }
+      { id: 1, name: 'Device Role', slug: 'server' },
     ])
     stub_get_netbox_request('dcim/manufacturers.json?limit=50&slug=unknown', results: [
-      { id: 1, name: 'Unknown', slug: 'unknown' }
+      { id: 1, name: 'Unknown', slug: 'unknown' },
     ])
     stub_get_netbox_request('dcim/device-types.json?limit=50&slug=unknown', results: [
-      { id: 1, name: 'Unknown', slug: 'unknown', tags: tags }
+      { id: 1, name: 'Unknown', slug: 'unknown', tags: tags },
     ])
     stub_get_netbox_request("dcim/devices.json?limit=50&serial=#{host.facts[:serialnumber]}", results: [
-      { id: 1, name: host.name, serial: host.facts[:serialnumber], tags: tags }
+      { id: 1, name: host.name, serial: host.facts[:serialnumber], tags: tags },
     ])
     stub_get_netbox_request('dcim/interfaces.json?device_id=1&limit=50', results: [])
     stub_get_netbox_request('ipam/ip-addresses.json?device_id=1&limit=50', results: [])
@@ -87,7 +87,7 @@ class SyncHostOrganizerTest < ActiveSupport::TestCase
       status: 200, headers: { 'Content-Type': 'application/json' },
       body: {
         count: 1,
-        results: results
+        results: results,
       }.to_json
     )
   end

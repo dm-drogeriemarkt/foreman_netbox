@@ -20,7 +20,7 @@ module ForemanNetbox
 
           def params
             {
-              device_id: device.id
+              device_id: device.id,
             }
           end
         end

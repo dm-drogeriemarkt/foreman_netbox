@@ -36,7 +36,7 @@ class CreateClusterTest < ActiveSupport::TestCase
         body: {
           name: host.netbox_facet.netbox_params.dig(:cluster, :name),
           type: cluster_type.id,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

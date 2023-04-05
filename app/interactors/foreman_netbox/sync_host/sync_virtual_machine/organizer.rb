@@ -15,14 +15,14 @@ module ForemanNetbox
         end
 
         organize SyncVirtualMachine::Validate,
-                 SyncHost::SyncTags::Organizer,
-                 SyncHost::SyncTenant::Organizer,
-                 SyncVirtualMachine::SyncCluster::Organizer,
-                 SyncVirtualMachine::Find,
-                 SyncVirtualMachine::Create,
-                 SyncVirtualMachine::SyncInterfaces::Organizer,
-                 SyncVirtualMachine::Update,
-                 SyncVirtualMachine::SaveNetboxUrl
+          SyncHost::SyncTags::Organizer,
+          SyncHost::SyncTenant::Organizer,
+          SyncVirtualMachine::SyncCluster::Organizer,
+          SyncVirtualMachine::Find,
+          SyncVirtualMachine::Create,
+          SyncVirtualMachine::SyncInterfaces::Organizer,
+          SyncVirtualMachine::Update,
+          SyncVirtualMachine::SaveNetboxUrl
       end
     end
   end

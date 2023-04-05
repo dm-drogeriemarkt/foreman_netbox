@@ -32,14 +32,14 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           'primary_ip4' => {
             'id' => 1,
             'family' => 4,
-            'address' => '10.0.0.8/24'
+            'address' => '10.0.0.8/24',
           },
           'primary_ip6' => {
             'id' => 2,
             'family' => 6,
-            'address' => '1600:0:2d0:202::18/64'
+            'address' => '1600:0:2d0:202::18/64',
           },
-          'tags' => device_tags
+          'tags' => device_tags,
         }
       )
     end
@@ -90,8 +90,8 @@ class UpdateDeviceTest < ActiveSupport::TestCase
         count: 2,
         results: [
           { id: primary_ip4.id, address: primary_ip4.address.address },
-          { id: primary_ip6.id, address: primary_ip6.address.address }
-        ]
+          { id: primary_ip6.id, address: primary_ip6.address.address },
+        ],
       }.to_json
     )
   end
@@ -109,7 +109,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             body: {
               id: t['id'],
               name: t['name'],
-              slug: t['slug']
+              slug: t['slug'],
             }.to_json
           )
       end
@@ -163,7 +163,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
           site: site.id,
           tenant: tenant.id,
           serial: serialnumber,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -187,7 +187,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             primary_ip6: primary_ip6.id,
             site: site.id,
             tenant: tenant.id,
-            tags: default_tags.map(&:id)
+            tags: default_tags.map(&:id),
           }.to_json
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },
@@ -219,7 +219,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             body: {
               id: t['id'],
               name: t['name'],
-              slug: t['slug']
+              slug: t['slug'],
             }.to_json
           )
       end

@@ -6,15 +6,15 @@ module ForemanNetbox
     UNKNOWN = 'Unknown'
     DEFAULT_INTERFACE_TYPE = 'virtual'
     CLUSTER_TYPES = {
-      :'Foreman::Model::Vmware' => {
+      'Foreman::Model::Vmware': {
         name: 'VMware ESXi',
-        slug: 'vmware-esxi'
-      }
+        slug: 'vmware-esxi',
+      },
     }.freeze
     DEVICE_ROLE = {
       name: 'SERVER',
       color: '9e9e9e',
-      slug: 'server'
+      slug: 'server',
     }.freeze
 
     def self.call(host)
@@ -46,7 +46,7 @@ module ForemanNetbox
           vcpus: compute_object&.cpus,
           memory: compute_object&.memory_mb,
           disk: compute_object&.volumes&.map(&:size_gb)&.reduce(&:+),
-          cluster: compute_object&.cluster
+          cluster: compute_object&.cluster,
         }.compact
       end
     end
@@ -55,8 +55,8 @@ module ForemanNetbox
       {
         tenant: {
           name: host.owner&.netbox_tenant_name,
-          slug: host.owner&.netbox_tenant_slug
-        }
+          slug: host.owner&.netbox_tenant_slug,
+        },
       }
     end
 
@@ -64,14 +64,14 @@ module ForemanNetbox
       {
         device: {
           name: host.name,
-          serial: host.facts.deep_symbolize_keys[:serialnumber]
-        }
+          serial: host.facts.deep_symbolize_keys[:serialnumber],
+        },
       }
     end
 
     def device_role
       {
-        device_role: DEVICE_ROLE
+        device_role: DEVICE_ROLE,
       }
     end
 
@@ -81,8 +81,8 @@ module ForemanNetbox
       {
         device_type: {
           model: model,
-          slug: model.parameterize
-        }
+          slug: model.parameterize,
+        },
       }
     end
 
@@ -92,8 +92,8 @@ module ForemanNetbox
       {
         manufacturer: {
           name: name,
-          slug: cached_netbox_params.dig(:manufacturer, :slug) || name.parameterize
-        }
+          slug: cached_netbox_params.dig(:manufacturer, :slug) || name.parameterize,
+        },
       }
     end
 
@@ -101,8 +101,8 @@ module ForemanNetbox
       {
         site: {
           name: host.location&.netbox_site_name,
-          slug: host.location&.netbox_site_slug
-        }
+          slug: host.location&.netbox_site_slug,
+        },
       }
     end
 
@@ -116,10 +116,10 @@ module ForemanNetbox
             name: identifier || (mac_address && "Interface #{mac_address}"),
             mac_address: mac_address,
             type: {
-              value: DEFAULT_INTERFACE_TYPE
-            }
+              value: DEFAULT_INTERFACE_TYPE,
+            },
           }
-        end
+        end,
       }
     end
 
@@ -129,7 +129,7 @@ module ForemanNetbox
         ip_addresses: host.interfaces.map do |interface|
           [
             interface.ip && interface.subnet && "#{interface.ip}/#{interface.subnet.cidr}",
-            interface.ip6 && interface.subnet6 && "#{interface.ip6}/#{interface.subnet6.cidr}"
+            interface.ip6 && interface.subnet6 && "#{interface.ip6}/#{interface.subnet6.cidr}",
           ].compact.map do |ip_address|
             identifier = interface.identifier.present? && interface.identifier
             mac_address = interface.mac&.upcase
@@ -137,11 +137,11 @@ module ForemanNetbox
             {
               address: ip_address,
               interface: {
-                name: identifier || (mac_address && "Interface #{mac_address}")
-              }
+                name: identifier || (mac_address && "Interface #{mac_address}"),
+              },
             }
           end
-        end.flatten
+        end.flatten,
       }
     end
     # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
@@ -152,15 +152,15 @@ module ForemanNetbox
           :vcpus, :memory, :disk
         ).merge(
           name: host.name
-        )
+        ),
       }
     end
 
     def cluster
       {
         cluster: {
-          name: netbox_compute_attributes[:cluster]
-        }.compact
+          name: netbox_compute_attributes[:cluster],
+        }.compact,
       }
     end
 
@@ -168,7 +168,7 @@ module ForemanNetbox
       type = host.compute_resource&.type&.to_sym
 
       {
-        cluster_type: CLUSTER_TYPES.fetch(type, nil)
+        cluster_type: CLUSTER_TYPES.fetch(type, nil),
       }
     end
   end

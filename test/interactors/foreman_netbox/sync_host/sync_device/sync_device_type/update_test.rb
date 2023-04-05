@@ -32,7 +32,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
     it 'updates device type' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json").with(
         body: {
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

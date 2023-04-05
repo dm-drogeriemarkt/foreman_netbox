@@ -23,7 +23,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
           :nic_base,
           identifier: 'eth1',
           mac: old_mac
-        )
+        ),
       ]
     )
   end
@@ -47,15 +47,15 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: new_mac.upcase,
-              tags: []
-            }
-          ]
+              tags: [],
+            },
+          ],
         }.to_json
       )
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/interfaces/1.json").with(
         body: {
           mac_address: host.interfaces.first.mac.upcase,
-          tags: tags.map(&:id)
+          tags: tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -81,9 +81,9 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
               id: 1,
               name: host.interfaces.first.netbox_name,
               mac_address: old_mac,
-              tags: tags.map { |t| { id: t.id, name: t.name, slug: t.slug } }
-            }
-          ]
+              tags: tags.map { |t| { id: t.id, name: t.name, slug: t.slug } },
+            },
+          ],
         }.to_json
       )
 

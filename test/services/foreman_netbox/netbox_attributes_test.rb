@@ -16,7 +16,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'Tenant Name',
-          slug: 'tenant-name'
+          slug: 'tenant-name',
         }
       end
 
@@ -33,7 +33,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'device_name',
-          serial: 'abc123'
+          serial: 'abc123',
         }
       end
 
@@ -62,7 +62,7 @@ module ForemanNetbox
       let(:expected) do
         {
           model: 'Product Name',
-          slug: 'product-name'
+          slug: 'product-name',
         }
       end
 
@@ -74,7 +74,7 @@ module ForemanNetbox
         let(:expected) do
           {
             model: 'Unknown',
-            slug: 'unknown'
+            slug: 'unknown',
           }
         end
 
@@ -120,7 +120,7 @@ module ForemanNetbox
       let(:expected) do
         {
           name: 'Site Name',
-          slug: 'site-name'
+          slug: 'site-name',
         }
       end
 
@@ -137,7 +137,7 @@ module ForemanNetbox
               :nic_base,
               identifier: expected.first[:name],
               mac: expected.first[:mac_address]
-            )
+            ),
           ]
         )
       end
@@ -147,8 +147,8 @@ module ForemanNetbox
           name: 'eth1',
           mac_address: 'FE:13:C6:44:29:24',
           type: {
-            value: 'virtual'
-          }
+            value: 'virtual',
+          },
         ]
       end
 
@@ -178,7 +178,7 @@ module ForemanNetbox
                 :subnet_ipv6,
                 cidr: expected.second[:address].split('/').second
               )
-            )
+            ),
           ]
         )
       end
@@ -188,15 +188,15 @@ module ForemanNetbox
           {
             address: '10.0.0.1/24',
             interface: {
-              name: 'eth1'
-            }
+              name: 'eth1',
+            },
           },
           {
             address: '1500:0:2d0:201::1/64',
             interface: {
-              name: 'eth2'
-            }
-          }
+              name: 'eth2',
+            },
+          },
         ]
       end
 
@@ -213,7 +213,7 @@ module ForemanNetbox
               memory_mb: expected[:memory],
               volumes: [
                 OpenStruct.new(size_gb: expected[:disk] / 2),
-                OpenStruct.new(size_gb: expected[:disk] / 2)
+                OpenStruct.new(size_gb: expected[:disk] / 2),
               ]
             )
           )
@@ -225,7 +225,7 @@ module ForemanNetbox
           name: 'virtual_machine_name',
           vcpus: 2,
           memory: 128,
-          disk: 20
+          disk: 20,
         }
       end
 

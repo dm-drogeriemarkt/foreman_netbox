@@ -13,7 +13,7 @@ module ForemanNetbox
             end
 
             organize SyncManufacturer::Find,
-                     SyncManufacturer::Create
+              SyncManufacturer::Create
           end
         end
       end

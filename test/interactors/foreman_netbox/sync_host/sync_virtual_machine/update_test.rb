@@ -30,14 +30,14 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           'primary_ip4' => {
             'id' => 1,
             'family' => 4,
-            'address' => '10.0.0.1/24'
+            'address' => '10.0.0.1/24',
           },
           'primary_ip6' => {
             'id' => 2,
             'family' => 6,
-            'address' => '1600:0:2d0:201::18/64'
+            'address' => '1600:0:2d0:201::18/64',
           },
-          'tags' => virtual_machine_tags
+          'tags' => virtual_machine_tags,
         }
       )
     end
@@ -78,7 +78,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           cpus: virtual_machine_data[:vcpus],
           memory_mb: virtual_machine_data[:memory],
           volumes: [
-            OpenStruct.new(size_gb: virtual_machine_data[:disk])
+            OpenStruct.new(size_gb: virtual_machine_data[:disk]),
           ]
         )
       )
@@ -95,8 +95,8 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
         count: 2,
         results: [
           { id: primary_ip4.id, address: primary_ip4.address.address },
-          { id: primary_ip6.id, address: primary_ip6.address.address }
-        ]
+          { id: primary_ip6.id, address: primary_ip6.address.address },
+        ],
       }.to_json
     )
   end
@@ -142,7 +142,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
             cpus: 4,
             memory_mb: 256,
             volumes: [
-              OpenStruct.new(size_gb: 1024)
+              OpenStruct.new(size_gb: 1024),
             ]
           )
         )
@@ -160,7 +160,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
           primary_ip6: primary_ip6.id,
           tenant: tenant.id,
           vcpus: host.compute_object.cpus,
-          tags: virtual_machine_tags.map { |t| t['id'] } | default_tags.map(&:id)
+          tags: virtual_machine_tags.map { |t| t['id'] } | default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

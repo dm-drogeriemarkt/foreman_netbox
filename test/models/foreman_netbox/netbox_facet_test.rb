@@ -152,7 +152,7 @@ module ForemanNetbox
                 memory_mb: memory,
                 volumes: [
                   OpenStruct.new(size_gb: disk / 2),
-                  OpenStruct.new(size_gb: disk / 2)
+                  OpenStruct.new(size_gb: disk / 2),
                 ]
               )
             )

@@ -32,7 +32,7 @@ class SyncK8sPhysicalHostTest < ActiveSupport::TestCase
           mac: '45:E9:6A:83:02:20',
           ip6: '1600:0:2d0:202::17',
           subnet6: FactoryBot.build_stubbed(:subnet_ipv6, organizations: [], locations: [])
-        )
+        ),
       ]
     ).tap do |host|
       host.stubs(:ip).returns(host.interfaces.find(&:ip).ip)
@@ -71,15 +71,15 @@ class SyncK8sPhysicalHostTest < ActiveSupport::TestCase
     end
 
     expected_tag_ids = subject.tags.pluck('id')
-    assert (expected_tag_ids - subject.device.tags.pluck('id')).empty?
-    assert (expected_tag_ids - subject.device_type.tags.pluck('id')).empty?
-    assert (expected_tag_ids - subject.site.tags.pluck('id')).empty?
-    assert (expected_tag_ids - subject.tenant.tags.pluck('id')).empty?
+    assert_empty(expected_tag_ids - subject.device.tags.pluck('id'))
+    assert_empty(expected_tag_ids - subject.device_type.tags.pluck('id'))
+    assert_empty(expected_tag_ids - subject.site.tags.pluck('id'))
+    assert_empty(expected_tag_ids - subject.tenant.tags.pluck('id'))
     subject.interfaces.reload.each do |interface|
-      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
+      assert_empty(expected_tag_ids - interface.tags.pluck('id'))
     end
     subject.ip_addresses.reload.each do |interface|
-      assert (expected_tag_ids - interface.tags.pluck('id')).empty?
+      assert_empty(expected_tag_ids - interface.tags.pluck('id'))
     end
   end
 end

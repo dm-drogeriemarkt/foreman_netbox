@@ -12,10 +12,10 @@ module ForemanNetbox
           end
 
           organize SyncInterfaces::Find,
-                   SyncInterfaces::Delete,
-                   SyncInterfaces::Create,
-                   SyncInterfaces::SyncIpAddresses::Organizer,
-                   SyncInterfaces::Update
+            SyncInterfaces::Delete,
+            SyncInterfaces::Create,
+            SyncInterfaces::SyncIpAddresses::Organizer,
+            SyncInterfaces::Update
         end
       end
     end

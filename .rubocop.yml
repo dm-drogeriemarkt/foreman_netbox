@@ -1,55 +1,24 @@
-require: rubocop-rails
+inherit_from: .rubocop_todo.yml
 
-AllCops:
-  TargetRubyVersion: 2.6
+inherit_gem:
+  theforeman-rubocop:
+    - default.yml
 
-Rails:
-  Enabled: true
-
-# Don't enforce documentation
-Style/Documentation:
-  Enabled: false
-
-# Force before_filter until upgrade to Rails 4
-Rails/ActionFilter:
-  EnforcedStyle: filter
-
-Metrics/ClassLength:
+Layout/LineLength:
   Exclude:
     - 'test/**/*'
-
-Metrics/MethodLength:
-  Max: 20
-
-Metrics/LineLength:
-  Max: 200
-
-Metrics/AbcSize:
-  Max: 31
-
-Metrics/PerceivedComplexity:
-  Max: 10
 
 Metrics/BlockLength:
   Exclude:
+    - 'lib/foreman_gaffer_tape/engine.rb'
     - 'test/**/*'
     - 'lib/foreman_netbox/engine.rb'
 
-Metrics/CyclomaticComplexity:
-  Max: 10
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/foreman_gaffer_tape/engine.rb'
+    - 'test/**/*'
 
-Style/Next:
-  Enabled: false
-
-# Support both ruby19 and hash_rockets
-Style/HashSyntax:
-  Enabled: false
-
-Style/FormatStringToken:
-  EnforcedStyle: template
-
-Style/CaseLikeIf:
-  Enabled: false
-
-Gemspec/RequiredRubyVersion:
-  Enabled: false
+Rails/DynamicFindBy:
+  Exclude:
+    - 'app/interactors/**/*'

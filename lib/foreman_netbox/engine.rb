@@ -17,7 +17,7 @@ module ForemanNetbox
       end
     end
 
-    initializer 'foreman_netbox.register_plugin', :before => :finisher_hook do |_app|
+    initializer 'foreman_netbox.register_plugin', before: :finisher_hook do |_app|
       Foreman::Plugin.register :foreman_netbox do
         requires_foreman '>= 3.1'
 
@@ -29,33 +29,33 @@ module ForemanNetbox
         # extend host show page
         extend_page('hosts/show') do |context|
           context.add_pagelet :main_tabs,
-                              name: N_('Netbox'),
-                              partial: 'hosts/netbox_tab',
-                              onlyif: proc { |host| host.netbox_facet.synchronized_at }
+            name: N_('Netbox'),
+            partial: 'hosts/netbox_tab',
+            onlyif: proc { |host| host.netbox_facet.synchronized_at }
         end
 
         settings do
           category(:netbox, N_('Netbox')) do
             setting 'netbox_url',
-                    type: :string,
-                    default: '-',
-                    full_name: N_('Netbox URL'),
-                    description: N_('URL where Netbox is reachable')
+              type: :string,
+              default: '-',
+              full_name: N_('Netbox URL'),
+              description: N_('URL where Netbox is reachable')
             setting 'netbox_api_token',
-                    type: :string,
-                    default: '-',
-                    full_name: N_('Netbox API token'),
-                    description: N_('API token to Netbox')
+              type: :string,
+              default: '-',
+              full_name: N_('Netbox API token'),
+              description: N_('API token to Netbox')
             setting 'netbox_orchestration_enabled',
-                    type: :boolean,
-                    default: false,
-                    full_name: N_('Netbox Orchestration'),
-                    description: N_('Enable Netbox Orchestration')
+              type: :boolean,
+              default: false,
+              full_name: N_('Netbox Orchestration'),
+              description: N_('Enable Netbox Orchestration')
             setting 'netbox_skip_site_update',
-                    type: :boolean,
-                    default: false,
-                    full_name: N_('Skip Site Update'),
-                    description: N_('Skip updating Site attribute for Devices')
+              type: :boolean,
+              default: false,
+              full_name: N_('Skip Site Update'),
+              description: N_('Skip updating Site attribute for Devices')
           end
         end
 

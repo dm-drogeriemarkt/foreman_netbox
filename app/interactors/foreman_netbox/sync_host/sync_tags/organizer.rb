@@ -7,7 +7,7 @@ module ForemanNetbox
         include ::Interactor::Organizer
 
         DEFAULT_TAGS = [
-          { name: 'foreman', slug: 'foreman' }
+          { name: 'foreman', slug: 'foreman' },
         ].freeze
 
         after do
@@ -15,7 +15,7 @@ module ForemanNetbox
         end
 
         organize SyncTags::Find,
-                 SyncTags::Create
+          SyncTags::Create
       end
     end
   end

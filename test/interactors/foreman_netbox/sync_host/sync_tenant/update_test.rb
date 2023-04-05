@@ -34,7 +34,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
     it 'updates tenant' do
       stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1.json").with(
         body: {
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

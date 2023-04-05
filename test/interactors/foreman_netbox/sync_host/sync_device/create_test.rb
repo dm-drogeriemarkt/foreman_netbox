@@ -45,7 +45,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
           device_role: device_role.id,
           site: site.id,
           tenant: tenant.id,
-          tags: tags.map(&:id)
+          tags: tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

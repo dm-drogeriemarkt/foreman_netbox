@@ -23,7 +23,7 @@ class CreateDeviceRoleTest < ActiveSupport::TestCase
         body: {
           name: device_role_params[:name],
           color: device_role_params[:color],
-          slug: device_role_params[:slug]
+          slug: device_role_params[:slug],
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

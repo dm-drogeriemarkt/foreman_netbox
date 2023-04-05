@@ -26,7 +26,7 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
           cpus: 2,
           memory_mb: 512,
           volumes: [
-            OpenStruct.new(size_gb: 128)
+            OpenStruct.new(size_gb: 128),
           ]
         )
       )
@@ -53,7 +53,7 @@ class CreateVirtualMachineTest < ActiveSupport::TestCase
           name: netbox_virtual_machine_params[:name],
           cluster: cluster.id,
           tenant: tenant.id,
-          tags: default_tags.map(&:id)
+          tags: default_tags.map(&:id),
         }.to_json
       ).to_return(
         status: 201, headers: { 'Content-Type': 'application/json' },

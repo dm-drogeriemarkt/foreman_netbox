@@ -9,10 +9,9 @@ module ForemanNetbox
             include ::Interactor
 
             def call
-              # rubocop:disable Rails/DynamicFindBy
               context.manufacturer = find_by_slug || find_by_name
-              # rubocop:enable Rails/DynamicFindBy
-            rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
+            rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError,
+                   NetboxClientRuby::RemoteError => e
               ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
               context.fail!(error: "#{self.class}: #{e}")
             end

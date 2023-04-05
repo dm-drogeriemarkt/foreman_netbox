@@ -21,7 +21,7 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
       interfaces: [
         FactoryBot.build_stubbed(:nic_base, mac: 'FE:13:C6:44:29:24', ip: '10.0.0.1', ip6: '1500:0:2d0:201::1'),
         FactoryBot.build_stubbed(:nic_base, mac: 'FE:13:C6:44:29:22', ip: '10.0.0.2', ip6: '1500:0:2d0:201::2'),
-        FactoryBot.build_stubbed(:nic_base, identifier: nil, mac: nil)
+        FactoryBot.build_stubbed(:nic_base, identifier: nil, mac: nil),
       ]
     )
   end
@@ -38,13 +38,13 @@ class CreateVirtualMachineInterfacesTest < ActiveSupport::TestCase
         name: host.interfaces.first.netbox_name,
         mac_address: host.interfaces.first.mac.upcase,
         virtual_machine: virtual_machine.id,
-        tags: default_tags.map(&:id)
+        tags: default_tags.map(&:id),
       }.to_json
     ).to_return(
       status: 201, headers: { 'Content-Type': 'application/json' },
       body: {
         id: 1,
-        name: host.interfaces.first.netbox_name
+        name: host.interfaces.first.netbox_name,
       }.to_json
     )
 

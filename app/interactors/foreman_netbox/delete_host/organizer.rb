@@ -6,7 +6,7 @@ module ForemanNetbox
       include ::Interactor::Organizer
 
       organize DeleteHost::DeleteVirtualMachine,
-               DeleteHost::DeleteDevice
+        DeleteHost::DeleteDevice
     end
   end
 end
