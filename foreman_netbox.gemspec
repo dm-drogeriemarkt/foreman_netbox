@@ -19,8 +19,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'netbox-client-ruby', '~> 0.6.0'
 
   # pin versions
-  s.add_dependency 'dry-container', '0.8.0'
-  s.add_dependency 'dry-schema', '1.10.2'
+  s.add_dependency 'dry-container', '0.9.0'
+  s.add_dependency 'dry-core', '0.8.1'
+  s.add_dependency 'dry-schema', '1.10.6'
 
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'theforeman-rubocop', '~> 0.1.2'
