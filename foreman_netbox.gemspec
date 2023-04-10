@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'dry-validation', '~> 1.8.1'
   s.add_dependency 'interactor', '~> 3.1.1'
-  s.add_dependency 'netbox-client-ruby', '~> 0.6.0'
+  s.add_dependency 'netbox-client-ruby', '>= 0.6', '< 0.8'
 
   # pin versions
   s.add_dependency 'dry-container', '0.9.0'
