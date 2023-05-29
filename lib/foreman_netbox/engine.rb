@@ -39,8 +39,13 @@ module ForemanNetbox
             setting 'netbox_url',
               type: :string,
               default: '-',
-              full_name: N_('Netbox URL'),
-              description: N_('URL where Netbox is reachable')
+              full_name: N_('Netbox UI URL'),
+              description: N_('URL where Netbox UI is reachable')
+            setting 'netbox_api_url',
+              type: :string,
+              default: '-',
+              full_name: N_('Netbox API URL'),
+              description: N_('URL where Netbox API is reachable, in case it is different than Netbox UI')
             setting 'netbox_api_token',
               type: :string,
               default: '-',
