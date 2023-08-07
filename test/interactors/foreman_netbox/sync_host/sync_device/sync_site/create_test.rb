@@ -39,6 +39,19 @@ class CreateSiteTest < ActiveSupport::TestCase
       assert_equal site_id, subject.site.id
       assert_requested(stub_post)
     end
+
+    context 'when netbox_upsert_sites is false' do
+      setup do
+        Setting[:netbox_upsert_sites] = false
+      end
+
+      it 'does not assign site to context' do
+        stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/sites/")
+
+        refute subject.site
+        assert_not_requested stub_post
+      end
+    end
   end
 
   context 'when site is already assigned to the context' do

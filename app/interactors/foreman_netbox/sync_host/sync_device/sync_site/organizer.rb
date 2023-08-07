@@ -8,7 +8,7 @@ module ForemanNetbox
           include ::Interactor::Organizer
 
           around do |interactor|
-            interactor.call if context.host.location && !Setting[:netbox_skip_site_update]
+            interactor.call if context.host.location
           end
 
           after do
