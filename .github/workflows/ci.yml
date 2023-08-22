@@ -47,6 +47,11 @@ jobs:
         with:
           repository: theforeman/foreman
           ref: ${{ matrix.foreman-core-branch }}
+          fetch-depth: 0
+      - name: Apply patches for Foreman < 3.5
+        if: ${{ contains(fromJson('["3.1-stable", "3.2-stable", "3.3-stable", "3.4-stable"]'), matrix.foreman-core-branch) }}
+        run: |
+          git cherry-pick --strategy=recursive -X theirs -n 1c3a4155f286352e0abbf0d0b298e47e81c2d6c5 # https://github.com/theforeman/foreman/pull/9781
       - uses: actions/checkout@v3
         with:
           path: foreman_netbox
