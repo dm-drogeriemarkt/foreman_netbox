@@ -55,6 +55,19 @@ class CreateDeviceTest < ActiveSupport::TestCase
       assert_equal device_id, subject.device.id
       assert_requested(stub_post)
     end
+
+    context 'when creation is disabled' do
+      setup do
+        Setting[:netbox_create_devices] = false
+      end
+
+      it 'does not create a device' do
+        stub_post = stub_request(:post, "#{Setting[:netbox_url]}/api/dcim/devices/")
+
+        refute subject.device
+        assert_not_requested stub_post
+      end
+    end
   end
 
   context 'when device is already assigned to the context' do

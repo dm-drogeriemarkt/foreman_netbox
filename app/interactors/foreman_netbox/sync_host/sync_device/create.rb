@@ -8,7 +8,7 @@ module ForemanNetbox
         include ForemanNetbox::Concerns::AssignTags
 
         around do |interactor|
-          interactor.call unless context.device
+          interactor.call if !context.device && Setting[:netbox_create_devices]
         end
 
         def call

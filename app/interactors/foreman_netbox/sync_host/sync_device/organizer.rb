@@ -11,7 +11,7 @@ module ForemanNetbox
         end
 
         after do
-          context.raw_data[:device] = context.device.raw_data!
+          context.raw_data[:device] = context.device.raw_data! if context.device
         end
 
         organize SyncDevice::Validate,

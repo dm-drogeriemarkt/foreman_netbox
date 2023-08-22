@@ -9,7 +9,7 @@ module ForemanNetbox
           include ForemanNetbox::Concerns::AssignTags
 
           around do |interactor|
-            interactor.call if context.site
+            interactor.call if context.site && Setting[:netbox_upsert_sites]
           end
 
           def call

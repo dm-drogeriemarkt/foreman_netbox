@@ -40,6 +40,19 @@ class UpdateSiteTest < ActiveSupport::TestCase
       assert subject.success?
       assert_requested stub_patch
     end
+
+    context 'when netbox_upsert_sites is false' do
+      setup do
+        Setting[:netbox_upsert_sites] = false
+      end
+
+      it 'does not update site' do
+        stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json")
+
+        assert subject.success?
+        assert_not_requested stub_patch
+      end
+    end
   end
 
   context 'when unchanged' do

@@ -61,6 +61,21 @@ module ForemanNetbox
               default: false,
               full_name: N_('Skip Site Update'),
               description: N_('Skip updating Site attribute for Devices')
+            setting 'netbox_upsert_sites',
+              type: :boolean,
+              default: true,
+              full_name: N_('Create/Update Sites'),
+              description: N_('Create/Update Netbox Site objects for Locations if they are missing or outdated')
+            setting 'netbox_create_devices',
+              type: :boolean,
+              default: true,
+              full_name: N_('Create Devices'),
+              description: N_('Create Netbox Device objects for Hosts if they are missing')
+            setting 'netbox_delete_devices',
+              type: :boolean,
+              default: true,
+              full_name: N_('Delete Devices'),
+              description: N_('Delete Device objects on Host deletion')
           end
         end
 
