@@ -80,6 +80,22 @@ module ForemanNetbox
 
         it { assert_equal expected, subject }
       end
+
+      context 'manufacturer prefixed' do
+        let(:host) do
+          FactoryBot.build_stubbed(:host, :managed).tap do |host|
+            host.stubs(:facts).returns({ manufacturer: manufacturer[:name], productname: "#{manufacturer[:name]} #{expected[:model]}" })
+          end
+        end
+
+        let(:manufacturer) do
+          {
+            name: 'Manufacturer Name',
+          }
+        end
+
+        it { assert_equal expected, subject }
+      end
     end
 
     describe '#manufacturer' do
