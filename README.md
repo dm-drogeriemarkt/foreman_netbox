@@ -1,6 +1,6 @@
 # ForemanNetbox
 
-[<img src="https://opensourcelogos.aws.dmtech.cloud/dmTECH_opensource_logo.svg" height="21" width="130">](https://www.dmtech.de/)
+[<img src="https://raw.githubusercontent.com/dm-drogeriemarkt/.github/refs/heads/main/assets/dmtech-open-source-badge.svg">](https://www.dmtech.de/)
 
 This is a plugin for Foreman that introduces integration with [NetBox](https://netbox.readthedocs.io)
 
