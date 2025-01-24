@@ -6,7 +6,7 @@ module ForemanNetbox
       include ::Interactor
 
       around do |interactor|
-        interactor.call unless context.host.compute?
+        interactor.call if !context.host.compute? && Setting[:netbox_delete_devices]
       end
 
       def call

@@ -7,6 +7,10 @@ module ForemanNetbox
         class Organizer
           include ::Interactor::Organizer
 
+          around do |interactor|
+            interactor.call if context.device
+          end
+
           after do
             context.raw_data[:interfaces] = context.interfaces.reload.raw_data!
           end
