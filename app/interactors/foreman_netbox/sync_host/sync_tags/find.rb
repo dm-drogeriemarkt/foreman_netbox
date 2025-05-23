@@ -8,7 +8,7 @@ module ForemanNetbox
 
         def call
           context.tags = slugs.map do |slug|
-            ForemanNetbox::API.client.extras.tags.find_by(slug: slug)
+            ForemanNetbox::Api.client.extras.tags.find_by(slug: slug)
           end.compact
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")

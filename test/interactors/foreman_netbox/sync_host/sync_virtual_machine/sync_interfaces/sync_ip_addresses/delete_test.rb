@@ -9,8 +9,8 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { ForemanNetbox::API.client.virtualization.interfaces.filter(virtual_machine_id: 1) }
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
+  let(:interfaces) { ForemanNetbox::Api.client.virtualization.interfaces.filter(virtual_machine_id: 1) }
+  let(:ip_addresses) { ForemanNetbox::Api.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
 
   let(:host) do
     FactoryBot.build_stubbed(

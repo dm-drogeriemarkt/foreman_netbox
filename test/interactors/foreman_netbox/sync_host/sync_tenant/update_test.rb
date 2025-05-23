@@ -10,7 +10,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
   end
 
   let(:tenant) do
-    ForemanNetbox::API.client::Tenancy::Tenant.new(id: 1).tap do |tenant|
+    ForemanNetbox::Api.client::Tenancy::Tenant.new(id: 1).tap do |tenant|
       tenant.instance_variable_set(
         :@data,
         { 'id' => 1, 'tags' => tenant_tags }

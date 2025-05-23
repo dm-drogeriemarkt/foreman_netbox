@@ -13,7 +13,7 @@ module ForemanNetbox
             end
 
             def call
-              context.manufacturer = ForemanNetbox::API.client::DCIM::Manufacturer.new(params).save
+              context.manufacturer = ForemanNetbox::Api.client::DCIM::Manufacturer.new(params).save
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
               ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
               context.fail!(error: "#{self.class}: #{e}")

@@ -66,7 +66,7 @@ module ForemanNetbox
       end.compact
     end
 
-    # rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def diff_new
       new_hash.except(*added_keys).each_with_object({}) do |(key, new_value), memo|
         case new_value
@@ -97,6 +97,6 @@ module ForemanNetbox
         end
       end.compact
     end
-    # rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
   end
 end

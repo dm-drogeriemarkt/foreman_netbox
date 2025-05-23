@@ -11,6 +11,8 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/dm-drogeriemarkt/foreman_netbox'
   s.summary     = 'Adds integration with NetBox'
 
+  s.required_ruby_version = '>= 2.7', '< 4'
+
   s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 

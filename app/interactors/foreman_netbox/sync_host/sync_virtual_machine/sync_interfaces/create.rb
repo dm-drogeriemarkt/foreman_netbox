@@ -17,14 +17,14 @@ module ForemanNetbox
                          .select { |i| i[:name] }
                          .reject { |i| interfaces.map(&:name).include?(i[:name]) }
                          .map do |new_interface|
-                           ForemanNetbox::API.client::Virtualization::Interface.new(
-                             new_interface.except(:type)
-                                          .merge(
-                                            virtual_machine: virtual_machine.id,
-                                            tags: default_tag_ids
-                                          )
-                           ).save
-                         end
+              ForemanNetbox::Api.client::Virtualization::Interface.new(
+                new_interface.except(:type)
+                .merge(
+                  virtual_machine: virtual_machine.id,
+                  tags: default_tag_ids
+                )
+              ).save
+            end
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")

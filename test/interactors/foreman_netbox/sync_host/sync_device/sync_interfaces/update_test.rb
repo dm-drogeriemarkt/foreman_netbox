@@ -12,8 +12,8 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
-  let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
+  let(:interfaces) { ForemanNetbox::Api.client::DCIM::Interfaces.new }
+  let(:tags) { [ForemanNetbox::Api.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
   let(:old_mac) { 'FE:13:C6:44:29:22' }
   let(:host) do
     FactoryBot.build_stubbed(

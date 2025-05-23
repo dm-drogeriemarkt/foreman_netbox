@@ -9,8 +9,8 @@ class DeleteDeviceIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { ForemanNetbox::API.client.dcim.interfaces.filter(device_id: 1) }
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: 1) }
+  let(:interfaces) { ForemanNetbox::Api.client.dcim.interfaces.filter(device_id: 1) }
+  let(:ip_addresses) { ForemanNetbox::Api.client.ipam.ip_addresses.filter(device_id: 1) }
   let(:host) do
     FactoryBot.build_stubbed(
       :host,

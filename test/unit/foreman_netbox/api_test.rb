@@ -3,7 +3,7 @@
 require 'test_plugin_helper'
 
 module ForemanNetbox
-  class APITest < ActiveSupport::TestCase
+  class ApiTest < ActiveSupport::TestCase
     describe '.netbox_api_url' do
       subject { described_class.netbox_api_url }
 

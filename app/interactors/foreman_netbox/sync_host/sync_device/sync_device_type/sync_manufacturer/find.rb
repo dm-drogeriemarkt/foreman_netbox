@@ -23,13 +23,13 @@ module ForemanNetbox
             def find_by_slug
               params = netbox_params.fetch(:manufacturer).slice(:slug)
 
-              ForemanNetbox::API.client.dcim.manufacturers.find_by(params)
+              ForemanNetbox::Api.client.dcim.manufacturers.find_by(params)
             end
 
             def find_by_name
               params = netbox_params.fetch(:manufacturer).slice(:name)
 
-              ForemanNetbox::API.client.dcim.manufacturers.find_by(params)
+              ForemanNetbox::Api.client.dcim.manufacturers.find_by(params)
             end
           end
         end

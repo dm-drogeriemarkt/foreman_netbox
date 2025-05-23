@@ -17,7 +17,7 @@ module ForemanNetbox
                          .select { |i| i[:name] }
                          .reject { |i| interfaces.map(&:name).include?(i[:name]) }
                          .map do |new_interface|
-                           ForemanNetbox::API.client::DCIM::Interface.new(
+                           ForemanNetbox::Api.client::DCIM::Interface.new(
                              new_interface.except(:type)
                                           .merge(
                                             type: new_interface.dig(:type, :value),

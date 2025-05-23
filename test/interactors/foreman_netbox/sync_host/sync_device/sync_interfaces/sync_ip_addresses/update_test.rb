@@ -11,7 +11,7 @@ class UpdateDeviceIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(device_id: 1) }
+  let(:ip_addresses) { ForemanNetbox::Api.client.ipam.ip_addresses.filter(device_id: 1) }
   let(:tags_data) { default_tags.map { |t| { id: t.id, name: t.name, slug: t.slug } } }
   let(:ip_addresses_data) do
     [

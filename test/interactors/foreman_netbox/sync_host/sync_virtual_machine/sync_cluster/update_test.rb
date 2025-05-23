@@ -11,7 +11,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
 
   let(:host) { FactoryBot.build_stubbed(:host).tap { |h| h.stubs(:compute?).returns(true) } }
   let(:cluster) do
-    ForemanNetbox::API.client::Virtualization::Cluster.new(id: 1).tap do |cluster|
+    ForemanNetbox::Api.client::Virtualization::Cluster.new(id: 1).tap do |cluster|
       cluster.instance_variable_set(
         :@data,
         { 'id' => 1, 'tags' => cluster_tags }

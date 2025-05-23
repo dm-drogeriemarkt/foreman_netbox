@@ -10,7 +10,7 @@ class DeleteVirtualMachineInterfacesTest < ActiveSupport::TestCase
   end
 
   let(:interface_id) { 1 }
-  let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::Api.client::Virtualization::Interfaces.new }
   let(:host) { FactoryBot.build_stubbed(:host, interfaces: []) }
 
   setup do

@@ -2,9 +2,9 @@
 
 require 'test_plugin_helper'
 
-class SaveNetboxUrlDeviceTest < ActiveSupport::TestCase
+class SaveNetboxURLDeviceTest < ActiveSupport::TestCase
   subject do
-    ForemanNetbox::SyncHost::SyncDevice::SaveNetboxUrl.call(host: host, device: device)
+    ForemanNetbox::SyncHost::SyncDevice::SaveNetboxURL.call(host: host, device: device)
   end
 
   let(:device) { OpenStruct.new(id: 1) }

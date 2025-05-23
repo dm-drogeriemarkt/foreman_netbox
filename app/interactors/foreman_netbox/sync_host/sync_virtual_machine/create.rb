@@ -12,7 +12,7 @@ module ForemanNetbox
         end
 
         def call
-          context.virtual_machine = ForemanNetbox::API.client::Virtualization::VirtualMachine.new(params).save
+          context.virtual_machine = ForemanNetbox::Api.client::Virtualization::VirtualMachine.new(params).save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")

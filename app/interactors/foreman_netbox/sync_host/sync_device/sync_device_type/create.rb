@@ -13,7 +13,7 @@ module ForemanNetbox
           end
 
           def call
-            context.device_type = ForemanNetbox::API.client::DCIM::DeviceType.new(params).save
+            context.device_type = ForemanNetbox::Api.client::DCIM::DeviceType.new(params).save
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")

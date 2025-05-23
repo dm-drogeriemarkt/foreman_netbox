@@ -54,7 +54,7 @@ class SyncRhelVirtualHostTest < ActiveSupport::TestCase
     end
   end
 
-  test 'sync host' do
+  test 'sync virtual host' do
     ForemanNetbox::NetboxFacet.any_instance.expects(:update).twice.returns(true)
 
     assert subject.success?

@@ -1,24 +1,77 @@
-inherit_from: .rubocop_todo.yml
-
 inherit_gem:
   theforeman-rubocop:
     - default.yml
 
-Layout/LineLength:
+AllCops:
+  TargetRubyVersion: '2.7'
+  Exclude:
+    - 'vendor/bundle/**/*'
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - Rakefile
+
+# Don't enforce documentation
+Style/Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 40
+
+Metrics/ClassLength:
   Exclude:
     - 'test/**/*'
 
 Metrics/BlockLength:
   Exclude:
-    - 'lib/foreman_gaffer_tape/engine.rb'
-    - 'test/**/*'
-    - 'lib/foreman_netbox/engine.rb'
-
-Metrics/ClassLength:
-  Exclude:
-    - 'lib/foreman_gaffer_tape/engine.rb'
     - 'test/**/*'
 
-Rails/DynamicFindBy:
+Naming/FileName:
   Exclude:
-    - 'app/interactors/**/*'
+      - 'db/seeds.d/*'
+
+Style/WordArray:
+  Enabled: false
+
+Style/RescueModifier:
+  Enabled: false
+
+# Support both ruby19 and hash_rockets
+Style/HashSyntax:
+  Enabled: false
+  SupportedStyles:
+    - ruby19
+    - hash_rockets
+
+Layout/LineLength:
+  Max: 190
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/FormatString:
+  Enabled: false
+
+Style/FormatStringToken:
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Style/MultilineBlockChain:
+  Exclude:
+    - 'app/interactors/foreman_netbox/sync_host/sync_device/sync_interfaces/sync_ip_addresses/delete.rb'
+    - 'app/interactors/foreman_netbox/sync_host/sync_virtual_machine/sync_interfaces/sync_ip_addresses/delete.rb'
+
+Performance/CollectionLiteralInLoop:
+  Exclude:
+    - 'test/services/foreman_netbox/netbox_parameters_comparator_test.rb'

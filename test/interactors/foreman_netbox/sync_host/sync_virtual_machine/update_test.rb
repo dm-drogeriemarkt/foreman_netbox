@@ -16,7 +16,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
   end
 
   let(:virtual_machine) do
-    ForemanNetbox::API.client::Virtualization::VirtualMachine.new(id: 1).tap do |virtual_machine|
+    ForemanNetbox::Api.client::Virtualization::VirtualMachine.new(id: 1).tap do |virtual_machine|
       virtual_machine.instance_variable_set(
         :@data,
         {
@@ -64,7 +64,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
       )
     )
   end
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: virtual_machine.id) }
+  let(:ip_addresses) { ForemanNetbox::Api.client.ipam.ip_addresses.filter(virtual_machine_id: virtual_machine.id) }
   let(:host) do
     FactoryBot.build_stubbed(
       :host,

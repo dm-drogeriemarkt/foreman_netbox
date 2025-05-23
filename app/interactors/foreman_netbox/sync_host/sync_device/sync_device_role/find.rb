@@ -8,7 +8,7 @@ module ForemanNetbox
           include ::Interactor
 
           def call
-            context.device_role = ForemanNetbox::API.client.dcim.device_roles.find_by(params)
+            context.device_role = ForemanNetbox::Api.client.dcim.device_roles.find_by(params)
           rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
             ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
             context.fail!(error: "#{self.class}: #{e}")

@@ -14,7 +14,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
 
   let(:host) { FactoryBot.build_stubbed(:host) }
   let(:device_type) do
-    ForemanNetbox::API.client::DCIM::DeviceType.new(id: 1).tap do |device|
+    ForemanNetbox::Api.client::DCIM::DeviceType.new(id: 1).tap do |device|
       device.instance_variable_set(
         :@data,
         { 'id' => 1, 'tags' => device_type_tags }
