@@ -6,11 +6,12 @@ This is a plugin for Foreman that introduces integration with [NetBox](https://n
 
 ## Compatibility
 
-| Netbox Version | Plugin Version |
-| -------------- | -------------- |
-| 2.8            | 1.0            |
-| 2.11           | 1.1            |
-| 3.3            | 1.2            |
+| Foreman Version | Netbox Version | Plugin Version |
+| --------------- | -------------- | -------------- |
+| <3.13           | 2.8            | 1.0            |
+| <3.13           | 2.11           | 1.1            |
+| <3.13           | 3.3            | 1.2            |
+| >=3.13          | 3.5            | 2.0            |
 
 ## Installation
 
