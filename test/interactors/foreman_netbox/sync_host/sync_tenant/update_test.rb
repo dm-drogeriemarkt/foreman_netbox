@@ -32,7 +32,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
     let(:tenant_tags) { [] }
 
     it 'updates tenant' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1/").with(
         body: {
           tags: default_tags.map(&:id),
         }.to_json
@@ -52,7 +52,7 @@ class UpdateTenantTest < ActiveSupport::TestCase
     end
 
     it 'does not update tenant' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/tenancy/tenants/1/")
 
       assert subject.success?
       assert_not_requested stub_patch

@@ -30,7 +30,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
     let(:device_type_tags) { [] }
 
     it 'updates device type' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1/").with(
         body: {
           tags: default_tags.map(&:id),
         }.to_json
@@ -50,7 +50,7 @@ class UpdateDeviceTypeTest < ActiveSupport::TestCase
     end
 
     it 'does not update device type' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/device-types/1/")
 
       assert subject.success?
       assert_not_requested stub_patch

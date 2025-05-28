@@ -27,7 +27,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
     let(:cluster_tags) { [] }
 
     it 'updates cluster' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1/").with(
         body: {
           tags: default_tags.map(&:id),
         }.to_json
@@ -47,7 +47,7 @@ class UpdateClusterTest < ActiveSupport::TestCase
     end
 
     it 'does not update cluster' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/clusters/1/")
 
       assert subject.success?
       assert_not_requested stub_patch

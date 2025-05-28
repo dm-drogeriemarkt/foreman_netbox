@@ -36,7 +36,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
     let(:new_mac) { 'FE:13:C6:44:29:24' }
 
     it 'updats interface in Netbox' do
-      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces.json").with(
+      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
         query: { limit: 50 }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -52,7 +52,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
           ],
         }.to_json
       )
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/interfaces/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/interfaces/1/").with(
         body: {
           mac_address: host.interfaces.first.mac.upcase,
           tags: tags.map(&:id),
@@ -70,7 +70,7 @@ class UpdateDeviceInterfacesTest < ActiveSupport::TestCase
 
   context 'if the host has not been updated since the last synchronization' do
     it 'does not update interface on Netbox' do
-      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces.json").with(
+      get_stub = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
         query: { limit: 50 }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

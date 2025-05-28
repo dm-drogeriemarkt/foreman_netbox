@@ -16,14 +16,14 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,db,lib,locale}/**/*'] + ['LICENSE', 'Rakefile', 'README.md']
   s.test_files = Dir['test/**/*']
 
-  s.add_dependency 'dry-validation', '~> 1.8.1'
+  s.add_dependency 'dry-validation', '~> 1.10.0'
   s.add_dependency 'interactor', '~> 3.1.1'
-  s.add_dependency 'netbox-client-ruby', '~> 0.6.0'
+  s.add_dependency 'netbox-client-ruby', '~> 0.13.0'
 
   # pin versions
-  s.add_dependency 'dry-container', '0.9.0'
-  s.add_dependency 'dry-core', '0.8.1'
-  s.add_dependency 'dry-schema', '1.10.6'
+  # s.add_dependency 'dry-container', '0.9.0'
+  # s.add_dependency 'dry-core', '0.8.1'
+  # s.add_dependency 'dry-schema', '1.10.6'
 
   s.add_development_dependency 'rdoc'
   s.add_development_dependency 'theforeman-rubocop', '~> 0.1.2'

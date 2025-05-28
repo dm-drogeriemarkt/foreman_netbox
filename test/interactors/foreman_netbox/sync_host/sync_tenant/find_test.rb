@@ -22,7 +22,7 @@ class FindTenantTest < ActiveSupport::TestCase
 
   context 'when tenant exists in Netbox' do
     it 'assigns tenant to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/tenancy/tenants.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/tenancy/tenants/").with(
         query: { limit: 50, slug: host.owner.name.parameterize }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -41,7 +41,7 @@ class FindTenantTest < ActiveSupport::TestCase
 
   context 'when tenant does not exist in NetBox' do
     it 'does not assign tenant to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/tenancy/tenants.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/tenancy/tenants/").with(
         query: { limit: 50, slug: host.owner.name.parameterize }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

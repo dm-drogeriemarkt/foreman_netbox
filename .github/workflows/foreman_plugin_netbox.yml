@@ -146,6 +146,9 @@ jobs:
                 SUPERUSER_NAME: admin
                 SUPERUSER_PASSWORD: admin
           EOF
+          docker version
+          docker compose version
+
           docker compose up -d --quiet-pull netbox netbox-worker postgres redis redis-cache
           docker container ls
       - name: Wait for NetBox to be available

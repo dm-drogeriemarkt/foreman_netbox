@@ -87,7 +87,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, virtual_machine_id: virtual_machine.id }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -150,7 +150,7 @@ class UpdateVirtualMachineTest < ActiveSupport::TestCase
     end
 
     it 'updates virtual_machine' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/#{virtual_machine.id}.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/#{virtual_machine.id}/").with(
         body: {
           name: host.name,
           cluster: cluster.id,

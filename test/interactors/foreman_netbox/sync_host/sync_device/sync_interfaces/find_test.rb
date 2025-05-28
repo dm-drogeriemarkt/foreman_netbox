@@ -17,7 +17,7 @@ class FindDeviceInterfacesTest < ActiveSupport::TestCase
 
   context 'when interfaces were found on Netbox' do
     it 'assigns interfaces to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
         query: { limit: 50, device_id: device.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -36,7 +36,7 @@ class FindDeviceInterfacesTest < ActiveSupport::TestCase
 
   context 'when interfaces were not found on Netbox' do
     it 'does not assign interfaces to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/interfaces/").with(
         query: { limit: 50, device_id: device.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
