@@ -55,6 +55,16 @@ on:
         required: false
         default: 60
         type: number
+      netbox_version:
+        description: NetBox version to use
+        default: 'v4.3'
+        required: false
+        type: string
+      netbox_docker_version:
+        description: NetBox docker version to use
+        default: '3.3.0'
+        required: false
+        type: string
 
 env:
   RAILS_ENV: test
@@ -114,15 +124,16 @@ jobs:
         with:
           repository: netbox-community/netbox-docker
           path: netbox-docker
+          ref: ${{ inputs.netbox_docker_version }}
       - name: Setup Netbox
         working-directory: netbox-docker
         run: |
           tee docker-compose.override.yml <<EOF
           services:
             netbox:
-              image: netboxcommunity/netbox:v3.5-2.6.1
+              image: netboxcommunity/netbox:${{ inputs.netbox_version }}-${{ inputs.netbox_docker_version }}
               ports:
-              - 8000:8080
+              - 127.0.0.1:8000:8080
               healthcheck:
                 test: curl -f http://localhost:8080/login/ || exit 1
                 start_period: 300s
@@ -135,8 +146,11 @@ jobs:
                 SUPERUSER_NAME: admin
                 SUPERUSER_PASSWORD: admin
           EOF
+          docker version
+          docker compose version
+
           docker compose up -d --quiet-pull netbox netbox-worker postgres redis redis-cache
-          docker container ls 
+          docker container ls
       - name: Wait for NetBox to be available
         run: |
           docker container ls

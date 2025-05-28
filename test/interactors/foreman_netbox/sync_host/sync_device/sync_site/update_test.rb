@@ -28,7 +28,7 @@ class UpdateSiteTest < ActiveSupport::TestCase
     let(:site_tags) { [] }
 
     it 'updates site' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1/").with(
         body: {
           tags: default_tags.map(&:id),
         }.to_json
@@ -46,7 +46,7 @@ class UpdateSiteTest < ActiveSupport::TestCase
     let(:site_tags) { default_tags.map { |t| { 'id' => t.id, 'name' => t.name, 'slug' => t.slug } } }
 
     it 'does not update site' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/sites/1/")
 
       assert subject.success?
       assert_not_requested stub_patch

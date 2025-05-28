@@ -18,19 +18,19 @@ class FindDeviceTest < ActiveSupport::TestCase
 
   context 'when device already exists in Netbox' do
     test 'find device by host name' do
-      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, name: host.name }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -44,13 +44,13 @@ class FindDeviceTest < ActiveSupport::TestCase
     end
 
     test 'find device by mac address' do
-      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -63,7 +63,7 @@ class FindDeviceTest < ActiveSupport::TestCase
     end
 
     test 'find device by serial number' do
-      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -77,19 +77,19 @@ class FindDeviceTest < ActiveSupport::TestCase
 
   context 'when device does not exist in NetBox' do
     it 'does not assign device to context' do
-      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_serial = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, serial: host.netbox_facet.netbox_params.dig(:device, :serial) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices.json").with(
+      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/devices/").with(
         query: { limit: 50, name: host.netbox_facet.netbox_params.dig(:device, :name) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

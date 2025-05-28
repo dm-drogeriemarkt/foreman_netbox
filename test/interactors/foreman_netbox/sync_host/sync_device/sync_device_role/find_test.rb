@@ -18,7 +18,7 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
 
   context 'when device_role exists in Netbox' do
     it 'assigns device_role to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles/").with(
         query: { limit: 50, slug: device_role_params[:slug] }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -41,7 +41,7 @@ class FindDeviceRoleTest < ActiveSupport::TestCase
 
   context 'when device_role does not exist in NetBox' do
     it 'does not assign device_role to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-roles/").with(
         query: { limit: 50, slug: device_role_params[:slug] }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

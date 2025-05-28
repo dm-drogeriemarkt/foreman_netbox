@@ -37,7 +37,7 @@ class UpdateDeviceIpAddressesTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, device_id: 1 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -49,8 +49,8 @@ class UpdateDeviceIpAddressesTest < ActiveSupport::TestCase
   end
 
   test 'update ip addresses' do
-    stub_unexpected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.first[:id]}.json")
-    stub_expected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.second[:id]}.json").with(
+    stub_unexpected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.first[:id]}/")
+    stub_expected_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_data.second[:id]}/").with(
       body: {
         tags: default_tags.map(&:id),
       }.to_json

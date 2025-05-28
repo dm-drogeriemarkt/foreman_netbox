@@ -82,7 +82,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, device_id: device.id }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -103,7 +103,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
     it 'does not update device' do
       device_tags.each do |t|
-        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}.json")
+        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}/")
           .to_return(
             status: 200, headers: { 'Content-Type': 'application/json' },
             body: {
@@ -113,7 +113,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             }.to_json
           )
       end
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}/")
 
       assert_equal device, subject.device
       assert_not_requested(stub_patch)
@@ -153,7 +153,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
     end
 
     it 'updates device' do
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}/").with(
         body: {
           name: host.name,
           device_role: device_role.id,
@@ -178,7 +178,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
       let(:serialnumber) { nil }
 
       it 'updates device' do
-        stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json").with(
+        stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}/").with(
           body: {
             name: host.name,
             device_role: device_role.id,
@@ -213,7 +213,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
 
     it 'does not update site of device' do
       device_tags.each do |t|
-        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}.json")
+        stub_request(:get, "#{Setting[:netbox_url]}/api/extras/tags/#{t['id']}/")
           .to_return(
             status: 200, headers: { 'Content-Type': 'application/json' },
             body: {
@@ -223,7 +223,7 @@ class UpdateDeviceTest < ActiveSupport::TestCase
             }.to_json
           )
       end
-      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}.json")
+      stub_patch = stub_request(:patch, "#{Setting[:netbox_url]}/api/dcim/devices/#{device.id}/")
 
       assert_not_equal device.site.id, new_site_id
       assert_not_requested(stub_patch)

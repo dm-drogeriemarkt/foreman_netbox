@@ -17,7 +17,7 @@ class FindDeviceIpAddressesTest < ActiveSupport::TestCase
 
   context 'when ip_addresses were found on Netbox' do
     it 'assigns ip_addresses to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
         query: { limit: 50, device_id: device.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -34,7 +34,7 @@ class FindDeviceIpAddressesTest < ActiveSupport::TestCase
 
   context 'when ip_addresses were not found on Netbox' do
     it 'does not assign ip_addresses to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
         query: { limit: 50, device_id: device.id }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

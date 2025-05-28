@@ -30,5 +30,7 @@ jobs:
     with:
       plugin: foreman_netbox
       foreman_version: ${{ matrix.foreman }}
+      netbox_version: 'v4.3'
+      netbox_docker_version: '3.3.0'
       environment_variables: |
         FOREMAN_VERSION=${{ matrix.foreman }}

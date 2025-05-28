@@ -28,7 +28,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
   context 'when manufacturer exists in Netbox' do
     context 'by slug' do
       it 'assigns manufacturer to context' do
-        stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+        stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
           query: { limit: 50, slug: netbox_params.dig(:manufacturer, :slug) }
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },
@@ -37,7 +37,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
             results: [netbox_params.fetch(:manufacturer).merge(id: 1)],
           }.to_json
         )
-        stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+        stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
           query: { limit: 50, name: netbox_params.dig(:manufacturer, :name) }
         )
 
@@ -49,7 +49,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
 
     context 'by name' do
       it 'assigns manufacturer to context' do
-        stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+        stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
           query: { limit: 50, slug: netbox_params.dig(:manufacturer, :slug) }
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },
@@ -58,7 +58,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
             results: [],
           }.to_json
         )
-        stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+        stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
           query: { limit: 50, name: netbox_params.dig(:manufacturer, :name) }
         ).to_return(
           status: 200, headers: { 'Content-Type': 'application/json' },
@@ -77,7 +77,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
 
   context 'when manufacturer does not exist in NetBox' do
     it 'does not assign manufacturer to context' do
-      stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+      stub_get_with_slug = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
         query: { limit: 50, slug: netbox_params.dig(:manufacturer, :slug) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -87,7 +87,7 @@ class FindManufacturerTest < ActiveSupport::TestCase
         }.to_json
       )
 
-      stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers.json").with(
+      stub_get_with_name = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/manufacturers/").with(
         query: { limit: 50, name: netbox_params.dig(:manufacturer, :name) }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

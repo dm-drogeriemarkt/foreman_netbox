@@ -23,13 +23,13 @@ class FindVirtualMachineTest < ActiveSupport::TestCase
 
   context 'when virtual machine already exists in Netbox' do
     test 'find virtual_machine by host name' do
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
+      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         query: { limit: 50, name: host.name }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -42,7 +42,7 @@ class FindVirtualMachineTest < ActiveSupport::TestCase
     end
 
     test 'find virtual_machine by mac address' do
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -56,13 +56,13 @@ class FindVirtualMachineTest < ActiveSupport::TestCase
 
   context 'when virtual machine does not exist in Netbox' do
     it 'does not assign virtual_machine to context' do
-      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
+      stub_get_by_mac_addres = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         query: { limit: 50, mac_address: host.mac }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
         body: { count: 0, results: [] }.to_json
       )
-      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines.json").with(
+      stub_get_by_name = stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/virtual-machines/").with(
         query: { limit: 50, name: host.name }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

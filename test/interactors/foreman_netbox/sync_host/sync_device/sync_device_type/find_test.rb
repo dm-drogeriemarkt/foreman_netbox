@@ -23,7 +23,7 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
 
   context 'when device_type exists in Netbox' do
     it 'assigns device_type to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-types.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-types/").with(
         query: { limit: 50, slug: slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },
@@ -46,7 +46,7 @@ class FindDeviceTypeTest < ActiveSupport::TestCase
 
   context 'when device_type does not exist in NetBox' do
     it 'does not assign device_type to context' do
-      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-types.json").with(
+      stub_get = stub_request(:get, "#{Setting[:netbox_url]}/api/dcim/device-types/").with(
         query: { limit: 50, slug: slug }
       ).to_return(
         status: 200, headers: { 'Content-Type': 'application/json' },

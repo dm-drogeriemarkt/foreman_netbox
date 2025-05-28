@@ -33,7 +33,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/interfaces.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/virtualization/interfaces/").with(
       query: { limit: 50, virtual_machine_id: 1 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         ],
       }.to_json
     )
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, virtual_machine_id: 1 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -59,10 +59,10 @@ class DeleteVirtualMachineIpAddressesTest < ActiveSupport::TestCase
   end
 
   it 'deletes from Netbox IP addresses that are not assigned to the host' do
-    stub_delete_ip_address_v4 = stub_request(:delete, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_v4_id}.json").to_return(
+    stub_delete_ip_address_v4 = stub_request(:delete, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_v4_id}/").to_return(
       status: 200, headers: { 'Content-Type': 'application/json' }
     )
-    stub_delete_ip_address_v6 = stub_request(:delete, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_v6_id}.json").to_return(
+    stub_delete_ip_address_v6 = stub_request(:delete, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/#{ip_addresses_v6_id}/").to_return(
       status: 200, headers: { 'Content-Type': 'application/json' }
     )
 

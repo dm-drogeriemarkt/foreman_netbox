@@ -30,7 +30,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
 
   setup do
     setup_default_netbox_settings
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, vminterface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ class CreateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
         results: [],
       }.to_json
     )
-    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses.json").with(
+    stub_request(:get, "#{Setting[:netbox_url]}/api/ipam/ip-addresses/").with(
       query: { limit: 50, vminterface_id: interfaces.first.id, address: host.interfaces.first.netbox_ip6 }
     ).to_return(
       status: 200, headers: { 'Content-Type': 'application/json' },
