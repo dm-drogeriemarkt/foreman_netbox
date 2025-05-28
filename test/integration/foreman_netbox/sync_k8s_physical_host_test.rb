@@ -42,7 +42,7 @@ class SyncK8sPhysicalHostTest < ActiveSupport::TestCase
     end
   end
 
-  test 'sync host' do
+  test 'sync k8s host' do
     ForemanNetbox::NetboxFacet.any_instance.expects(:update).twice.returns(true)
 
     assert subject.success?

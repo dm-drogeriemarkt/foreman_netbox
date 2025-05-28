@@ -1,0 +1,304 @@
+---
+name: Foreman Plugin
+
+on:
+  workflow_call:
+    inputs:
+      plugin:
+        description: Plugin name
+        required: true
+        type: string
+      plugin_repository:
+        description: Plugin repository to use
+        required: false
+        type: string
+      plugin_version:
+        description: Plugin version to use
+        required: false
+        type: string
+      foreman_version:
+        description: Foreman version to use
+        default: 'develop'
+        required: false
+        type: string
+      foreman_repository:
+        description: Foreman repository to use
+        default: 'theforeman/foreman'
+        required: false
+        type: string
+      matrix_include:
+        description: Additional test matrix combinations to include
+        default: '[]'
+        required: false
+        type: string
+      matrix_exclude:
+        description: Test matrix combinations to exclude
+        default: '[]'
+        required: false
+        type: string
+      postgresql_container:
+        description: PostgreSQL container to use
+        default: 'postgres'
+        required: false
+        type: string
+      test_existing_database:
+        description: Test plugin database migrations and seeds on an existing Foreman database
+        default: true
+        type: boolean
+      environment_variables:
+        description: arbitrary environment variables from caller
+        required: false
+        default: ''
+        type: string
+      timeout_minutes:
+        description: timout for the test jobs in minutes
+        required: false
+        default: 60
+        type: number
+
+env:
+  RAILS_ENV: test
+  NODE_ENV: test
+  DATABASE_URL: postgresql://postgres:password@localhost/test
+  DATABASE_CLEANER_ALLOW_REMOTE_DATABASE_URL: true
+  BUNDLE_WITHOUT: "console:development:journald:libvirt"
+  FOREMAN_NETBOX_URL: http://0.0.0.0:8000
+  FOREMAN_NETBOX_TOKEN: 0123456789abcdef0123456789abcdef01234567
+
+jobs:
+  setup_matrix:
+    name: Setup matrix
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.build_matrix.outputs.matrix }}
+    steps:
+      - name: Build test matrix
+        id: build_matrix
+        uses: theforeman/gha-matrix-builder@v0
+        with:
+          repository: ${{ inputs.foreman_repository }}
+          ref: ${{ inputs.foreman_version }}
+          include: ${{ inputs.matrix_include }}
+          exclude: ${{ inputs.matrix_exclude }}
+
+  test:
+    name: "${{ matrix.task }} - Foreman ${{ inputs.foreman_version }} with Ruby ${{ matrix.ruby }} and Node ${{ matrix.node }} on PostgreSQL ${{ matrix.postgresql }}"
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    services:
+      postgres:
+        image: '${{ inputs.postgresql_container }}:${{ matrix.postgresql }}'
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_PASSWORD: password
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ fromJson(needs.setup_matrix.outputs.matrix).ruby }}
+        node: ${{ fromJson(needs.setup_matrix.outputs.matrix).node }}
+        postgresql: ${{ fromJson(needs.setup_matrix.outputs.matrix).postgresql }}
+        task:
+          - 'test:${{ inputs.plugin }}'
+          - 'db:seed'
+          - 'plugin:assets:precompile[${{ inputs.plugin }}] RAILS_ENV=production DATABASE_URL=nulldb://nohost'
+        include: ${{ fromJson(needs.setup_matrix.outputs.matrix).include }}
+        exclude: ${{ fromJson(needs.setup_matrix.outputs.matrix).exclude }}
+    steps:
+      - name: Load environment variables from caller
+        run: echo "${{ inputs.environment_variables }}" >> $GITHUB_ENV
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y build-essential libcurl4-openssl-dev zlib1g-dev libpq-dev
+      - uses: actions/checkout@v4
+        with:
+          repository: netbox-community/netbox-docker
+          path: netbox-docker
+      - name: Setup Netbox
+        working-directory: netbox-docker
+        run: |
+          tee docker-compose.override.yml <<EOF
+          services:
+            netbox:
+              image: netboxcommunity/netbox:v3.5-2.6.1
+              ports:
+              - 8000:8080
+              healthcheck:
+                test: curl -f http://localhost:8080/login/ || exit 1
+                start_period: 300s
+                timeout: 10s
+                interval: 30s
+              environment:
+                SKIP_SUPERUSER: false
+                SUPERUSER_API_TOKEN: 0123456789abcdef0123456789abcdef01234567
+                SUPERUSER_EMAIL: admin@example.com
+                SUPERUSER_NAME: admin
+                SUPERUSER_PASSWORD: admin
+          EOF
+          docker compose up -d --quiet-pull netbox netbox-worker postgres redis redis-cache
+          docker container ls 
+      - name: Wait for NetBox to be available
+        run: |
+          docker container ls
+          docker logs netbox-docker-netbox-1
+          timeout 300 bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' 0.0.0.0:8000/login/)" != "200" ]]; do echo "waiting for NetBox"; sleep 5; done' || false
+        working-directory: netbox-docker
+      - name: generate artifact suffix
+        run: echo "ARTIFACT_SUFFIX=$(echo 'ruby-${{ matrix.ruby }}-node-${{ matrix.node }}-pg-${{ matrix.postgresql }}-foreman-${{ inputs.foreman_version }}-${{ matrix.task }}' | tr -cd '[:alnum:]-')" >> "${GITHUB_ENV}"
+      - name: "Check out Foreman ${{ inputs.foreman_version }}"
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.foreman_repository }}
+          ref: ${{ inputs.foreman_version }}
+      - name: Check out plugin
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.plugin_repository }}
+          ref: ${{ inputs.plugin_version }}
+          path: ${{ inputs.plugin }}
+      - name: Set up plugin in Foreman
+        run: |
+          echo "gemspec name: '${{ inputs.plugin }}', path: '${{ inputs.plugin }}'" > "bundler.d/${{ inputs.plugin }}.local.rb"
+          if [ -d ${{ inputs.plugin }}/gemfile.d ] ; then
+            cat ${{ inputs.plugin }}/gemfile.d/*.rb >> bundler.d/${{ inputs.plugin }}.local.rb
+          fi
+      - name: "Set up Ruby ${{ matrix.ruby }}"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Archive Gemfile.lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gemfile-${{ env.ARTIFACT_SUFFIX }}.lock
+          path: Gemfile.lock
+      - name: "Set up Node ${{ matrix.node }}"
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Setup NPM Cache
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && !contains(matrix.task, 'seed') }}
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ matrix.node }}-${{ hashFiles('**/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-${{ matrix.node }}-
+      - name: "Build package-lock.json"
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && !contains(matrix.task, 'seed') }}
+        run: bundle exec npm install --package-lock-only --no-audit
+      - name: "Install NPM packages"
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && !contains(matrix.task, 'seed') }}
+        run: bundle exec npm ci --no-audit
+      - name: Archive package-lock.json
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && !contains(matrix.task, 'seed') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: package-lock-${{ env.ARTIFACT_SUFFIX }}.json
+          path: |
+            package-lock.json
+            ${{ format('{0}/package-lock.json', inputs.plugin) }}
+      - name: Prepare test env
+        if: ${{ !contains(matrix.task, 'nulldb') }}
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+      - name: "Compile webpack"
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && contains(matrix.task, 'test') }}
+        run:
+          bundle exec rake webpack:compile
+      - name: Archive all_react_app_exports
+        if: ${{ hashFiles(format('{0}/package.json', inputs.plugin), format('{0}/test/integration/**', inputs.plugin)) != '' && contains(matrix.task, 'test') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: all_react_app_exports-${{ env.ARTIFACT_SUFFIX }}.js
+          path: webpack/assets/javascripts/all_react_app_exports.js
+      - name: Add nulldb DB schema
+        run: cp -f db/schema.rb.nulldb db/schema.rb
+        if: ${{ contains(matrix.task, 'nulldb') }}
+      - name: Run rake ${{ matrix.task }}
+        run: bundle exec rake ${{ matrix.task }}
+      - name: Upload logs
+        uses: actions/upload-artifact@v4
+        if: ${{ failure() && contains(matrix.task, 'test') }}
+        with:
+          name: logs-${{ env.ARTIFACT_SUFFIX }}
+          path: log/*.log
+          retention-days: 5
+
+  existing-database:
+    name: "Existing database - Foreman ${{ inputs.foreman_version }} with Ruby ${{ matrix.ruby }} and Node ${{ matrix.node }} on PostgreSQL ${{ matrix.postgresql }}"
+    if: ${{ inputs.test_existing_database }}
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    services:
+      postgres:
+        image: '${{ inputs.postgresql_container }}:${{ matrix.postgresql }}'
+        ports: ['5432:5432']
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+        env:
+          POSTGRES_PASSWORD: password
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ${{ fromJson(needs.setup_matrix.outputs.matrix).ruby }}
+        node: ${{ fromJson(needs.setup_matrix.outputs.matrix).node }}
+        postgresql: ${{ fromJson(needs.setup_matrix.outputs.matrix).postgresql }}
+        task:
+          - 'db:seed'
+        include: ${{ fromJson(needs.setup_matrix.outputs.matrix).include }}
+        exclude: ${{ fromJson(needs.setup_matrix.outputs.matrix).exclude }}
+    steps:
+      - name: Load environment variables from caller
+        run: echo "${{ inputs.environment_variables }}" >> $GITHUB_ENV
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y build-essential libcurl4-openssl-dev zlib1g-dev libpq-dev
+      - name: "Check out Foreman ${{ inputs.foreman_version }}"
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.foreman_repository }}
+          ref: ${{ inputs.foreman_version }}
+      - name: "Set up Ruby ${{ matrix.ruby }}"
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Prepare test env
+        run: |
+          bundle exec rake db:create
+          bundle exec rake db:migrate
+          bundle exec rake db:seed
+      - name: Check out plugin
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.plugin_repository }}
+          ref: ${{ inputs.plugin_version }}
+          path: ${{ inputs.plugin }}
+      - name: Set up plugin in Foreman
+        run: |
+          echo "gemspec name: '${{ inputs.plugin }}', path: '${{ inputs.plugin }}'" > "bundler.d/${{ inputs.plugin }}.local.rb"
+          if [ -d ${{ inputs.plugin }}/gemfile.d ] ; then
+            cat ${{ inputs.plugin }}/gemfile.d/*.rb >> bundler.d/${{ inputs.plugin }}.local.rb
+          fi
+      - name: Install plugin
+        run: bundle install
+      - name: Run plugin db migrations and seeds
+        run: |
+          bundle exec rake db:migrate
+          bundle exec rake db:seed
+
+  # A dummy job that you can mark as a required check instead of each individual test
+  test-suite:
+    if: always()
+    needs:
+      - test
+      - existing-database
+    runs-on: ubuntu-latest
+    name: Test suite
+    steps:
+      - name: Decide whether the needed jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}
+          allowed-skips: existing-database

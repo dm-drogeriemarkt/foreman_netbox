@@ -14,14 +14,14 @@ module ForemanNetbox
                 interface_id = interfaces_map.fetch(ip_address.dig(:interface, :name), nil)
 
                 next unless interface_id
-                next unless ForemanNetbox::API.client
+                next unless ForemanNetbox::Api.client
                                               .ipam
                                               .ip_addresses
                                               .filter(interface_id: interface_id, address: ip_address[:address])
                                               .total
                                               .zero?
 
-                ForemanNetbox::API.client::IPAM::IpAddress.new(
+                ForemanNetbox::Api.client::IPAM::IpAddress.new(
                   ip_address.slice(:address)
                             .merge(
                               assigned_object_type: 'dcim.interface', assigned_object_id: interface_id,

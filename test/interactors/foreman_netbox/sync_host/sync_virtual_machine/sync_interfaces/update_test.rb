@@ -12,7 +12,7 @@ class UpdateVirtualMachineInterfacesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:interfaces) { ForemanNetbox::API.client::Virtualization::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::Api.client::Virtualization::Interfaces.new }
   let(:old_mac) { 'FE:13:C6:44:29:22' }
   let(:host) do
     FactoryBot.build_stubbed(

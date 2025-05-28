@@ -42,7 +42,7 @@ class SyncRhelPhysicalHostTest < ActiveSupport::TestCase
     end
   end
 
-  test 'sync host' do
+  test 'sync physical host' do
     ForemanNetbox::NetboxFacet.any_instance.expects(:update).twice.returns(true)
 
     assert subject.success?

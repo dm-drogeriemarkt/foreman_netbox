@@ -19,12 +19,12 @@ module ForemanNetbox
         delegate :mac, to: :host
 
         def find_by_mac
-          ForemanNetbox::API.client.virtualization.virtual_machines.filter(mac_address: mac).first if mac
+          ForemanNetbox::Api.client.virtualization.virtual_machines.filter(mac_address: mac).first if mac
         end
 
         def find_by_name
           params = netbox_params.fetch(:virtual_machine).slice(:name)
-          ForemanNetbox::API.client.virtualization.virtual_machines.find_by(params)
+          ForemanNetbox::Api.client.virtualization.virtual_machines.find_by(params)
         end
       end
     end

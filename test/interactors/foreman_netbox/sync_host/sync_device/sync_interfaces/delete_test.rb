@@ -12,7 +12,7 @@ class DeleteDeviceInterfacesTest < ActiveSupport::TestCase
   end
 
   let(:interface_id) { 1 }
-  let(:interfaces) { ForemanNetbox::API.client::DCIM::Interfaces.new }
+  let(:interfaces) { ForemanNetbox::Api.client::DCIM::Interfaces.new }
   let(:host) do
     FactoryBot.build_stubbed(:host, interfaces: [])
   end

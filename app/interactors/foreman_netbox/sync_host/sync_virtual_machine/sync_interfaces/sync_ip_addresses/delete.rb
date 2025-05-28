@@ -22,9 +22,8 @@ module ForemanNetbox
 
               context.interfaces.each do |netbox_interface|
                 host_interface_ips = ip_addresses_netbox_params.select do |ip|
-                                       ip.dig(:interface, :name) == netbox_interface.name
-                                     end
-                                                               .map { |ip| ip.fetch(:address) }
+                  ip.dig(:interface, :name) == netbox_interface.name
+                end.map { |ip| ip.fetch(:address) }
 
                 context.ip_addresses
                        .select { |ip| ip['assigned_object_type'] == 'virtualization.vminterface' && ip['assigned_object_id'] == netbox_interface.id }
@@ -32,7 +31,6 @@ module ForemanNetbox
                        .each(&:delete)
               end
             end
-
             delegate :netbox_params, to: :context
           end
         end

@@ -2,9 +2,9 @@
 
 require 'test_plugin_helper'
 
-class SaveNetboxUrlVirtualMachineTest < ActiveSupport::TestCase
+class SaveNetboxURLVirtualMachineTest < ActiveSupport::TestCase
   subject do
-    ForemanNetbox::SyncHost::SyncVirtualMachine::SaveNetboxUrl.call(host: host, virtual_machine: virtual_machine)
+    ForemanNetbox::SyncHost::SyncVirtualMachine::SaveNetboxURL.call(host: host, virtual_machine: virtual_machine)
   end
 
   let(:virtual_machine) { OpenStruct.new(id: 1) }

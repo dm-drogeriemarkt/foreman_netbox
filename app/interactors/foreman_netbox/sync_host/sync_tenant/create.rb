@@ -12,7 +12,7 @@ module ForemanNetbox
         end
 
         def call
-          context.tenant = ForemanNetbox::API.client::Tenancy::Tenant.new(params).save
+          context.tenant = ForemanNetbox::Api.client::Tenancy::Tenant.new(params).save
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")

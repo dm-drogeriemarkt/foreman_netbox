@@ -10,9 +10,9 @@ class UpdateSiteTest < ActiveSupport::TestCase
   end
 
   let(:host) { FactoryBot.build_stubbed(:host) }
-  # let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
+  # let(:tags) { [ForemanNetbox::Api.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
   let(:site) do
-    ForemanNetbox::API.client::DCIM::Site.new(id: 1).tap do |site|
+    ForemanNetbox::Api.client::DCIM::Site.new(id: 1).tap do |site|
       site.instance_variable_set(
         :@data,
         { 'id' => 1, 'tags' => site_tags }

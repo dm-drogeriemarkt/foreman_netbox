@@ -27,7 +27,7 @@ class CreateDeviceTest < ActiveSupport::TestCase
   let(:site) { OpenStruct.new(id: 1) }
   let(:tenant) { OpenStruct.new(id: 1) }
   let(:netbox_device_params) { host.netbox_facet.netbox_params.fetch(:device) }
-  let(:tags) { [ForemanNetbox::API.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
+  let(:tags) { [ForemanNetbox::Api.client::Extras::Tag.new(id: 1, name: 'foreman', slug: 'foreman')] }
 
   setup do
     setup_default_netbox_settings

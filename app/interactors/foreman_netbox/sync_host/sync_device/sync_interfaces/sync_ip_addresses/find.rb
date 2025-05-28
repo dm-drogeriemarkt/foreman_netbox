@@ -9,7 +9,7 @@ module ForemanNetbox
             include ::Interactor
 
             def call
-              context.ip_addresses = ForemanNetbox::API.client.ipam.ip_addresses.filter(params)
+              context.ip_addresses = ForemanNetbox::Api.client.ipam.ip_addresses.filter(params)
             rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
               ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
               context.fail!(error: "#{self.class}: #{e}")

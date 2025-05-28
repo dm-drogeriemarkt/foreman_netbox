@@ -15,7 +15,7 @@ module ForemanNetbox
         def new_tags
           SyncTags::Organizer::DEFAULT_TAGS
             .reject { |params| existing_slugs.include?(params[:slug]) }
-            .map { |params| ForemanNetbox::API.client::Extras::Tag.new(params).save }
+            .map { |params| ForemanNetbox::Api.client::Extras::Tag.new(params).save }
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")

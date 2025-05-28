@@ -27,6 +27,6 @@ end
 
 def default_tags
   ForemanNetbox::SyncHost::SyncTags::Organizer::DEFAULT_TAGS.map.with_index(1) do |tag, id|
-    ForemanNetbox::API.client::Extras::Tag.new(id: id, name: tag[:name], slug: tag[:slug])
+    ForemanNetbox::Api.client::Extras::Tag.new(id: id, name: tag[:name], slug: tag[:slug])
   end
 end

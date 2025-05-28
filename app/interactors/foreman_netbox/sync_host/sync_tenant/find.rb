@@ -7,7 +7,7 @@ module ForemanNetbox
         include ::Interactor
 
         def call
-          context.tenant = ForemanNetbox::API.client.tenancy.tenants.find_by(params)
+          context.tenant = ForemanNetbox::Api.client.tenancy.tenants.find_by(params)
         rescue NetboxClientRuby::LocalError, NetboxClientRuby::ClientError, NetboxClientRuby::RemoteError => e
           ::Foreman::Logging.logger('foreman_netbox/import').error("#{self.class} error #{e}: #{e.backtrace}")
           context.fail!(error: "#{self.class}: #{e}")

@@ -21,17 +21,17 @@ module ForemanNetbox
         def find_by_serial
           serial = netbox_params.dig(:device, :serial)
 
-          ForemanNetbox::API.client.dcim.devices.filter(serial: serial).first if serial
+          ForemanNetbox::Api.client.dcim.devices.filter(serial: serial).first if serial
         end
 
         def find_by_mac
-          ForemanNetbox::API.client.dcim.devices.filter(mac_address: mac).first if mac
+          ForemanNetbox::Api.client.dcim.devices.filter(mac_address: mac).first if mac
         end
 
         def find_by_name
           name = netbox_params.dig(:device, :name)
 
-          ForemanNetbox::API.client.dcim.devices.find_by(name: name)
+          ForemanNetbox::Api.client.dcim.devices.find_by(name: name)
         end
       end
     end

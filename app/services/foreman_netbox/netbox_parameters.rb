@@ -123,7 +123,7 @@ module ForemanNetbox
       }
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:disable Metrics/CyclomaticComplexity
     def ip_addresses
       {
         ip_addresses: host.interfaces.map do |interface|
@@ -144,7 +144,7 @@ module ForemanNetbox
         end.flatten,
       }
     end
-    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def virtual_machine
       {

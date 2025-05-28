@@ -11,7 +11,7 @@ class UpdateVirtualMachineIpAddressesTest < ActiveSupport::TestCase
     )
   end
 
-  let(:ip_addresses) { ForemanNetbox::API.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
+  let(:ip_addresses) { ForemanNetbox::Api.client.ipam.ip_addresses.filter(virtual_machine_id: 1) }
   let(:ip_addresses_data) do
     [
       {

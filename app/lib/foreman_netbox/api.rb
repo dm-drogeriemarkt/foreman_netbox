@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ForemanNetbox
-  class API
+  class Api
     def self.client
       NetboxClientRuby.configure do |config|
         config.netbox.api_base_url = netbox_api_url

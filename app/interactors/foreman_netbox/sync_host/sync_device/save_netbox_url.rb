@@ -3,7 +3,7 @@
 module ForemanNetbox
   module SyncHost
     module SyncDevice
-      class SaveNetboxUrl
+      class SaveNetboxURL
         include ::Interactor
 
         around do |interactor|
