@@ -76,7 +76,9 @@ module ForemanNetbox
     end
 
     def device_type
+      make = manufacturer.dig(:manufacturer, :name)
       model = host.facts.deep_symbolize_keys[:productname] || host.facts.deep_symbolize_keys[:'dmi::product::name'] || UNKNOWN
+      model = model.delete_prefix(make).strip if model.start_with?(make) && model != make
 
       {
         device_type: {
