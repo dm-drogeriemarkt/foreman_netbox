@@ -20,7 +20,8 @@ jobs:
     name: Ruby
     needs: rubocop
     strategy:
-      fail-fast: false
+      fail-fast: true
+      max-parallel: 2
       matrix:
         foreman:
           - "develop"
